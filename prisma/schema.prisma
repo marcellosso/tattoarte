@@ -22,12 +22,13 @@ model Generation {
 
 model User {
   id            String       @default(cuid()) @id
-  email         String?   @unique
-  subscribed    Boolean?  @default(false)
-  generationCount   Int?      @default(0) 
-  stripeId      String   @unique
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  email         String?      @unique
+  subscribed    Boolean?     @default(false)
+  subscribedAt  DateTime?    @map(name: "subscribed_at")
+  generationCount   Int?     @default(0) 
+  stripeId      String       @unique
+  createdAt     DateTime     @default(now()) @map(name: "created_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
   generations  Generation[]
   @@map(name: "users")
 }

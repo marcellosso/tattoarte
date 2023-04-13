@@ -22,9 +22,9 @@ module.exports = withApiAuthRequired(async (req, res) => {
         email,
       },
     })) as User;
-    console.log(req.headers.referer);
 
     const session = await stripe.checkout.sessions.create({
+      customer_email: user.email!,
       line_items: [
         {
           price: productId as string,
