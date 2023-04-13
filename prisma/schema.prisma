@@ -25,6 +25,7 @@ model User {
   email         String?   @unique
   subscribed    Boolean?  @default(false)
   generationCount   Int?      @default(0) 
+  stripeId      String   @unique
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   generations  Generation[]
