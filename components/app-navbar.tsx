@@ -1,4 +1,4 @@
-import processPayment from '@/utils/payment';
+import processPayments from '@/utils/payment';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
 import React, { FC, useMemo } from 'react';
@@ -30,7 +30,8 @@ const AppNavbar = () => {
         </Link>
         <div className="flex md:order-2 items-center">
           <button
-            onClick={() => processPayment('price_1MwG5IICcQQfNZPtAjiwGx5J')}
+            onClick={() => processPayments('price_1MwG5IICcQQfNZPtAjiwGx5J')}
+            // onClick={() => processPayments('price_1MwZayICcQQfNZPt9tOeKZNp')}
             type="button"
             className="bg-gradient-to-r font-bold text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500 ..."
           >
@@ -53,7 +54,7 @@ const AppNavbar = () => {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
                 clip-rule="evenodd"
               ></path>

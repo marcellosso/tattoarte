@@ -1,5 +1,6 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import AppNavbar from '@/components/app-navbar';
+import ImageContainer from '@/components/image-container';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 import React, { FC } from 'react';
@@ -31,7 +32,7 @@ const App: FC<IAPP> = ({ user }) => {
                 <textarea
                   id="message"
                   rows={4}
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Um pescador viajando pelo espaço"
                 />
               </div>
@@ -45,7 +46,7 @@ const App: FC<IAPP> = ({ user }) => {
                 </label>
                 <select
                   id="countries"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="border text-sm rounded-lg block w-full p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="Preto e Branco">Preto e Branco</option>
                   <option value="Colorido">Colorido</option>
@@ -61,7 +62,7 @@ const App: FC<IAPP> = ({ user }) => {
                 </label>
                 <select
                   id="estilo"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="border text-sm rounded-lg block w-full p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:ring-blue-500 focus:border-blue-500"
                 >
                   {tattooStyles.map((tattoo, idx) => (
                     <option key={idx} value={tattoo}>
@@ -81,7 +82,7 @@ const App: FC<IAPP> = ({ user }) => {
                 <input
                   type="text"
                   id="first_name"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="border text-sm rounded-lg block w-full p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"
                   required
                 />
@@ -89,7 +90,14 @@ const App: FC<IAPP> = ({ user }) => {
             </div>
           </div>
           <div className="w-4/5 p-4 bg-primary">
-            <div className="bg-secondary h-full w-full rounded-lg shadow-md shadow-gray-400"></div>
+            <div className="bg-secondary h-full w-full rounded-lg shadow-md shadow-gray-400">
+              <div className="grid grid-cols-1 md:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
+                <ImageContainer />
+                <ImageContainer />
+                <ImageContainer />
+                <ImageContainer />
+              </div>
+            </div>
           </div>
         </section>
       </main>

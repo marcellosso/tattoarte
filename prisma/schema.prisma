@@ -13,22 +13,25 @@ datasource db {
 model Generation {
   id           String       @default(cuid()) @id
   prompt       String
+  style        String
   image_name   String
   createdAt    DateTime     @default(now()) @map(name: "created_at")
   updatedAt    DateTime     @updatedAt @map(name: "updated_at")
-  author       User @relation(fields: [authorId], references: [id])
+  author       User         @relation(fields: [authorId], references: [id])
   authorId     String
 }
 
 model User {
-  id            String       @default(cuid()) @id
-  email         String?      @unique
-  subscribed    Boolean?     @default(false)
-  subscribedAt  DateTime?    @map(name: "subscribed_at")
-  generationCount   Int?     @default(0) 
-  stripeId      String       @unique
-  createdAt     DateTime     @default(now()) @map(name: "created_at")
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
-  generations  Generation[]
+  id                   String       @default(cuid()) @id
+  email                String?      @unique
+  passSubscription     Boolean?     @default(false)
+  passSubscriptionAt   DateTime?    @map(name: "subscribed_at")
+  passDuration         Int?         @default(0)
+  availableGenerations Int?         @default(0)
+  generationCount      Int?         @default(0) 
+  stripeId             String       @unique
+  createdAt            DateTime     @default(now()) @map(name: "created_at")
+  updatedAt            DateTime     @updatedAt @map(name: "updated_at")
+  generations          Generation[]
   @@map(name: "users")
 }

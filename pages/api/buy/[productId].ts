@@ -1,5 +1,3 @@
-// pages/api/charge-card/[courseId].js
-
 import { withApiAuthRequired, getSession, Session } from '@auth0/nextjs-auth0';
 import { PrismaClient, User } from '@prisma/client';
 import Stripe from 'stripe';
@@ -38,8 +36,8 @@ module.exports = withApiAuthRequired(async (req, res) => {
           productId: productId as string,
         },
       },
-      success_url: `${req.headers.referer}/app`,
-      cancel_url: `${req.headers.referer}/`,
+      success_url: `${process.env.AUTH0_BASE_URL}/app`,
+      cancel_url: `${process.env.AUTH0_BASE_URL}/`,
     });
 
     res.json({ id: session.id });

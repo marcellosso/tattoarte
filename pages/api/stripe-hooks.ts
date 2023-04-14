@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
+import { Console } from 'console';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 
@@ -27,14 +28,36 @@ export default async (req: any, res: any) => {
     switch (event.type) {
       case 'charge.succeeded':
         if (metadata?.userId) {
+          const user = (await prisma.user.findUnique({
+            where: {
+              id: metadata.userId,
+            },
+          })) as User;
+
+          const newUserData = {} as Record<string, any>;
+
+          const products = await stripe.products.list();
+          const product = products.data.find(
+            (product: any) => product.default_price == metadata?.productId
+          );
+
+          if (product?.metadata?.productType == 'package') {
+            newUserData.availableGenerations =
+              user.availableGenerations! +
+              parseInt(product?.metadata?.productAmount);
+          } else if (product?.metadata?.productType == 'access') {
+            newUserData.passSubscription = true;
+            newUserData.passDuration = parseInt(
+              product?.metadata?.productAmount
+            );
+            newUserData.passSubscriptionAt = new Date();
+          }
+
           await prisma.user.update({
             where: {
               id: metadata.userId,
             },
-            data: {
-              subscribed: true,
-              subscribedAt: new Date(),
-            },
+            data: newUserData,
           });
         }
         break;
