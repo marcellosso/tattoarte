@@ -4,6 +4,9 @@ export default handleAuth({
   async login(req, res) {
     await handleLogin(req, res, {
       returnTo: '/app',
+      authorizationParams: {
+        connection: 'google-oauth2',
+      },
     });
   },
 });
