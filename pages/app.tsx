@@ -29,15 +29,15 @@ const App: FC<IAPP> = ({ user }) => {
             <div className="p-4">
               <div className="mb-3">
                 <label
-                  htmlFor="message"
+                  htmlFor="prompt"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Descreva sua tattoo
                 </label>
                 <textarea
-                  id="message"
+                  id="prompt"
                   rows={4}
-                  className="block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:ring-blue-500 focus:border-blue-500"
+                  className="max-w-full max-h-64 h-32 block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Um pescador viajando pelo espaço"
                 />
               </div>
