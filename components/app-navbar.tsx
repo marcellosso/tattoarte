@@ -5,7 +5,7 @@ import React, { FC, useMemo } from 'react';
 
 const AppNavbar = () => {
   const { user } = useUser();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState(false);
 
   const userInitials = useMemo(() => {
     const name = user?.name || '';
@@ -37,34 +37,11 @@ const AppNavbar = () => {
           >
             Compre o passe de acesso
           </button>
-          <button
-            data-toggle="collapse"
-            data-target="#navbar-sticky"
-            type="button"
-            className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            aria-controls="navbar-sticky"
-            aria-expanded="false"
-          >
-            <span className="sr-only">Abra o menu</span>
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </button>
 
           <div>
             <div
               id="userAvatar"
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
               className="relative inline-flex items-center justify-center ml-3 w-12 h-12 overflow-hidde rounded-full bg-gray-600 hover:bg-gray-700 hover:cursor-pointer"
             >
               <span className="font-medium text-gray-600 dark:text-gray-300">
@@ -75,7 +52,7 @@ const AppNavbar = () => {
             <div
               id="userDropdown"
               className={`z-10 divide-y absolute mt-3 rounded-md shadow w-44 dark:bg-gray-700 ${
-                isOpen ? 'block' : 'hidden'
+                isUserDropdownOpen ? 'block' : 'hidden'
               }`}
             >
               <ul
@@ -87,6 +64,20 @@ const AppNavbar = () => {
                     href="#"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                      ></path>
+                    </svg>{' '}
                     Compras
                   </Link>
                 </li>

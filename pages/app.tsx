@@ -1,6 +1,7 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import AppNavbar from '@/components/app-navbar';
 import ImageContainer from '@/components/image-container';
+import generateImage from '@/utils/generate';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 import React, { FC } from 'react';
@@ -153,6 +154,7 @@ const App: FC<IAPP> = ({ user }) => {
 
               <button
                 type="button"
+                onClick={() => generateImage()}
                 className="bg-gradient-to-r w-full font-bold text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500 ..."
               >
                 Criar tattoo

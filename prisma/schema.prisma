@@ -15,23 +15,27 @@ model Generation {
   prompt       String
   style        String
   image_name   String
+  is_hd        Boolean?     @default(false)
   createdAt    DateTime     @default(now()) @map(name: "created_at")
   updatedAt    DateTime     @updatedAt @map(name: "updated_at")
   author       User         @relation(fields: [authorId], references: [id])
   authorId     String
+  is_favorite  Boolean?     @default(false)
+  is_private   Boolean?     @default(false)
+  @@map(name: "generations")
 }
 
 model User {
   id                   String       @default(cuid()) @id
   email                String?      @unique
-  passSubscription     Boolean?     @default(false)
-  passSubscriptionAt   DateTime?    @map(name: "subscribed_at")
-  passDuration         Int?         @default(0)
-  availableGenerations Int?         @default(0)
+  subscriped           Boolean?     @default(false)
+  subscriptionAt       DateTime?    @map(name: "subscribed_at")
+  subscriptionDuration Int?         @default(0)
+  credits              Int?         @default(0)
   generationCount      Int?         @default(0) 
   stripeId             String       @unique
   createdAt            DateTime     @default(now()) @map(name: "created_at")
   updatedAt            DateTime     @updatedAt @map(name: "updated_at")
-  generations          Generation[]
+  generations          Generation[] 
   @@map(name: "users")
 }
