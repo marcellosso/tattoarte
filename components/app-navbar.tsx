@@ -22,8 +22,8 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
           <Image
             src="/images/tattooarte-logo.png"
             alt="TattoArte logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
-            width={40}
-            height={40}
+            width={50}
+            height={50}
           />
           <span
             className={`${oswald.className} self-center text-3xl font-semibold whitespace-nowrap dark:text-white ml-2`}
@@ -32,14 +32,16 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
           </span>
         </Link>
         <div className="flex md:order-2 items-center ">
-          <button
-            onClick={() => processPayments('price_1MwG5IICcQQfNZPtAjiwGx5J')}
-            // onClick={() => processPayments('price_1MwZayICcQQfNZPt9tOeKZNp')}
-            type="button"
-            className={`${oswald.className} bg-gradient-to-r font-bold text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
-          >
-            Compre o passe de acesso
-          </button>
+          {!user.subscribed && (
+            <button
+              onClick={() => processPayments('price_1MwG5IICcQQfNZPtAjiwGx5J')}
+              // onClick={() => processPayments('price_1MwZayICcQQfNZPt9tOeKZNp')}
+              type="button"
+              className={`${oswald.className} bg-gradient-to-r font-bold text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+            >
+              Compre o passe de acesso
+            </button>
+          )}
 
           <UserAvatar credits={user.credits as number} />
         </div>

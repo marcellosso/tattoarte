@@ -1,9 +1,13 @@
 import axios from 'axios';
 
-const generateImage = async () => {
-  const data = await axios.get(`/api/generation/test`);
-  console.log(data);
-  return data;
+// TODO Catch errors
+const generateImage = async (params: ParamsType) => {
+  try {
+    const { data } = await axios.post('/api/generation/create', params);
+    return data;
+  } catch (err: any) {
+    throw err.response?.data || err.message;
+  }
 };
 
 export default generateImage;

@@ -13,6 +13,9 @@ module.exports = {
         detail: '#FFD369',
         letter: '#EEEEEE',
       },
+      fontSize: {
+        '2xs': '0.65rem',
+      },
     },
   },
   plugins: [],

@@ -25,11 +25,30 @@ const UserAvatar: FC<IUserAvatar> = ({ credits }) => {
   return (
     <div>
       <div className="flex items-center ml-3">
-        {credits && (
-          <div className="bg-primary text-letter text-sm font-bold mr-2 p-3 h-full rounded-3xl shadow-inner">
-            {credits} Credits
+        <Link
+          href="#"
+          className="bg-primary text-letter text-sm font-normal mr-2 p-3  h-full rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700"
+        >
+          <span className="font-bold text-detail">{credits}&nbsp;</span>{' '}
+          Creditos
+          <div className="ml-2 h-5 w-5">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              className="text-letter"
+              strokeWidth={1.5}
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
           </div>
-        )}
+        </Link>
         <div
           id="userAvatar"
           onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
@@ -41,7 +60,7 @@ const UserAvatar: FC<IUserAvatar> = ({ credits }) => {
 
       <div
         id="userDropdown"
-        className={`z-10 ml-5 absolute mt-2 rounded-md shadow bg-primary ${
+        className={`z-10 ml-20 absolute mt-2 rounded-md shadow bg-primary ${
           isUserDropdownOpen ? 'block' : 'hidden'
         }`}
       >

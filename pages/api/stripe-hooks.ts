@@ -1,9 +1,9 @@
+import prisma from '@/utils/use-prisma';
 import { PrismaClient, User } from '@prisma/client';
 import { Console } from 'console';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 
-const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2022-11-15',
 });
@@ -42,15 +42,14 @@ export default async (req: any, res: any) => {
           );
 
           if (product?.metadata?.productType == 'package') {
-            newUserData.availableGenerations =
-              user.availableGenerations! +
-              parseInt(product?.metadata?.productAmount);
+            newUserData.credits =
+              user.credits! + parseInt(product?.metadata?.productAmount);
           } else if (product?.metadata?.productType == 'access') {
-            newUserData.passSubscription = true;
-            newUserData.passDuration = parseInt(
+            newUserData.subscribed = true;
+            newUserData.subscriptionDuration = parseInt(
               product?.metadata?.productAmount
             );
-            newUserData.passSubscriptionAt = new Date();
+            newUserData.subscriptionAt = new Date();
           }
 
           await prisma.user.update({
@@ -65,8 +64,6 @@ export default async (req: any, res: any) => {
         console.log(`Unhandled event type ${event.type}`);
     }
   } catch (err: any) {
-    console.log(err);
-
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 

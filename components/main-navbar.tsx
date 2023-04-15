@@ -23,6 +23,7 @@ const NavbarLink: FC<INavbarLink> = ({ label, href }) => (
 
 const MainNavbar = () => {
   const { user } = useUser();
+
   return (
     <nav className="bg-secondary fixed w-full z-20 top-0 left-0 shadow-lg">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

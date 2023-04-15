@@ -1,8 +1,8 @@
+import prisma from '@/utils/use-prisma';
 import { withApiAuthRequired, getSession, Session } from '@auth0/nextjs-auth0';
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import Stripe from 'stripe';
 
-const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2022-11-15',
 });
@@ -43,7 +43,5 @@ module.exports = withApiAuthRequired(async (req, res) => {
     res.json({ id: session.id });
   } catch (err) {
     res.send(err);
-  } finally {
-    await prisma.$disconnect();
   }
 });

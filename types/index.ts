@@ -5,4 +5,5 @@ type ParamsType = {
   artistInspiration?: string;
   isHD?: boolean;
   isPrivate?: boolean;
+  colors?: string[];
 };

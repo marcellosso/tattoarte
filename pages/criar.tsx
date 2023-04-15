@@ -1,15 +1,18 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import AppNavbar from '@/components/app-navbar';
+import ColorPicker from '@/components/color-picker';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
+import prisma from '@/utils/use-prisma';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { PrismaClient, User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
+import Image from 'next/image';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
-import { SketchPicker } from 'react-color';
+import { toast } from 'react-toastify';
 
 const oswald = Oswald({ subsets: ['latin'] });
 
@@ -18,22 +21,71 @@ interface IAPP {
 }
 
 const App: FC<IAPP> = ({ user }) => {
-  const [color, setColor] = React.useState('#fff');
-  const [openColorPicker, setOpenColorPicker] = React.useState(false);
-  const [params, setParams] = React.useState<ParamsType>({} as ParamsType);
+  const [userData, setUserData] = useState(user);
 
-  const [loadingImages, setLoadingImages] = React.useState(false);
+  const [colors, setColors] = useState<string[]>([]);
+  const [openColorPicker, setOpenColorPicker] = useState<
+    Record<string, boolean>
+  >({});
+  const [params, setParams] = useState<ParamsType>({
+    prompt: '',
+    tattooStyle: 'Minimalista',
+    colorsStyle: 'Colorido',
+  } as ParamsType);
+
+  const [images, setImages] = useState<string[]>([]);
+  const [loadingImages, setLoadingImages] = useState(false);
+
+  useEffect(() => {
+    if (colors.length > 0) {
+      setParams({
+        ...params,
+        colors,
+      });
+    }
+  }, [colors]);
+
+  const handleCreate = async () => {
+    setLoadingImages(true);
+    try {
+      const response = await generateImage(params);
+      setImages(response.images);
+      setUserData(response.newUserData);
+    } catch (err) {
+      toast.error(err as string, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+    setLoadingImages(false);
+  };
 
   return (
     <>
-      <AppNavbar user={user} />
+      <AppNavbar user={userData} />
       <main className="flex min-h-screen h-screen flex-col items-center justify-between pt-16 bg-primary text-letter">
         <section className="flex w-screen h-full">
           <div className="bg-secondary w-1/5 h-full shadow-lg shadow-gray-500">
-            <h1 className="text-lg font-bold text-letter border-b-2 text-center divide-letter py-2">
-              Crie suas <span className="text-detail">tattoos</span>,{' '}
-              {user.name}!
-            </h1>
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-lg font-bold text-letter text-center divide-letter pt-2">
+                Crie suas <span className="text-detail">tattoos</span>,{' '}
+                {user.name}!
+              </h1>
+              <span className="text-gray-400 text-xs text-center pb-3">
+                Voce já criou
+                <span className="text-detail">
+                  {' '}
+                  {(userData.generationCount || 0) * 4} tatuagens!
+                </span>
+              </span>
+              <div className="h-1 w-full bg-letter" />
+            </div>
 
             <div className="p-4">
               <div className="mb-3">
@@ -70,8 +122,8 @@ const App: FC<IAPP> = ({ user }) => {
                   id="countries"
                   className="border text-sm rounded-lg block w-full p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                 >
-                  <option value="Preto e Branco">Preto e Branco</option>
                   <option value="Colorido">Colorido</option>
+                  <option value="Preto e Branco">Preto e Branco</option>
                 </select>
               </div>
 
@@ -103,7 +155,8 @@ const App: FC<IAPP> = ({ user }) => {
                   htmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-letter"
                 >
-                  Artistas para inspiração
+                  Artistas para inspiração{' '}
+                  <span className="text-gray-400 text-xs">(Opcional)</span>
                 </label>
                 <input
                   value={params.artistInspiration}
@@ -112,53 +165,137 @@ const App: FC<IAPP> = ({ user }) => {
                   }
                   type="text"
                   id="first_name"
-                  className="border text-sm rounded-lg block w-full p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
+                  className="border text-sm rounded-lg block w-full p-2.5 placeholder:text-2xs bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                   placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"
                   required
                 />
               </div>
 
-              <div className="mb-3 flex items-center">
-                <div
-                  className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm"
-                  style={{ backgroundColor: color }}
-                  onClick={() => setOpenColorPicker(!openColorPicker)}
-                />
-                {openColorPicker && (
-                  <div className="absolute z-10">
-                    <div
-                      className="fixed top-0 left-0 bottom-0 right-0"
-                      onClick={() => setOpenColorPicker(false)}
-                    />
-                    <SketchPicker
-                      color={color}
-                      onChangeComplete={(color) => setColor(color.hex)}
-                      className="mt-2 text-primary"
-                    />
+              {params.colorsStyle == 'Colorido' && (
+                <div className="mb-3">
+                  <span className="block mb-2 text-sm font-medium text-letter">
+                    Paleta de Cores{' '}
+                    <span className="text-gray-400 text-xs">
+                      (Limite de 5 cores)
+                    </span>
+                  </span>
+                  <div className="flex items-center">
+                    {colors.map((color, idx) => {
+                      return (
+                        <>
+                          <div className="relative">
+                            <div
+                              className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm hover:scale-105"
+                              style={{ backgroundColor: color }}
+                              onClick={() =>
+                                setOpenColorPicker({
+                                  ...openColorPicker,
+                                  [idx]: !openColorPicker[idx],
+                                })
+                              }
+                            />
+                            <div
+                              onClick={() => {
+                                setColors((prevState) => {
+                                  const newArr = [...prevState];
+                                  newArr.splice(idx, 1);
+                                  return newArr;
+                                });
+
+                                setOpenColorPicker((prevState) => {
+                                  const newOpenColorPicker = { ...prevState };
+
+                                  // subtract all other keys after this one by 1
+                                  for (
+                                    let i = idx + 1;
+                                    i < Object.keys(prevState).length;
+                                    i++
+                                  ) {
+                                    newOpenColorPicker[i - 1] =
+                                      newOpenColorPicker[i];
+                                  }
+                                  delete newOpenColorPicker[idx];
+                                  return newOpenColorPicker;
+                                });
+                              }}
+                              className="w-4 h-4 absolute right-0 -top-2 bg-primary rounded-3xl hover:cursor-pointer hover:bg-gray-600"
+                            >
+                              <svg
+                                fill="none"
+                                stroke="currentColor"
+                                className="text-letter hover:text-detail"
+                                strokeWidth={1.5}
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          {openColorPicker[idx] && (
+                            <ColorPicker
+                              key={color}
+                              color={color}
+                              setColor={(color) =>
+                                setColors((prevState) => {
+                                  const newArr = [...prevState];
+                                  newArr.splice(idx, 1, color);
+                                  return newArr;
+                                })
+                              }
+                              open={openColorPicker[idx]}
+                              setOpen={(open) =>
+                                setOpenColorPicker({
+                                  ...openColorPicker,
+                                  [idx]: open,
+                                })
+                              }
+                            />
+                          )}
+                        </>
+                      );
+                    })}
+
+                    {colors.length < 5 && (
+                      <div
+                        onClick={() => {
+                          setOpenColorPicker({
+                            ...openColorPicker,
+                            [colors.length]: false,
+                          });
+                          setColors((prevState) => {
+                            const newArr = [...prevState];
+                            newArr.push('#eeeeee');
+                            return newArr;
+                          });
+                        }}
+                        className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm bg-primary border border-gray-600 hover:border-detail"
+                      >
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-letter hover:text-detail"
+                          strokeWidth="1.5"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 4.5v15m7.5-7.5h-15"
+                          ></path>
+                        </svg>
+                      </div>
+                    )}
                   </div>
-                )}
-                <div
-                  className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm"
-                  style={{ backgroundColor: '#e5e5e' }}
-                />
-                <div className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm bg-gray-600 border-gray-400 border">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    className="text-gray-400"
-                    strokeWidth="1.5"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    ></path>
-                  </svg>
                 </div>
-              </div>
+              )}
 
               <div className="mb-3">
                 <label className="relative inline-flex items-center">
@@ -193,7 +330,7 @@ const App: FC<IAPP> = ({ user }) => {
                       })
                     }
                     className="sr-only peer"
-                    disabled={!user.subscribed}
+                    disabled={!userData.subscribed}
                   />
                   <div className="w-11 h-6 cursor-pointer peer-focus:outline-none peer-focus:ring-4 dark:peer-focus:ring-gray-600 rounded-full peer dark:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-detail"></div>
                   <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -209,10 +346,10 @@ const App: FC<IAPP> = ({ user }) => {
                 </label>
               </div>
 
-              {user.credits! > 0 || user.subscribed ? (
+              {userData.credits! > 0 || userData.subscribed ? (
                 <button
                   type="button"
-                  onClick={() => generateImage()}
+                  onClick={handleCreate}
                   className="flex items-center justify-center text-xl bg-gradient-to-r w-full font-bold text-primary p-3 rounded-md bg-detail hover:scale-105"
                 >
                   <div className="w-6 h-6 mr-2">
@@ -249,9 +386,34 @@ const App: FC<IAPP> = ({ user }) => {
           </div>
           <div className="w-4/5 p-4 bg-primary">
             <div className="bg-secondary h-full w-full rounded-lg shadow-xl drop-shadow-2xl">
-              <div className="grid grid-cols-1 md:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
-                <ImageContainer isLoading={loadingImages} />
-              </div>
+              {images?.length == 0 && !loadingImages ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="w-3/7 h-3/4 max-w-xl bg-white flex flex-col items-center justify-between p-4 rounded-xl shadow-xl">
+                    <h2 className="text-primary font-bold text-2xl">
+                      Suas tatuagens irão aparecer aqui!
+                    </h2>
+                    <p className="text-primary text-sm text-center">
+                      Preencha os campos na sua esquerda, clique em{' '}
+                      <span className="text-secondary font-bold">
+                        'Criar tattoo'
+                      </span>{' '}
+                      e com isso, nossa IA criará um tatuagem{' '}
+                      <span className="text-secondary font-bold">única</span>{' '}
+                      para você!
+                    </p>
+                    <Image
+                      src="/images/tattoo-background.webp"
+                      alt="Imagem de fundo com diversas 'flash' tattoos."
+                      height={600}
+                      width={600}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
+                  <ImageContainer isLoading={loadingImages} images={images} />
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -266,7 +428,6 @@ export const getServerSideProps = withPageAuthRequired({
     const session = await getSession(req, res);
     const sessionUser = session!.user || {};
 
-    const prisma = new PrismaClient();
     const user = (await prisma.user.findUnique({
       where: {
         email: sessionUser.email as string,
@@ -281,6 +442,7 @@ export const getServerSideProps = withPageAuthRequired({
           subscribed: user?.subscribed,
           subscriptionAt: user?.subscriptionAt,
           subscriptionDuration: user?.subscriptionDuration,
+          generationCount: user?.generationCount,
         },
       },
     };

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/utils/use-prisma';
 import Stripe from 'stripe';
-
-const prisma = new PrismaClient();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2022-11-15',
@@ -20,9 +18,6 @@ module.exports = async (req: any, res: any) => {
       });
     } catch (err) {
       console.log(err);
-    } finally {
-      await prisma.$disconnect();
-      res.send({ received: true });
     }
   } else {
     res.send('You forgot to send me your secret!');

@@ -3,6 +3,9 @@ import type { AppProps } from 'next/app';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Head from 'next/head';
 import { Chivo_Mono } from 'next/font/google';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { ToastContainer } from 'react-toastify';
 
 const chivoMono = Chivo_Mono({ subsets: ['latin'] });
 
@@ -18,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Artista de Tatuagem IA | TattoArte</title>
       </Head>
       <Component {...pageProps} />
+      <ToastContainer />
     </UserProvider>
   );
 }
