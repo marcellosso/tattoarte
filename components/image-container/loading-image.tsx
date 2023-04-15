@@ -1,4 +1,4 @@
-const ImageContainer = () => {
+const LoadingImage = () => {
   return (
     <div className="bg-gray-600 w-11/12 h-72 md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center">
       <svg
@@ -21,4 +21,4 @@ const ImageContainer = () => {
   );
 };
 
-export default ImageContainer;
+export default LoadingImage;

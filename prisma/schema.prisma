@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Generation {
@@ -22,16 +23,17 @@ model Generation {
   authorId     String
   is_favorite  Boolean?     @default(false)
   is_private   Boolean?     @default(false)
+  @@index([authorId])
   @@map(name: "generations")
 }
 
 model User {
   id                   String       @default(cuid()) @id
   email                String?      @unique
-  subscriped           Boolean?     @default(false)
+  subscribed           Boolean?     @default(false)
   subscriptionAt       DateTime?    @map(name: "subscribed_at")
   subscriptionDuration Int?         @default(0)
-  credits              Int?         @default(0)
+  credits              Int?         @default(3)
   generationCount      Int?         @default(0) 
   stripeId             String       @unique
   createdAt            DateTime     @default(now()) @map(name: "created_at")

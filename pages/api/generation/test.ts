@@ -10,8 +10,8 @@ module.exports = withApiAuthRequired(async (req, res) => {
   try {
     const response = await openai.createImage({
       prompt: 'a white siamese cat',
-      n: 1,
-      size: '1024x1024',
+      n: 4,
+      size: '256x256',
     });
     const image_url = response.data.data[0].url;
     res.json({ id: image_url });
