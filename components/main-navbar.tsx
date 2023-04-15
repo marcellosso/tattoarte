@@ -48,7 +48,6 @@ const MainNavbar = () => {
               >
                 Crie sua arte
               </Link>
-              <UserAvatar />
             </>
           ) : (
             <Link

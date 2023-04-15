@@ -6,7 +6,7 @@ import generateImage from '@/utils/generate';
 import prisma from '@/utils/use-prisma';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -37,12 +37,10 @@ const App: FC<IAPP> = ({ user }) => {
   const [loadingImages, setLoadingImages] = useState(false);
 
   useEffect(() => {
-    if (colors.length > 0) {
-      setParams({
-        ...params,
-        colors,
-      });
-    }
+    setParams({
+      ...params,
+      colors,
+    });
   }, [colors]);
 
   const handleCreate = async () => {
@@ -397,7 +395,7 @@ const App: FC<IAPP> = ({ user }) => {
                       <span className="text-secondary font-bold">
                         'Criar tattoo'
                       </span>{' '}
-                      e com isso, nossa IA criará um tatuagem{' '}
+                      e, com isso, nossa IA criará uma tatuagem{' '}
                       <span className="text-secondary font-bold">única</span>{' '}
                       para você!
                     </p>

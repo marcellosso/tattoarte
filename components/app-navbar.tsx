@@ -43,7 +43,10 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
             </button>
           )}
 
-          <UserAvatar credits={user.credits as number} />
+          <UserAvatar
+            credits={user.credits as number}
+            isSubscribed={user.subscribed as boolean}
+          />
         </div>
       </div>
     </nav>
