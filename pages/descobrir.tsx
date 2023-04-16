@@ -1,27 +1,36 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import AppNavbar from '@/components/navbars/app-navbar';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '@/utils/use-prisma';
 import { Generation, User } from '@prisma/client';
 import { FC } from 'react';
+import MainNavbar from '@/components/navbars/main-navbar';
+import { GetServerSidePropsContext } from 'next';
 
-interface ICollection {
-  user: User;
+interface IDiscover {
   generations: Generation[];
-  ownerName: string;
 }
 
-const Collection: FC<ICollection> = ({ user, generations, ownerName }) => {
+const Discover: FC<IDiscover> = ({ generations }) => {
   return (
     <>
-      <AppNavbar user={user} />
-      <main className="flex min-h-screen h-screen flex-col items-center p-12 pt-24 bg-primary text-letter">
+      <MainNavbar />
+      <main className="flex min-h-screen h-screen flex-col items-center pt-24 pb-0 bg-secondary text-letter">
         <h1 className="text-3xl font-bold">
-          Coleção de <span className="text-detail">{ownerName}</span>
+          Descubra criações de outros{' '}
+          <span className="text-detail">usuários</span>!
         </h1>
+        <p className="text-letter font-md mb-3">
+          Veja o que outros estão criando usando nossa Inteligencia Artificial
+          (IA) artista de tatuagens!
+        </p>
+        <Link
+          href="/criar"
+          className="mb-3 flex items-center justify-center bg-detail hover:scale-105 text-lg bg-gradient-to-r w-1/5 font-bold text-primary p-3 rounded-md"
+        >
+          Crie sua própria arte
+        </Link>
 
-        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6">
+        <div className="bg-primary h-full w-full mt-4 rounded-md p-6 overflow-y-scroll overflow-x-hidden scrollbar-hide">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5">
             {generations.map((generation) => (
               <Link
@@ -54,54 +63,26 @@ const Collection: FC<ICollection> = ({ user, generations, ownerName }) => {
   );
 };
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res, query } = context;
-    const session = await getSession(req, res);
-    const sessionUser = session!.user || {};
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { query } = context;
+  const style = query.estilo || undefined;
 
-    const user = (await prisma.user.findUnique({
+  const generations =
+    (await prisma.generation.findMany({
       where: {
-        email: sessionUser.email as string,
+        is_private: false,
+        style: style as string,
       },
-    })) as User;
+      take: 20,
+    })) || [];
 
-    const queryId = query?.userId || user?.id;
+  return {
+    props: {
+      generations: JSON.parse(JSON.stringify(generations)),
+    },
+  };
+};
 
-    let generationsFromUser = [] as Generation[];
-
-    const isSameUser = queryId == user?.id;
-    let ownerName = user?.name;
-
-    if (!isSameUser) {
-      const owner = (await prisma.user.findUnique({
-        where: {
-          id: queryId as string,
-        },
-        select: {
-          name: true,
-        },
-      })) as User;
-
-      ownerName = owner?.name;
-    }
-
-    generationsFromUser =
-      (await prisma.generation.findMany({
-        where: {
-          authorId: queryId as string,
-          is_private: !isSameUser ? false : undefined,
-        },
-      })) || [];
-
-    return {
-      props: {
-        user: JSON.parse(JSON.stringify(user)),
-        generations: JSON.parse(JSON.stringify(generationsFromUser)),
-        ownerName,
-      },
-    };
-  },
-});
-
-export default Collection;
+export default Discover;

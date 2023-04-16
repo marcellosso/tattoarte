@@ -83,8 +83,8 @@ const MainNavbar = () => {
           id="navbar-sticky"
         >
           <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border bg-secondary rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-            <NavbarLink label="Descobrir" href="/" />
-            <NavbarLink label="Estilos" href="/" />
+            <NavbarLink label="Descobrir" href="/descobrir" />
+            <NavbarLink label="Estilos" href="/estilos" />
             <NavbarLink label="Preços" href="/" />
           </ul>
         </div>
