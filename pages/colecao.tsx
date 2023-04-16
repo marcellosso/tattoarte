@@ -137,6 +137,26 @@ const Collection: FC<ICollection> = ({
                   priority
                   className="rounded-md"
                 />
+                {generation.is_private && (
+                  <div className="h-6 w-6 absolute left-0 top-0 z-30 opacity-100 group-hover:opacity-0 transition-all">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      className="text-primary"
+                      strokeWidth={1.5}
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        className="fill-detail"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+                      />
+                    </svg>
+                  </div>
+                )}
                 <div className="bg-primary opacity-0 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-1 left-1 group-hover:opacity-100 transition-all overflow-ellipsis">
                   <span className="text-detail">{generation.style}</span>
                 </div>

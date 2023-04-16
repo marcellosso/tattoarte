@@ -25,7 +25,9 @@ module.exports = withApiAuthRequired(async (req, res) => {
     let newCredits = user.credits || 0;
 
     if (!user.subscribed) {
-      const creditsToDeduce = params.isHD ? 3 : 1;
+      let creditsToDeduce = 1;
+      if (params.isHD) creditsToDeduce += 2;
+      if (params.isPrivate) creditsToDeduce += 2;
 
       if (user.credits == 0 || (user.credits || 0) < creditsToDeduce) {
         throw 'Você não possui créditos suficientes para gerar uma arte.';
