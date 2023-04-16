@@ -37,7 +37,8 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </div>
           )}
           <div className="flex flex-col items-center w-full h-full">
-            <span className="text-gray-200 text-sm">
+            <span className="text-gray-200 text-xs">
+              Criado em:{' '}
               {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
             </span>
             <span className="text-gray-400 text-md font-bold">
