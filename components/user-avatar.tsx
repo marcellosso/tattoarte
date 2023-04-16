@@ -1,6 +1,10 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
+import LoadingState from './loading-state';
 
 const CREDITS_CONTAINER_CSS =
   'bg-primary text-letter text-sm font-normal mr-2 p-3  h-full rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700';
@@ -8,12 +12,18 @@ const CREDITS_CONTAINER_CSS =
 interface IUserAvatar {
   credits?: number;
   isSubscribed?: boolean;
-  userId?: string;
+  userStripeId?: string;
 }
 
-const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed, userId }) => {
+const UserAvatar: FC<IUserAvatar> = ({
+  credits,
+  isSubscribed,
+  userStripeId,
+}) => {
   const { user } = useUser();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const userInitials = useMemo(() => {
     const name = user?.name || '';
@@ -27,8 +37,35 @@ const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed, userId }) => {
     return initials;
   }, [user?.name]);
 
+  const router = useRouter();
+
+  const goToBilling = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get('/api/billing', {
+        params: {
+          customerId: userStripeId,
+        },
+      });
+      await router.push(data.url);
+      setLoading(false);
+    } catch (err) {
+      toast.error(err as string, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  };
+
   return (
     <div>
+      <LoadingState isLoading={loading} label="Redirecionando" />
       <div className="flex items-center ml-3">
         {isSubscribed ? (
           <div className={CREDITS_CONTAINER_CSS}>
@@ -118,6 +155,7 @@ const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed, userId }) => {
                 Criar
               </Link>
             </li>
+
             <li>
               <Link
                 href="/colecao"
@@ -142,9 +180,12 @@ const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed, userId }) => {
                 Coleção
               </Link>
             </li>
+
+            <div className="h-0.5 w-full my-2 bg-letter opacity-70" />
+
             <li>
-              <Link
-                href="#"
+              <button
+                onClick={() => goToBilling()}
                 className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center"
               >
                 <div className="h-6 w-6 mr-2">
@@ -164,7 +205,7 @@ const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed, userId }) => {
                   </svg>
                 </div>
                 Compras
-              </Link>
+              </button>
             </li>
             <li>
               <Link

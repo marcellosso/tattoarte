@@ -21,6 +21,15 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             <span className="text-gray-400 text-md font-bold">
               TATUAGEM {generation.style.toUpperCase()}
             </span>
+            <span className=" text-gray-400 text-sm">
+              por{' '}
+              <Link
+                href={`/colecao?userId=${generation.authorId}`}
+                className="text-detail font-bold hover:text-yellow-600"
+              >
+                {generation.authorName}
+              </Link>
+            </span>
             <h2 className="text-detail font-bold text-2xl">
               {generation.prompt}
             </h2>

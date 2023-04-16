@@ -36,7 +36,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
           productId: productId as string,
         },
       },
-      success_url: `${process.env.AUTH0_BASE_URL}/app`,
+      success_url: `${process.env.AUTH0_BASE_URL}/criar`,
       cancel_url: `${process.env.AUTH0_BASE_URL}/`,
     });
 

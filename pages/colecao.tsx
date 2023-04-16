@@ -4,15 +4,91 @@ import AppNavbar from '@/components/navbars/app-navbar';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '@/utils/use-prisma';
 import { Generation, User } from '@prisma/client';
-import { FC } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import useDebounce from '@/utils/hooks/useDebounce';
+import { toast } from 'react-toastify';
 
 interface ICollection {
   user: User;
   generations: Generation[];
   ownerName: string;
+  isOwner: boolean;
 }
 
-const Collection: FC<ICollection> = ({ user, generations, ownerName }) => {
+const Collection: FC<ICollection> = ({
+  user,
+  generations,
+  ownerName,
+  isOwner,
+}) => {
+  const [localGenerations, setLocalGenerations] =
+    useState<Generation[]>(generations);
+
+  const [tabs, setTabs] = useState('all');
+  const debouncedLocalGenerations = useDebounce(
+    localGenerations,
+    1500
+  ) as Generation[];
+
+  const updateLocalGenerationsState = (
+    val: any,
+    genId: string,
+    field: string
+  ) => {
+    const updatedLocalGenerations = localGenerations.map((gen) => {
+      if (gen.id === genId) {
+        return {
+          ...gen,
+          [field]: val,
+        };
+      }
+
+      return gen;
+    });
+
+    setLocalGenerations(updatedLocalGenerations);
+  };
+
+  const generationsToShow = useMemo(() => {
+    if (tabs === 'all') return localGenerations;
+    else return localGenerations.filter((gen) => gen.is_favorite);
+  }, [localGenerations, tabs]);
+
+  const updateGenerations = async (updateGenerations: Generation[]) => {
+    try {
+      await axios.put('/api/generation/update', { updateGenerations });
+    } catch (err: any) {
+      toast.error(err.message as string, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isOwner) {
+      // If we add new possible changes, change this method to fit that.
+      // For now, we only have is_favorite as a possible change.
+      const changedGenerations = debouncedLocalGenerations.filter((gen) =>
+        generations.some(
+          (filter) =>
+            filter.id === gen.id && filter.is_favorite !== gen.is_favorite
+        )
+      );
+
+      if (changedGenerations.length > 0) {
+        updateGenerations(changedGenerations);
+      }
+    }
+  }, [debouncedLocalGenerations, isOwner]);
+
   return (
     <>
       <AppNavbar user={user} />
@@ -21,9 +97,33 @@ const Collection: FC<ICollection> = ({ user, generations, ownerName }) => {
           Coleção de <span className="text-detail">{ownerName}</span>
         </h1>
 
-        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5">
-            {generations.map((generation) => (
+        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6 relative">
+          <div
+            className={`absolute -top-8 left-0 p-3 font-bold ${
+              tabs == 'all'
+                ? 'bg-gray-900 text-detail'
+                : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
+            }`}
+            onClick={() => isOwner && setTabs('all')}
+          >
+            <span>Todas</span>
+          </div>
+
+          {isOwner && (
+            <div
+              className={`absolute -top-8 left-16 ml-2 p-3 font-bold ${
+                tabs == 'favorites'
+                  ? 'bg-gray-900 text-detail'
+                  : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
+              }`}
+              onClick={() => isOwner && setTabs('favorites')}
+            >
+              <span>Favoritas</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5 mt-2">
+            {generationsToShow.map((generation) => (
               <Link
                 key={generation.id}
                 href={`/tattoo/${generation.id}`}
@@ -45,6 +145,67 @@ const Collection: FC<ICollection> = ({ user, generations, ownerName }) => {
                     {generation.prompt}
                   </span>
                 </div>
+                {isOwner && (
+                  <>
+                    {generation.is_favorite ? (
+                      <div className="h-6 w-6 absolute right-0 top-0 z-20">
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            updateLocalGenerationsState(
+                              false,
+                              generation.id,
+                              'is_favorite'
+                            );
+                          }}
+                          strokeWidth={1.5}
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="fill-red-600 hover:fill-red-900"
+                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                          />
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="h-6 w-6 absolute right-0 top-0 opacity-0 group-hover:opacity-100 transition-all z-20">
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            updateLocalGenerationsState(
+                              true,
+                              generation.id,
+                              'is_favorite'
+                            );
+                          }}
+                          strokeWidth={1.5}
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="fill-detail hover:fill-yellow-500"
+                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </>
+                )}
               </Link>
             ))}
           </div>
@@ -99,6 +260,7 @@ export const getServerSideProps = withPageAuthRequired({
         user: JSON.parse(JSON.stringify(user)),
         generations: JSON.parse(JSON.stringify(generationsFromUser)),
         ownerName,
+        isOwner: isSameUser,
       },
     };
   },
