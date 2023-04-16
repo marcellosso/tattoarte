@@ -92,7 +92,7 @@ const Collection: FC<ICollection> = ({
   return (
     <>
       <AppNavbar user={user} />
-      <main className="flex min-h-screen h-screen flex-col items-center p-12 pt-24 bg-primary text-letter">
+      <main className="flex min-h-screen h-screen flex-col items-center p-12 pt-16 bg-primary text-letter overflow-hidden">
         <h1 className="text-3xl font-bold">
           Coleção de <span className="text-detail">{ownerName}</span>
         </h1>
@@ -122,7 +122,7 @@ const Collection: FC<ICollection> = ({
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5 mt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5 mt-2 overflow-y-scroll scrollbar-hide">
             {generationsToShow.map((generation) => (
               <Link
                 key={generation.id}
@@ -273,6 +273,11 @@ export const getServerSideProps = withPageAuthRequired({
           authorId: queryId as string,
           is_private: !isSameUser ? false : undefined,
         },
+        orderBy: [
+          {
+            createdAt: 'desc',
+          },
+        ],
       })) || [];
 
     return {

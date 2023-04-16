@@ -19,7 +19,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
     <>
       <MainNavbar />
       <main className="flex min-h-screen h-screen flex-col items-center p-12 pt-24 bg-primary text-letter">
-        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6 relative">
+        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6 relative pt-2">
           {openFullscreenImageModal && (
             <div
               className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hover:cursor-pointer"
@@ -36,7 +36,10 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               </div>
             </div>
           )}
-          <div className="flex flex-col items-center  w-full h-full">
+          <div className="flex flex-col items-center w-full h-full">
+            <span className="text-gray-200 text-sm">
+              {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
+            </span>
             <span className="text-gray-400 text-md font-bold">
               TATUAGEM {generation.style.toUpperCase()}
             </span>
