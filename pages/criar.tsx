@@ -46,7 +46,7 @@ const App: FC<IAPP> = ({ user }) => {
   const handleCreate = async () => {
     setLoadingImages(true);
     try {
-      const response = await generateImage(params);
+      const response = await generateImage(params, userData);
       setImages(response.images);
       setUserData(response.newUserData);
     } catch (err) {
