@@ -5,7 +5,8 @@ import { Oswald } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { FC } from 'react';
-import UserAvatar from './user-avatar';
+import UserAvatar from '../user-avatar';
+import NavbarLink from './navbar-link';
 
 const oswald = Oswald({ subsets: ['latin'] });
 // const inter = Inter({ subsets: ['latin'] });
@@ -31,6 +32,12 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
             Tattoo<span className="font-bold text-detail">Arte</span>
           </span>
         </Link>
+        {/* <div className=" hidden w-full md:flex md:w-auto md:order-1"> */}
+        <ul className="flex p-4 md:p-0 mt-4 font-medium border bg-secondary rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+          <NavbarLink label="Colecao" href="/colecao" />
+          <NavbarLink label="Criar" href="/criar" />
+        </ul>
+        {/* </div> */}
         <div className="flex md:order-2 items-center ">
           {!user.subscribed && (
             <button
@@ -46,6 +53,7 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
           <UserAvatar
             credits={user.credits as number}
             isSubscribed={user.subscribed as boolean}
+            userId={user.id}
           />
         </div>
       </div>

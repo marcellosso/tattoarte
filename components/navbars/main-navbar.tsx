@@ -1,25 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { FC } from 'react';
-import UserAvatar from './user-avatar';
-
-interface INavbarLink {
-  label: string;
-  href: string;
-}
-
-const NavbarLink: FC<INavbarLink> = ({ label, href }) => (
-  <li>
-    <Link
-      href={href}
-      className="block py-2 pl-3 pr-4 text-letter rounded hover:bg-detail md:hover:bg-transparent md:hover:text-detail md:p-0hover:bg-gray-700"
-      aria-current="page"
-    >
-      {label}
-    </Link>
-  </li>
-);
+import NavbarLink from './navbar-link';
 
 const MainNavbar = () => {
   const { user } = useUser();

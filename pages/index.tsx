@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import MainNavbar from '@/components/main-navbar';
+import MainNavbar from '@/components/navbars/main-navbar';
 
 const Home = () => {
   const { user, error, isLoading } = useUser();

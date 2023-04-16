@@ -1,5 +1,5 @@
 import tattooStyles from '@/assets/tattoo-styles';
-import AppNavbar from '@/components/app-navbar';
+import AppNavbar from '@/components/navbars/app-navbar';
 import ColorPicker from '@/components/color-picker';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
@@ -348,7 +348,10 @@ const App: FC<IAPP> = ({ user }) => {
                 <button
                   type="button"
                   onClick={handleCreate}
-                  className="flex items-center justify-center text-xl bg-gradient-to-r w-full font-bold text-primary p-3 rounded-md bg-detail hover:scale-105"
+                  disabled={loadingImages}
+                  className={`flex items-center justify-center text-xl bg-gradient-to-r w-full font-bold text-primary p-3 rounded-md ${
+                    loadingImages ? 'bg-gray-400' : 'bg-detail hover:scale-105'
+                  }`}
                 >
                   <div className="w-6 h-6 mr-2">
                     <svg
@@ -370,10 +373,6 @@ const App: FC<IAPP> = ({ user }) => {
                 </button>
               ) : (
                 <button
-                  // onClick={() =>
-                  //   // processPayments('price_1MwG5IICcQQfNZPtAjiwGx5J')
-                  // }
-                  // onClick={() => processPayments('price_1MwZayICcQQfNZPt9tOeKZNp')}
                   type="button"
                   className={`${oswald.className} bg-gradient-to-r  w-full font-bold text-lg text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
                 >
@@ -434,14 +433,7 @@ export const getServerSideProps = withPageAuthRequired({
 
     return {
       props: {
-        user: {
-          ...sessionUser,
-          credits: user?.credits,
-          subscribed: user?.subscribed,
-          subscriptionAt: user?.subscriptionAt,
-          subscriptionDuration: user?.subscriptionDuration,
-          generationCount: user?.generationCount,
-        },
+        user: JSON.parse(JSON.stringify(user)),
       },
     };
   },

@@ -24,8 +24,8 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
       {images?.map((image) => (
         <div className="w-11/12 h-72 md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative">
           <Image
-            src={image}
-            alt="Arte criada por TattooArte!"
+            src={`/images/generated/${image}.png`}
+            alt="Arte de tatuagem criada pela inteligencia artificial - TattooArte!"
             objectFit="contain"
             layout="fill"
             className="rounded-md"

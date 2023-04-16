@@ -3,6 +3,10 @@ import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { User } from '@prisma/client';
 import { Configuration, OpenAIApi } from 'openai';
 
+import fs, { WriteStream } from 'fs';
+import { v4 } from 'uuid';
+('uuid');
+
 const IMAGE_NAME_PATTERN = '(?=img).+?(?=.png)';
 
 const configuration = new Configuration({
@@ -42,47 +46,60 @@ module.exports = withApiAuthRequired(async (req, res) => {
     //   prompt: prompt,
     //   n: 1,
     //   size: params.isHD ? '1024x1024' : '512x512',
+    //   response_format: 'b64_json',
     // });
     // const images = response.data.data;
 
     const images = [
       {
-        url: '/images/img-test.png',
+        b64_json: '/images/generated/img-test1.png',
       },
       {
-        url: '/images/img-test2.png',
+        b64_json: '/images/generated/img-test2.png',
       },
       {
-        url: '/images/img-test3.png',
+        b64_json: '/images/generated/img-test3.png',
       },
       {
-        url: '/images/img-test4.png',
+        b64_json: '/images/generated/img-test4.png',
       },
     ];
 
+    // const imageNames = [] as string[];
+
+    const imageNames = ['img-test', 'img-test2', 'img-test3', 'img-test4'];
+
     images.forEach(async (image, idx) => {
-      const imageName = image.url.match(IMAGE_NAME_PATTERN)?.[0] || '';
+      // const imageName = v4();
+      const imageName = imageNames[idx];
 
-      if (imageName) {
-        const generationObj = {
-          prompt: params.prompt,
-          style: params.tattooStyle,
-          image_name: imageName,
-          is_hd: params.isHD || false,
-          is_private: params.isPrivate || false,
-        };
+      // await fs.writeFileSync(
+      //   `public/images/generated/${imageName}.png`,
+      //   image.b64_json as string,
+      //   'base64'
+      // );
 
-        await prisma.generation.create({
-          data: {
-            ...generationObj,
-            author: {
-              connect: {
-                id: user.id,
-              },
+      // imageNames.push(imageName);
+
+      const generationObj = {
+        prompt: params.prompt,
+        style: params.tattooStyle,
+        image_name: imageName,
+        is_hd: params.isHD || false,
+        is_private: params.isPrivate || false,
+      };
+
+      await prisma.generation.create({
+        data: {
+          ...generationObj,
+          authorName: user.name as string,
+          author: {
+            connect: {
+              id: user.id,
             },
           },
-        });
-      }
+        },
+      });
     });
 
     user = await prisma.user.update({
@@ -95,9 +112,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       },
     });
 
-    res
-      .status(200)
-      .json({ images: images.map((image) => image.url), newUserData: user });
+    res.status(200).json({ images: imageNames, newUserData: user });
   } catch (err) {
     res.status(500).send(err);
   }

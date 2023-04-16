@@ -8,9 +8,10 @@ const CREDITS_CONTAINER_CSS =
 interface IUserAvatar {
   credits?: number;
   isSubscribed?: boolean;
+  userId?: string;
 }
 
-const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed }) => {
+const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed, userId }) => {
   const { user } = useUser();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
@@ -26,7 +27,6 @@ const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed }) => {
     return initials;
   }, [user?.name]);
 
-  // TODO Se a pessoa tem o passe, substitui quantidade de creditos por simbolo do infinito
   return (
     <div>
       <div className="flex items-center ml-3">
@@ -91,7 +91,7 @@ const UserAvatar: FC<IUserAvatar> = ({ credits, isSubscribed }) => {
           >
             <li>
               <Link
-                href="#"
+                href="/colecao"
                 className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center"
               >
                 <div className="h-6 w-6 mr-2">

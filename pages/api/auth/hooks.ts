@@ -6,20 +6,22 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 module.exports = async (req: any, res: any) => {
-  const { email, secret } = JSON.parse(req.body);
+  const { name, email, secret } = req.body;
 
   if (secret === process.env.AUTH0_HOOK_SECRET) {
     try {
       const customer = await stripe.customers.create({
         email,
       });
-      await prisma.user.create({
-        data: { email, stripeId: customer.id },
+      const user = await prisma.user.create({
+        data: { email, name, stripeId: customer.id },
       });
+
+      res.status(200).json(user.id);
     } catch (err) {
-      console.log(err);
+      res.status(500).send(err);
     }
   } else {
-    res.send('You forgot to send me your secret!');
+    res.status(400).send('You forgot to send me your secret!');
   }
 };

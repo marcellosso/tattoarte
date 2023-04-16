@@ -20,6 +20,7 @@ model Generation {
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   author      User     @relation(fields: [authorId], references: [id])
+  authorName  String   @map(name: "author_name")
   authorId    String
   is_favorite Boolean? @default(false)
   is_private  Boolean? @default(false)
@@ -30,6 +31,7 @@ model Generation {
 
 model User {
   id                   String       @id @default(cuid())
+  name                 String?
   email                String?      @unique
   subscribed           Boolean?     @default(false)
   subscriptionAt       DateTime?    @map(name: "subscribed_at")
