@@ -67,7 +67,7 @@ const App: FC<IAPP> = ({ user }) => {
   return (
     <>
       <AppNavbar user={userData} />
-      <main className="flex min-h-screen h-screen flex-col items-center justify-between pt-16 bg-primary text-letter">
+      <main className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 bg-primary text-letter">
         <section className="flex w-screen h-full">
           <div className="bg-secondary w-1/5 h-full shadow-lg shadow-gray-500">
             <div className="flex flex-col items-center justify-center">
@@ -408,7 +408,7 @@ const App: FC<IAPP> = ({ user }) => {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
+                <div className="grid grid-cols-1 xl:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
                   <ImageContainer isLoading={loadingImages} images={images} />
                 </div>
               )}

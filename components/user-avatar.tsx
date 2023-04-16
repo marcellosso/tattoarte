@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import LoadingState from './loading-state';
 
 const CREDITS_CONTAINER_CSS =
-  'bg-primary text-letter text-sm font-normal mr-2 p-3  h-full rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700';
+  'bg-primary text-letter text-xs font-normal mr-2 p-2  h-full rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700';
 
 interface IUserAvatar {
   credits?: number;
@@ -103,7 +103,7 @@ const UserAvatar: FC<IUserAvatar> = ({
         <div
           id="userAvatar"
           onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-          className="relative inline-flex items-center justify-center w-12 h-12 shadow-inner overflow-hidden rounded-full bg-primary hover:bg-gray-700 hover:cursor-pointer"
+          className="relative inline-flex items-center justify-center w-10 h-10 shadow-inner overflow-hidden rounded-full bg-primary hover:bg-gray-700 hover:cursor-pointer"
         >
           <span className="text-letter font-bold">{userInitials}</span>
         </div>

@@ -10,9 +10,9 @@ const MainNavbar = () => {
   const { user } = useUser();
 
   return (
-    <nav className="bg-secondary fixed w-full z-20 top-0 left-0 shadow-lg">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link href="/" className="flex items-center">
+    <nav className="bg-secondary fixed w-full z-20 top-0 left-0 shadow-lg max-h-12 p-2 py-1">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
+        <Link href="/" className="flex items-center justify-center">
           <Image
             src="/images/tattooarte-logo.png"
             alt="TattoArte logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
@@ -21,17 +21,17 @@ const MainNavbar = () => {
             priority
           />
           <span
-            className={`${oswald.className} self-center text-3xl font-semibold whitespace-nowrap dark:text-white ml-2`}
+            className={`${oswald.className} self-center text-2xl font-semibold whitespace-nowrap dark:text-white ml-2`}
           >
             Tattoo<span className="font-bold text-detail">Arte</span>
           </span>
         </Link>
-        <div className="flex md:order-2">
+        <div className="flex md:order-2 items-center">
           {user ? (
             <>
               <Link
                 href="/criar"
-                className="bg-gradient-to-r font-bold text-primary p-3 rounded-md bg-detail hover:bg-yellow-500"
+                className="bg-gradient-to-r font-bold text-primary text-sm p-2 rounded-md bg-detail hover:bg-yellow-500"
               >
                 Crie sua arte
               </Link>
@@ -87,7 +87,7 @@ const MainNavbar = () => {
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
           id="navbar-sticky"
         >
-          <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border bg-secondary rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+          <ul className="flex flex-col p-4 md:p-0  font-medium border bg-secondary rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
             <NavbarLink
               label="Descobrir"
               href="/descobrir"
