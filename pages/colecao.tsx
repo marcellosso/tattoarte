@@ -138,7 +138,7 @@ const Collection: FC<ICollection> = ({
                   className="rounded-md"
                 />
                 {generation.is_private && (
-                  <div className="h-6 w-6 absolute left-0 top-0 z-30 opacity-100 group-hover:opacity-0 transition-all">
+                  <div className="h-6 w-6 absolute left-0 top-0 z-10 opacity-100 group-hover:opacity-0 group-hover:top-2 transition-all">
                     <svg
                       fill="none"
                       stroke="currentColor"
@@ -157,7 +157,7 @@ const Collection: FC<ICollection> = ({
                     </svg>
                   </div>
                 )}
-                <div className="bg-primary opacity-0 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-1 left-1 group-hover:opacity-100 transition-all overflow-ellipsis">
+                <div className="bg-primary opacity-0 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-2 left-2 group-hover:opacity-100 transition-all overflow-ellipsis">
                   <span className="text-detail">{generation.style}</span>
                 </div>
                 <div className="bg-primary opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 group-hover:opacity-100 transition-all">
@@ -168,7 +168,7 @@ const Collection: FC<ICollection> = ({
                 {isOwner && (
                   <>
                     {generation.is_favorite ? (
-                      <div className="h-6 w-6 absolute right-0 top-0 z-20">
+                      <div className="h-6 w-6 absolute right-0 top-0 z-10 transition-all">
                         <svg
                           fill="none"
                           stroke="currentColor"
@@ -196,7 +196,7 @@ const Collection: FC<ICollection> = ({
                         </svg>
                       </div>
                     ) : (
-                      <div className="h-6 w-6 absolute right-0 top-0 opacity-0 group-hover:opacity-100 transition-all z-20">
+                      <div className="h-6 w-6 absolute right-0 top-0 opacity-0 group-hover:opacity-100 transition-all z-10 group-hover:top-2">
                         <svg
                           fill="none"
                           stroke="currentColor"

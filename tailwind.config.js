@@ -23,6 +23,9 @@ module.exports = {
       height: {
         '90p': '90%',
       },
+      zIndex: {
+        100: 100,
+      },
     },
   },
   plugins: [],
