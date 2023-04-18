@@ -99,7 +99,7 @@ const Collection: FC<ICollection> = ({
 
         <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6 relative">
           <div
-            className={`absolute -top-8 left-0 p-3 font-bold ${
+            className={`absolute -top-8 left-0 p-3 font-bold rounded-ss-lg ${
               tabs == 'all'
                 ? 'bg-gray-900 text-detail'
                 : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
@@ -111,7 +111,7 @@ const Collection: FC<ICollection> = ({
 
           {isOwner && (
             <div
-              className={`absolute -top-8 left-16 ml-2 p-3 font-bold ${
+              className={`absolute -top-8 left-16 ml-2 p-3 font-bold rounded-se-lg ${
                 tabs == 'favorites'
                   ? 'bg-gray-900 text-detail'
                   : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
