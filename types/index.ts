@@ -1,4 +1,4 @@
-type ParamsType = {
+export type ParamsType = {
   prompt: string;
   colorsStyle: string;
   tattooStyle: string;
@@ -7,3 +7,16 @@ type ParamsType = {
   isPrivate?: boolean;
   colors?: string[];
 };
+
+export type ProductType = {
+  name: string;
+  price: string;
+  priceDetail: string;
+  perks: string[];
+  callToAction: JSX.Element;
+};
+
+export enum PriceTabEnum {
+  ACCESS = 'access',
+  PACKAGE = 'package',
+}

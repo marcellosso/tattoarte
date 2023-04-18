@@ -1,3 +1,4 @@
+import { PriceTabEnum } from '@/types';
 import prisma from '@/utils/use-prisma';
 import { PrismaClient, User } from '@prisma/client';
 import { Console } from 'console';
@@ -41,10 +42,10 @@ export default async (req: any, res: any) => {
             (product: any) => product.default_price == metadata?.productId
           );
 
-          if (product?.metadata?.productType == 'package') {
+          if (product?.metadata?.productType == PriceTabEnum.PACKAGE) {
             newUserData.credits =
               user.credits! + parseInt(product?.metadata?.productAmount);
-          } else if (product?.metadata?.productType == 'access') {
+          } else if (product?.metadata?.productType == PriceTabEnum.ACCESS) {
             newUserData.subscribed = true;
             newUserData.subscriptionDuration = parseInt(
               product?.metadata?.productAmount
@@ -66,8 +67,6 @@ export default async (req: any, res: any) => {
   } catch (err: any) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-
-  // check what kind of event stripe has sent us
 
   res.send({ received: true });
 };

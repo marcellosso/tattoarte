@@ -79,7 +79,7 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
         </div>
 
         <Link
-          href="/precos"
+          href="/precos?tab=package"
           className={`${oswald.className} bg-gradient-to-r w-1/2 font-bold text-center text-lg text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
         >
           Compre o passe de acesso

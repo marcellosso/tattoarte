@@ -5,6 +5,7 @@ import { Configuration, OpenAIApi } from 'openai';
 
 import fs, { WriteStream } from 'fs';
 import { v4 } from 'uuid';
+import { ParamsType } from '@/types';
 ('uuid');
 
 const IMAGE_NAME_PATTERN = '(?=img).+?(?=.png)';

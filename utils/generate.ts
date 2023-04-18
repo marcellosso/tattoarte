@@ -1,3 +1,4 @@
+import { ParamsType } from '@/types';
 import { User } from '@prisma/client';
 import axios from 'axios';
 

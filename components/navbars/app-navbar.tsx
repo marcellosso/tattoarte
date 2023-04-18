@@ -15,10 +15,10 @@ interface IAppNavbar {
 
 const AppNavbar: FC<IAppNavbar> = ({ user }) => {
   return (
-    <nav className="bg-secondary fixed w-full z-20 top-0 left-0 shadow-lg max-h-12 p-2 py-1">
+    <nav className="bg-navbar fixed w-full z-20 top-0 left-0 shadow-lg max-h-12 p-2 py-1">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
         <Logo />
-        <ul className="flex md:p-0 font-medium border bg-secondary rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+        <ul className="flex md:p-0 font-medium border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
           <NavbarLink
             label="Colecao"
             href="/colecao"
@@ -73,9 +73,7 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
         <div className="flex md:order-2 items-center ">
           {!user.subscribed && (
             <Link
-              // onClick={() => processPayments('price_1MwG5IICcQQfNZPtAjiwGx5J')}
-              // onClick={() => processPayments('price_1MwZayICcQQfNZPt9tOeKZNp')}
-              href="/precos"
+              href="/precos?tab=package"
               className={`${oswald.className} bg-gradient-to-r font-bold text-letter text-sm p-2 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
             >
               Compre o passe de acesso

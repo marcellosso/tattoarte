@@ -73,7 +73,7 @@ const UserAvatar: FC<IUserAvatar> = ({
           </div>
         ) : (
           <Link
-            href="#"
+            href="/precos"
             className={`${CREDITS_CONTAINER_CSS} hover:cursor-pointer hover:bg-gray-700`}
           >
             <div>

@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import handleUserSubscription from '@/utils/user-subscription';
 import Link from 'next/link';
 import MarketingModal from '@/components/marketing-modal';
+import { ParamsType } from '@/types';
 
 const oswald = Oswald({ subsets: ['latin'] });
 interface IAPP {
@@ -246,7 +247,7 @@ const App: FC<IAPP> = ({ user }) => {
                 </button>
               ) : (
                 <Link
-                  href="/precos"
+                  href="/precos?tab=package"
                   className={`${oswald.className} text-center block bg-gradient-to-r w-full font-bold text-xl text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
                 >
                   Compre o passe de acesso
