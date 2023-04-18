@@ -1,0 +1,138 @@
+    const [colors, setColors] = useState<string[]>([]);
+  const [openColorPicker, setOpenColorPicker] = useState<
+    Record<string, boolean>
+  >({});
+
+  
+  useEffect(() => {
+    setParams({
+      ...params,
+      colors,
+    });
+  }, [colors]);
+  
+  {/* {params.colorsStyle == 'Colorido' && (
+                <div className="mb-3">
+                  <span className="block mb-2 text-sm font-medium text-letter">
+                    Paleta de Cores{' '}
+                    <span className="text-gray-400 text-xs">
+                      (Limite de 5 cores)
+                    </span>
+                  </span>
+                  <div className="flex items-center">
+                    {colors.map((color, idx) => {
+                      return (
+                        <>
+                          <div className="relative">
+                            <div
+                              className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm hover:scale-105"
+                              style={{ backgroundColor: color }}
+                              onClick={() =>
+                                setOpenColorPicker({
+                                  ...openColorPicker,
+                                  [idx]: !openColorPicker[idx],
+                                })
+                              }
+                            />
+                            <div
+                              onClick={() => {
+                                setColors((prevState) => {
+                                  const newArr = [...prevState];
+                                  newArr.splice(idx, 1);
+                                  return newArr;
+                                });
+
+                                setOpenColorPicker((prevState) => {
+                                  const newOpenColorPicker = { ...prevState };
+
+                                  // subtract all other keys after this one by 1
+                                  for (
+                                    let i = idx + 1;
+                                    i < Object.keys(prevState).length;
+                                    i++
+                                  ) {
+                                    newOpenColorPicker[i - 1] =
+                                      newOpenColorPicker[i];
+                                  }
+                                  delete newOpenColorPicker[idx];
+                                  return newOpenColorPicker;
+                                });
+                              }}
+                              className="w-4 h-4 absolute right-0 -top-2 bg-primary rounded-3xl hover:cursor-pointer hover:bg-gray-600"
+                            >
+                              <svg
+                                fill="none"
+                                stroke="currentColor"
+                                className="text-letter hover:text-detail"
+                                strokeWidth={1.5}
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          {openColorPicker[idx] && (
+                            <ColorPicker
+                              key={color}
+                              color={color}
+                              setColor={(color) =>
+                                setColors((prevState) => {
+                                  const newArr = [...prevState];
+                                  newArr.splice(idx, 1, color);
+                                  return newArr;
+                                })
+                              }
+                              open={openColorPicker[idx]}
+                              setOpen={(open) =>
+                                setOpenColorPicker({
+                                  ...openColorPicker,
+                                  [idx]: open,
+                                })
+                              }
+                            />
+                          )}
+                        </>
+                      );
+                    })}
+
+                    {colors.length < 5 && (
+                      <div
+                        onClick={() => {
+                          setOpenColorPicker({
+                            ...openColorPicker,
+                            [colors.length]: false,
+                          });
+                          setColors((prevState) => {
+                            const newArr = [...prevState];
+                            newArr.push('#eeeeee');
+                            return newArr;
+                          });
+                        }}
+                        className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm bg-primary border border-gray-600 hover:border-detail"
+                      >
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-letter hover:text-detail"
+                          strokeWidth="1.5"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 4.5v15m7.5-7.5h-15"
+                          ></path>
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )} */}

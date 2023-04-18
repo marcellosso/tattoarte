@@ -1,6 +1,5 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import AppNavbar from '@/components/navbars/app-navbar';
-import ColorPicker from '@/components/color-picker';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
 import prisma from '@/utils/use-prisma';
@@ -9,13 +8,14 @@ import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
-import Link from 'next/link';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { toast } from 'react-toastify';
+import handleUserSubscription from '@/utils/user-subscription';
+import Link from 'next/link';
+import MarketingModal from '@/components/marketing-modal';
 
 const oswald = Oswald({ subsets: ['latin'] });
-
 interface IAPP {
   user: UserProfile & User;
 }
@@ -23,10 +23,10 @@ interface IAPP {
 const App: FC<IAPP> = ({ user }) => {
   const [userData, setUserData] = useState(user);
 
-  const [colors, setColors] = useState<string[]>([]);
-  const [openColorPicker, setOpenColorPicker] = useState<
-    Record<string, boolean>
-  >({});
+  const [openMarketingModal, setOpenMarketingModal] = useState(
+    !user.subscribed && user.credits! <= 0
+  );
+
   const [params, setParams] = useState<ParamsType>({
     prompt: '',
     tattooStyle: 'Minimalista',
@@ -35,13 +35,6 @@ const App: FC<IAPP> = ({ user }) => {
 
   const [images, setImages] = useState<string[]>([]);
   const [loadingImages, setLoadingImages] = useState(false);
-
-  useEffect(() => {
-    setParams({
-      ...params,
-      colors,
-    });
-  }, [colors]);
 
   const handleCreate = async () => {
     setLoadingImages(true);
@@ -67,11 +60,16 @@ const App: FC<IAPP> = ({ user }) => {
   return (
     <>
       <AppNavbar user={userData} />
+
+      {openMarketingModal && (
+        <MarketingModal setOpenMarketingModal={setOpenMarketingModal} />
+      )}
+
       <main className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 bg-primary text-letter">
         <section className="flex w-screen h-full">
           <div className="bg-secondary w-1/5 h-full shadow-lg shadow-gray-500">
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-lg font-bold text-letter text-center divide-letter pt-2">
+              <h1 className="text-md font-bold text-letter text-center divide-letter py-2 px-0">
                 Crie suas <span className="text-detail">tattoos</span>,{' '}
                 {user.name}!
               </h1>
@@ -169,132 +167,6 @@ const App: FC<IAPP> = ({ user }) => {
                 />
               </div>
 
-              {/* {params.colorsStyle == 'Colorido' && (
-                <div className="mb-3">
-                  <span className="block mb-2 text-sm font-medium text-letter">
-                    Paleta de Cores{' '}
-                    <span className="text-gray-400 text-xs">
-                      (Limite de 5 cores)
-                    </span>
-                  </span>
-                  <div className="flex items-center">
-                    {colors.map((color, idx) => {
-                      return (
-                        <>
-                          <div className="relative">
-                            <div
-                              className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm hover:scale-105"
-                              style={{ backgroundColor: color }}
-                              onClick={() =>
-                                setOpenColorPicker({
-                                  ...openColorPicker,
-                                  [idx]: !openColorPicker[idx],
-                                })
-                              }
-                            />
-                            <div
-                              onClick={() => {
-                                setColors((prevState) => {
-                                  const newArr = [...prevState];
-                                  newArr.splice(idx, 1);
-                                  return newArr;
-                                });
-
-                                setOpenColorPicker((prevState) => {
-                                  const newOpenColorPicker = { ...prevState };
-
-                                  // subtract all other keys after this one by 1
-                                  for (
-                                    let i = idx + 1;
-                                    i < Object.keys(prevState).length;
-                                    i++
-                                  ) {
-                                    newOpenColorPicker[i - 1] =
-                                      newOpenColorPicker[i];
-                                  }
-                                  delete newOpenColorPicker[idx];
-                                  return newOpenColorPicker;
-                                });
-                              }}
-                              className="w-4 h-4 absolute right-0 -top-2 bg-primary rounded-3xl hover:cursor-pointer hover:bg-gray-600"
-                            >
-                              <svg
-                                fill="none"
-                                stroke="currentColor"
-                                className="text-letter hover:text-detail"
-                                strokeWidth={1.5}
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                          {openColorPicker[idx] && (
-                            <ColorPicker
-                              key={color}
-                              color={color}
-                              setColor={(color) =>
-                                setColors((prevState) => {
-                                  const newArr = [...prevState];
-                                  newArr.splice(idx, 1, color);
-                                  return newArr;
-                                })
-                              }
-                              open={openColorPicker[idx]}
-                              setOpen={(open) =>
-                                setOpenColorPicker({
-                                  ...openColorPicker,
-                                  [idx]: open,
-                                })
-                              }
-                            />
-                          )}
-                        </>
-                      );
-                    })}
-
-                    {colors.length < 5 && (
-                      <div
-                        onClick={() => {
-                          setOpenColorPicker({
-                            ...openColorPicker,
-                            [colors.length]: false,
-                          });
-                          setColors((prevState) => {
-                            const newArr = [...prevState];
-                            newArr.push('#eeeeee');
-                            return newArr;
-                          });
-                        }}
-                        className="w-10 h-10 hover:cursor-pointer mr-2 rounded-sm bg-primary border border-gray-600 hover:border-detail"
-                      >
-                        <svg
-                          fill="none"
-                          stroke="currentColor"
-                          className="text-letter hover:text-detail"
-                          strokeWidth="1.5"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 4.5v15m7.5-7.5h-15"
-                          ></path>
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )} */}
-
               <div className="mb-3">
                 <label className="relative inline-flex items-center">
                   <input
@@ -373,12 +245,12 @@ const App: FC<IAPP> = ({ user }) => {
                   Criar tattoo
                 </button>
               ) : (
-                <button
-                  type="button"
-                  className={`${oswald.className} bg-gradient-to-r  w-full font-bold text-lg text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+                <Link
+                  href="/precos"
+                  className={`${oswald.className} text-center block bg-gradient-to-r w-full font-bold text-xl text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
                 >
                   Compre o passe de acesso
-                </button>
+                </Link>
               )}
             </div>
           </div>
@@ -426,11 +298,15 @@ export const getServerSideProps = withPageAuthRequired({
     const session = await getSession(req, res);
     const sessionUser = session!.user || {};
 
-    const user = (await prisma.user.findUnique({
+    let user = (await prisma.user.findUnique({
       where: {
         email: sessionUser.email as string,
       },
     })) as User;
+
+    if (user.subscribed) {
+      user = await handleUserSubscription(user);
+    }
 
     return {
       props: {

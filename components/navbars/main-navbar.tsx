@@ -1,10 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { Oswald } from 'next/font/google';
-import Image from 'next/image';
 import Link from 'next/link';
+import Logo from '../logo';
 import NavbarLink from './navbar-link';
-
-const oswald = Oswald({ subsets: ['latin'] });
 
 const MainNavbar = () => {
   const { user } = useUser();
@@ -12,20 +9,8 @@ const MainNavbar = () => {
   return (
     <nav className="bg-secondary fixed w-full z-20 top-0 left-0 shadow-lg max-h-12 p-2 py-1">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-        <Link href="/" className="flex items-center justify-center">
-          <Image
-            src="/images/tattooarte-logo.png"
-            alt="TattoArte logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
-            width={40}
-            height={40}
-            priority
-          />
-          <span
-            className={`${oswald.className} self-center text-2xl font-semibold whitespace-nowrap dark:text-white ml-2`}
-          >
-            Tattoo<span className="font-bold text-detail">Arte</span>
-          </span>
-        </Link>
+        <Logo />
+
         <div className="flex md:order-2 items-center">
           {user ? (
             <>

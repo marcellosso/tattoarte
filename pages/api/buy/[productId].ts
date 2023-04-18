@@ -37,7 +37,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
         },
       },
       success_url: `${process.env.AUTH0_BASE_URL}/criar`,
-      cancel_url: `${process.env.AUTH0_BASE_URL}/`,
+      cancel_url: `${process.env.AUTH0_BASE_URL}/precos`,
     });
 
     res.json({ id: session.id });
