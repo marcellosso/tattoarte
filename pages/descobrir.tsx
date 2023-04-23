@@ -75,7 +75,7 @@ export const getServerSideProps = async (
         is_private: false,
         style: style as string,
       },
-      take: 20,
+      take: 24,
       orderBy: [
         {
           createdAt: 'desc',

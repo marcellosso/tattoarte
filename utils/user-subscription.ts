@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import prisma from './use-prisma';
+import { prisma } from './use-prisma';
 
 const handleUserSubscription = async (user: User) => {
   const date1 = new Date();

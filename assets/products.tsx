@@ -13,6 +13,7 @@ export default {
         'Até 3 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
+        'Limite de 100 caracteres ao descrever tatuagem',
       ],
       callToAction: (
         <Link
@@ -33,6 +34,7 @@ export default {
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Artes privadas',
+        'Maior limite de caracteres ao descrever tatuagem',
       ],
       callToAction: (
         <button
@@ -53,6 +55,7 @@ export default {
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Artes privadas',
+        'Maior limite de caracteres ao descrever tatuagem',
       ],
       callToAction: (
         <button
@@ -74,6 +77,7 @@ export default {
         'Até 3 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
+        'Limite de 100 caracteres ao descrever tatuagem',
       ],
       callToAction: (
         <Link
@@ -96,6 +100,7 @@ export default {
         'Acesso a coleção pessoal',
         'Artes privadas',
         'Pagamento único',
+        'Limite máximo de caracteres ao descrever tatuagem',
         'Não é mensalidade',
       ],
       callToAction: (
@@ -119,6 +124,7 @@ export default {
         'Acesso a coleção pessoal',
         'Artes privadas',
         'Pagamento único',
+        'Limite máximo de caracteres ao descrever tatuagem',
         'Não é mensalidade',
       ],
       callToAction: (

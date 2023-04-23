@@ -8,7 +8,7 @@ import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import handleUserSubscription from '@/utils/user-subscription';
@@ -58,6 +58,13 @@ const App: FC<IAPP> = ({ user }) => {
     setLoadingImages(false);
   };
 
+  const maxPromptLenght = useMemo(() => {
+    if (user.freeTrial) return 100;
+    if (!user.subscribed) return 250;
+
+    return 500;
+  }, [user]);
+
   return (
     <>
       <AppNavbar user={userData} />
@@ -85,6 +92,30 @@ const App: FC<IAPP> = ({ user }) => {
             </div>
 
             <div className="p-4">
+              {params.prompt.length >= maxPromptLenght && (
+                <div
+                  className="flex p-4 mb-4 text-sm border rounded-lg bg-primary text-blue-400 border-blue-800"
+                  role="alert"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="flex-shrink-0 inline w-4 h-4 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <Link href="/precos" className="text-xs hover:text-blue-600">
+                    Você atingiu o limite de caracteres!
+                  </Link>
+                </div>
+              )}
+
               <div className="mb-3 relative">
                 <label
                   htmlFor="prompt"
@@ -92,9 +123,9 @@ const App: FC<IAPP> = ({ user }) => {
                 >
                   Descreva sua tattoo
                 </label>
-                {params.prompt.length > 180 && (
+                {params.prompt.length > maxPromptLenght - 15 && (
                   <div className="text-xs text-gray-400 text-right absolute right-2 bottom-2">
-                    {params.prompt.length} / 200
+                    {params.prompt.length} / {maxPromptLenght}
                   </div>
                 )}
                 <textarea
@@ -104,7 +135,7 @@ const App: FC<IAPP> = ({ user }) => {
                     setParams({ ...params, prompt: e.target.value })
                   }
                   rows={4}
-                  maxLength={200}
+                  maxLength={maxPromptLenght}
                   className="max-w-full max-h-64 h-32 block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                   placeholder="Um pescador viajando pelo espaço"
                 />
@@ -174,31 +205,6 @@ const App: FC<IAPP> = ({ user }) => {
                 />
               </div>
 
-              {/* <div className="mb-3">
-                <label className="relative inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={params.isHD || false}
-                    onChange={(_) =>
-                      setParams({
-                        ...params,
-                        isHD: !params.isHD,
-                      })
-                    }
-                  />
-                  <div className="w-11 h-6 cursor-pointer peer-focus:outline-none peer-focus:ring-4 dark:peer-focus:ring-gray-600 rounded-full peer dark:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-detail"></div>
-                  <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Arte em HD{' '}
-                    {!user.subscribed && (
-                      <span className="text-gray-400 text-xs">
-                        (+2 creditos)
-                      </span>
-                    )}
-                  </span>
-                </label>
-              </div> */}
-
               <div className="mb-3">
                 <label className="relative inline-flex items-center ">
                   <input
@@ -211,13 +217,22 @@ const App: FC<IAPP> = ({ user }) => {
                       })
                     }
                     className="sr-only peer"
+                    disabled={user.freeTrial!}
                   />
-                  <div className="w-11 h-6 cursor-pointer peer-focus:outline-none peer-focus:ring-4 dark:peer-focus:ring-gray-600 rounded-full peer dark:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-detail"></div>
-                  <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  <div
+                    className={`w-11 h-6 ${
+                      user.freeTrial ? 'cursor-not-allowed' : 'cursor-pointer'
+                    } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-600 rounded-full peer bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-detail`}
+                  ></div>
+                  <span
+                    className={`ml-3 text-sm font-medium ${
+                      user.freeTrial ? 'text-gray-500' : 'text-letter'
+                    }`}
+                  >
                     Arte Privada{' '}
                     {!user.subscribed && (
                       <span className="text-gray-400 text-xs">
-                        (+2 creditos)
+                        {!user.freeTrial && '(+2 creditos)'}
                       </span>
                     )}
                   </span>
@@ -288,7 +303,11 @@ const App: FC<IAPP> = ({ user }) => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 xl:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
-                  <ImageContainer isLoading={loadingImages} images={images} />
+                  <ImageContainer
+                    isLoading={loadingImages}
+                    images={images}
+                    isTrial={user.freeTrial!}
+                  />
                 </div>
               )}
             </div>

@@ -26,7 +26,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     if (!user.subscribed) {
       let creditsToDeduce = 1;
-      if (params.isPrivate) creditsToDeduce += 2;
+      if (params.isPrivate && !user.freeTrial) creditsToDeduce += 2;
 
       if (user.credits == 0 || (user.credits || 0) < creditsToDeduce) {
         throw 'Você não possui créditos suficientes para gerar uma arte.';
@@ -35,9 +35,18 @@ module.exports = withApiAuthRequired(async (req, res) => {
       newCredits = Math.max(0, (user.credits || 0) - creditsToDeduce);
     }
 
+    let maxPromptLenght = 500;
+
+    if (user.freeTrial) maxPromptLenght = 100;
+    else if (!user.subscribed) maxPromptLenght = 250;
+
     if (params.prompt) {
+      let localPrompt = params.prompt;
+      if (params.prompt.length > maxPromptLenght)
+        localPrompt = localPrompt.slice(0, maxPromptLenght);
+
       const response = await axios.post(
-        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${process.env.TRANSLATE_API_KEY}&text=${params.prompt}&lang=pt-en&format=plain`
+        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${process.env.TRANSLATE_API_KEY}&text=${localPrompt}&lang=pt-en&format=plain`
       );
       const translatedPrompt = response.data.text[0];
 
@@ -61,48 +70,52 @@ module.exports = withApiAuthRequired(async (req, res) => {
       }
     )) as string[];
 
-    const imageNames = [] as string[];
+    let imageNames = [] as string[];
 
-    await Promise.all(
-      output.map(async (image, idx) => {
-        const imageName = v4();
+    if (!user.freeTrial) {
+      await Promise.all(
+        output.map(async (image, idx) => {
+          const imageName = v4();
 
-        const imageBufferResponse = await axios.get(image, {
-          responseType: 'arraybuffer',
-        });
-        const imageB64 = Buffer.from(
-          imageBufferResponse.data,
-          'binary'
-        ).toString('base64');
+          const imageBufferResponse = await axios.get(image, {
+            responseType: 'arraybuffer',
+          });
+          const imageB64 = Buffer.from(
+            imageBufferResponse.data,
+            'binary'
+          ).toString('base64');
 
-        await fs.writeFileSync(
-          `public\\images\\generated\\${imageName}.png`,
-          imageB64 as string,
-          'base64'
-        );
+          await fs.writeFileSync(
+            `public\\images\\generated\\${imageName}.png`,
+            imageB64 as string,
+            'base64'
+          );
 
-        imageNames.push(imageName);
+          imageNames.push(imageName);
 
-        const generationObj = {
-          prompt: params.prompt,
-          style: params.tattooStyle,
-          image_name: imageName,
-          is_private: params.isPrivate || false,
-        };
+          const generationObj = {
+            prompt: params.prompt,
+            style: params.tattooStyle,
+            image_name: imageName,
+            is_private: params.isPrivate || false,
+          };
 
-        await prisma.generation.create({
-          data: {
-            ...generationObj,
-            authorName: user.name as string,
-            author: {
-              connect: {
-                id: user.id,
+          await prisma.generation.create({
+            data: {
+              ...generationObj,
+              authorName: user.name as string,
+              author: {
+                connect: {
+                  id: user.id,
+                },
               },
             },
-          },
-        });
-      })
-    );
+          });
+        })
+      );
+    } else {
+      imageNames = output;
+    }
 
     user = await prisma.user.update({
       where: {

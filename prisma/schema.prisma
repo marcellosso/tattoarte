@@ -38,6 +38,7 @@ model User {
   subscriptionDuration Int?         @default(0)
   credits              Int?         @default(3)
   generationCount      Int?         @default(0)
+  freeTrial            Boolean?     @default(true)
   stripeId             String       @unique
   createdAt            DateTime     @default(now()) @map(name: "created_at")
   updatedAt            DateTime     @updatedAt @map(name: "updated_at")

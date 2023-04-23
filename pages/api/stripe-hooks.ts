@@ -57,7 +57,10 @@ export default async (req: any, res: any) => {
             where: {
               id: metadata.userId,
             },
-            data: newUserData,
+            data: {
+              ...newUserData,
+              freeTrial: false,
+            },
           });
         }
         break;
