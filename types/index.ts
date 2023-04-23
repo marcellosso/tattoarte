@@ -11,6 +11,7 @@ export type ParamsType = {
 export type ProductType = {
   name: string;
   price: string;
+  priceBeforeDiscount: string;
   priceDetail: string;
   perks: string[];
   callToAction: JSX.Element;

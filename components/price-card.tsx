@@ -10,10 +10,24 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
   return (
     <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border shadow border-gray-600 xl:p-6 bg-primary text-letter max-h-[95%]">
       <h3 className="text-2xl font-bold text-detail">{product.name}</h3>
-      <div className="flex justify-center items-baseline my-4">
-        <span className="mr-2 text-3xl font-extrabold">{product.price}</span>
+      {product.priceBeforeDiscount && (
+        <span className="text-md font-extrabold text-letter">
+          Promoção por tempo limitado
+        </span>
+      )}
+      <div className="flex justify-center items-center my-4">
+        <div className="flex flex-col items-center">
+          {product.priceBeforeDiscount && (
+            <span className="mr-2 text-md font-normal line-through text-letter">
+              {product.priceBeforeDiscount}
+            </span>
+          )}
+          <span className="mr-2 text-2xl font-extrabold text-detail">
+            {product.price}
+          </span>
+        </div>
         {product.priceDetail && (
-          <span className="ml-1 text-sm font-thin">{product.priceDetail}</span>
+          <span className="text-sm font-thin ml-1">{product.priceDetail}</span>
         )}
       </div>
 

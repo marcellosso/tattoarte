@@ -6,10 +6,11 @@ export default {
   access: [
     {
       name: 'Teste',
+      priceBeforeDiscount: '',
       price: 'Gratuíto',
       priceDetail: '',
       perks: [
-        'Até 3 artes de tatuuagem',
+        'Até 3 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
       ],
@@ -24,10 +25,11 @@ export default {
     },
     {
       name: '10 Créditos',
+      priceBeforeDiscount: 'R$ 29,90',
       price: 'R$ 19,90',
       priceDetail: '(pagamento único)',
       perks: [
-        'Até 10 artes de tatuuagem',
+        'Até 10 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Artes privadas',
@@ -43,10 +45,11 @@ export default {
     },
     {
       name: '50 Créditos',
-      price: 'R$ 99,90',
+      priceBeforeDiscount: 'R$ 109,90',
+      price: 'R$ 89,90',
       priceDetail: '(pagamento único)',
       perks: [
-        'Até 50 artes de tatuuagem',
+        'Até 50 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Artes privadas',
@@ -64,10 +67,11 @@ export default {
   package: [
     {
       name: 'Teste',
+      priceBeforeDiscount: '',
       price: 'Gratuíto',
       priceDetail: '',
       perks: [
-        'Até 3 artes de tatuuagem',
+        'Até 3 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
       ],
@@ -82,6 +86,7 @@ export default {
     },
     {
       name: 'Acesso Total - 7 dias',
+      priceBeforeDiscount: 'R$ 69,90',
       price: 'R$ 49,99',
       priceDetail: '(pagamento único)',
       perks: [
@@ -104,6 +109,7 @@ export default {
     },
     {
       name: 'Acesso Total - 30 dias',
+      priceBeforeDiscount: 'R$ 129,90',
       price: 'R$ 109,90',
       priceDetail: '(pagamento único)',
       perks: [

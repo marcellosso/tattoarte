@@ -8,17 +8,18 @@ import { prisma } from '@/utils/use-prisma';
 import axios from 'axios';
 
 import fs from 'fs';
+import { englishTattooStyles } from '@/assets/tattoo-styles';
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN!,
 });
 
-// long vertical tattoo flash design of a skull with flowers coming out of its head, in black and white ink tattoo style, clean white background
-const DEFAULT_PROMPT = 'HD On a flat white background, create a tattoo art';
+const PREFIX_DEFAULT_PROMPT = 'mdjrny-v4 style tattoo flash design of ';
+const SUFFIX_DEFAULT_PROMPT = ', clean white background, HD, without borders';
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
-    let prompt = DEFAULT_PROMPT;
+    let prompt = '';
     let { params, user } = req.body as { params: ParamsType; user: User };
 
     let newCredits = user.credits || 0;
@@ -34,20 +35,28 @@ module.exports = withApiAuthRequired(async (req, res) => {
       newCredits = Math.max(0, (user.credits || 0) - creditsToDeduce);
     }
 
-    if (params.prompt) prompt += `: ${params.prompt}`;
-    if (params.colorsStyle) prompt += `, ${params.colorsStyle},`;
-    if (params.tattooStyle) prompt += ` ${params.tattooStyle} style`;
+    if (params.prompt) {
+      const response = await axios.post(
+        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${process.env.TRANSLATE_API_KEY}&text=${params.prompt}&lang=pt-en&format=plain`
+      );
+      const translatedPrompt = response.data.text[0];
+
+      prompt += `${translatedPrompt}`;
+    }
+    if (params.tattooStyle)
+      prompt += `, in ${englishTattooStyles[params.tattooStyle]} tattoo style`;
+    if (params.colorsStyle) prompt += `, ${params.colorsStyle}`;
     if (params.artistInspiration)
-      prompt += ` inspired by ${params.artistInspiration}`;
-    // if (params.isHD) prompt += `, HD`;
+      prompt += `, art by ${params.artistInspiration}`;
+
+    prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
 
     const output = (await replicate.run(
       'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
       {
         input: {
           num_outputs: 4,
-          prompt:
-            'mdjrny-v4 style a highly detailed matte painting of a man on a hill watching a rocket launch in the distance by studio ghibli, makoto shinkai, by artgerm, by wlop, by greg rutkowski, volumetric lighting, octane render, 4 k resolution, trending on artstation, masterpiece',
+          prompt,
         },
       }
     )) as string[];
@@ -78,7 +87,6 @@ module.exports = withApiAuthRequired(async (req, res) => {
           prompt: params.prompt,
           style: params.tattooStyle,
           image_name: imageName,
-          is_hd: params.isHD || false,
           is_private: params.isPrivate || false,
         };
 
@@ -108,7 +116,6 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     res.status(200).json({ images: imageNames, newUserData: user });
   } catch (err) {
-    // console.log(err);
     res.status(500).send(err);
   }
 });

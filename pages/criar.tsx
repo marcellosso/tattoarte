@@ -31,7 +31,7 @@ const App: FC<IAPP> = ({ user }) => {
   const [params, setParams] = useState<ParamsType>({
     prompt: '',
     tattooStyle: 'Minimalista',
-    colorsStyle: 'Colorido',
+    colorsStyle: 'Colorful',
   } as ParamsType);
 
   const [images, setImages] = useState<string[]>([]);
@@ -85,13 +85,18 @@ const App: FC<IAPP> = ({ user }) => {
             </div>
 
             <div className="p-4">
-              <div className="mb-3">
+              <div className="mb-3 relative">
                 <label
                   htmlFor="prompt"
                   className="block mb-2 text-sm font-medium text-letter"
                 >
                   Descreva sua tattoo
                 </label>
+                {params.prompt.length > 180 && (
+                  <div className="text-xs text-gray-400 text-right absolute right-2 bottom-2">
+                    {params.prompt.length} / 200
+                  </div>
+                )}
                 <textarea
                   id="prompt"
                   value={params.prompt}
@@ -99,6 +104,7 @@ const App: FC<IAPP> = ({ user }) => {
                     setParams({ ...params, prompt: e.target.value })
                   }
                   rows={4}
+                  maxLength={200}
                   className="max-w-full max-h-64 h-32 block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                   placeholder="Um pescador viajando pelo espaço"
                 />
@@ -119,8 +125,8 @@ const App: FC<IAPP> = ({ user }) => {
                   id="countries"
                   className="border text-sm rounded-lg block w-full p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                 >
-                  <option value="Colorido">Colorido</option>
-                  <option value="Preto e Branco">Preto e Branco</option>
+                  <option value="Colorful">Colorido</option>
+                  <option value="Black and White">Preto e Branco</option>
                 </select>
               </div>
 
