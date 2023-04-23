@@ -25,7 +25,7 @@ const App: FC<IAPP> = ({ user }) => {
   const [userData, setUserData] = useState(user);
 
   const [openMarketingModal, setOpenMarketingModal] = useState(
-    !user.subscribed && user.credits! <= 0
+    !user?.subscribed && user?.credits! <= 0
   );
 
   const [params, setParams] = useState<ParamsType>({
@@ -59,8 +59,8 @@ const App: FC<IAPP> = ({ user }) => {
   };
 
   const maxPromptLenght = useMemo(() => {
-    if (user.freeTrial) return 100;
-    if (!user.subscribed) return 250;
+    if (user?.freeTrial) return 100;
+    if (!user?.subscribed) return 250;
 
     return 500;
   }, [user]);
@@ -79,7 +79,7 @@ const App: FC<IAPP> = ({ user }) => {
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-md font-bold text-letter text-center divide-letter py-2 px-0">
                 Crie suas <span className="text-detail">tattoos</span>,{' '}
-                {user.name}!
+                {user?.name}!
               </h1>
               <span className="text-gray-400 text-xs text-center pb-3">
                 Voce já criou
@@ -105,9 +105,9 @@ const App: FC<IAPP> = ({ user }) => {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     ></path>
                   </svg>
                   <Link href="/precos" className="text-xs hover:text-blue-600">
@@ -217,22 +217,22 @@ const App: FC<IAPP> = ({ user }) => {
                       })
                     }
                     className="sr-only peer"
-                    disabled={user.freeTrial!}
+                    disabled={user?.freeTrial!}
                   />
                   <div
                     className={`w-11 h-6 ${
-                      user.freeTrial ? 'cursor-not-allowed' : 'cursor-pointer'
+                      user?.freeTrial ? 'cursor-not-allowed' : 'cursor-pointer'
                     } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-600 rounded-full peer bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-detail`}
                   ></div>
                   <span
                     className={`ml-3 text-sm font-medium ${
-                      user.freeTrial ? 'text-gray-500' : 'text-letter'
+                      user?.freeTrial ? 'text-gray-500' : 'text-letter'
                     }`}
                   >
                     Arte Privada{' '}
-                    {!user.subscribed && (
+                    {!user?.subscribed && (
                       <span className="text-gray-400 text-xs">
-                        {!user.freeTrial && '(+2 creditos)'}
+                        {!user?.freeTrial && '(+2 creditos)'}
                       </span>
                     )}
                   </span>
@@ -303,11 +303,7 @@ const App: FC<IAPP> = ({ user }) => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 xl:grid-cols-2 h-full w-full items-center justify-items-center overflow-y-scroll scrollbar-hide">
-                  <ImageContainer
-                    isLoading={loadingImages}
-                    images={images}
-                    isTrial={user.freeTrial!}
-                  />
+                  <ImageContainer isLoading={loadingImages} images={images} />
                 </div>
               )}
             </div>
@@ -330,7 +326,7 @@ export const getServerSideProps = withPageAuthRequired({
       },
     })) as User;
 
-    if (user.subscribed) {
+    if (user?.subscribed) {
       user = await handleUserSubscription(user);
     }
 

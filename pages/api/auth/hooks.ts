@@ -13,6 +13,7 @@ module.exports = async (req: any, res: any) => {
       const customer = await stripe.customers.create({
         email,
       });
+
       const user = await prisma.user.create({
         data: { email, name, stripeId: customer.id },
       });

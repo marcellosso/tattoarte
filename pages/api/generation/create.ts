@@ -7,8 +7,16 @@ import { v4 } from 'uuid';
 import { prisma } from '@/utils/use-prisma';
 import axios from 'axios';
 
-import fs from 'fs';
+import S3 from 'aws-sdk/clients/s3';
+
 import { englishTattooStyles } from '@/assets/tattoo-styles';
+
+const s3 = new S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+  signatureVersion: 'v4',
+});
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN!,
@@ -60,43 +68,49 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
 
-    const output = (await replicate.run(
-      'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
-      {
-        input: {
-          num_outputs: 4,
-          prompt,
-        },
-      }
-    )) as string[];
+    // const output = (await replicate.run(
+    //   'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
+    //   {
+    //     input: {
+    //       num_outputs: 1,
+    //       prompt,
+    //     },
+    //   }
+    // )) as string[];
 
-    let imageNames = [] as string[];
+    const output = [
+      'https://replicate.delivery/pbxt/Ufj2XWeDiwmlq0bnCWlbDV7fHpQRZpMzKSK76SMDpvWTbpphA/out-0.png',
+    ];
+
+    let images = [] as string[];
 
     if (!user.freeTrial) {
       await Promise.all(
         output.map(async (image, idx) => {
           const imageName = v4();
 
-          const imageBufferResponse = await axios.get(image, {
+          const imageResponse = await axios.get(image, {
             responseType: 'arraybuffer',
           });
-          const imageB64 = Buffer.from(
-            imageBufferResponse.data,
-            'binary'
-          ).toString('base64');
 
-          await fs.writeFileSync(
-            `public\\images\\generated\\${imageName}.png`,
-            imageB64 as string,
-            'base64'
-          );
+          const s3UploadResponse = await s3
+            .upload({
+              Bucket: process.env.AWS_BUCKET_NAME!,
+              Key: `generations/${user.id}/${imageName}.png`,
+              Body: imageResponse.data,
+              ACL: 'public-read',
+            })
+            .promise();
 
-          imageNames.push(imageName);
+          const imageUrl = s3UploadResponse.Location;
+
+          images.push(imageUrl);
 
           const generationObj = {
             prompt: params.prompt,
             style: params.tattooStyle,
-            image_name: imageName,
+            imageName: imageName,
+            imageUrl,
             is_private: params.isPrivate || false,
           };
 
@@ -114,7 +128,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
         })
       );
     } else {
-      imageNames = output;
+      images = output;
     }
 
     user = await prisma.user.update({
@@ -127,7 +141,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       },
     });
 
-    res.status(200).json({ images: imageNames, newUserData: user });
+    res.status(200).json({ images, newUserData: user });
   } catch (err) {
     res.status(500).send(err);
   }

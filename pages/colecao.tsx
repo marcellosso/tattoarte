@@ -130,7 +130,7 @@ const Collection: FC<ICollection> = ({
                 className="h-[256px] w-[256px] rounded-md hover:scale-105 relative group"
               >
                 <Image
-                  src={`/images/generated/${generation.image_name}.png`}
+                  src={generation.imageUrl}
                   alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
                   objectFit="cover"
                   layout="fill"

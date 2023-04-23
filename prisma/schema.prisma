@@ -15,13 +15,14 @@ model Generation {
   id          String   @id @default(cuid())
   prompt      String
   style       String
-  image_name  String
+  imageName   String   @map(name: "image_name")
+  imageUrl    String   @map(name: "image_url")
   is_hd       Boolean? @default(false)
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   author      User     @relation(fields: [authorId], references: [id])
   authorName  String   @map(name: "author_name")
-  authorId    String
+  authorId    String   @map(name: "author_id")
   is_favorite Boolean? @default(false)
   is_private  Boolean? @default(false)
 
@@ -35,11 +36,11 @@ model User {
   email                String?      @unique
   subscribed           Boolean?     @default(false)
   subscriptionAt       DateTime?    @map(name: "subscribed_at")
-  subscriptionDuration Int?         @default(0)
+  subscriptionDuration Int?         @default(0) @map(name: "subscription_duration")
   credits              Int?         @default(3)
-  generationCount      Int?         @default(0)
-  freeTrial            Boolean?     @default(true)
-  stripeId             String       @unique
+  generationCount      Int?         @default(0) @map(name: "generation_count")
+  freeTrial            Boolean?     @default(true) @map(name: "free_trial")
+  stripeId             String       @unique @map(name: "stripe_id")
   createdAt            DateTime     @default(now()) @map(name: "created_at")
   updatedAt            DateTime     @updatedAt @map(name: "updated_at")
   Generation           Generation[]

@@ -27,7 +27,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             >
               <div className="w-[1024px] h-[768px] my-2 md:my-0 rounded-md flex items-center justify-center relative">
                 <Image
-                  src={`/images/generated/${generation.image_name}.png`}
+                  src={generation.imageUrl}
                   alt="Arte de tatuagem criada pela inteligencia artificial - TattooArte!"
                   objectFit="contain"
                   layout="fill"
@@ -67,7 +67,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </Link>
             <div className="w-[512px] h-[512px] relative hover:scale-105 hover:cursor-pointer">
               <Image
-                src={`/images/generated/${generation.image_name}.png`}
+                src={generation.imageUrl}
                 alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
                 objectFit="cover"
                 layout="fill"

@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['replicate.delivery'],
+    domains: [
+      'dev-tattooarte.s3.sa-east-1.amazonaws.com',
+      'stg-tattooarte.s3.sa-east-1.amazonaws.com',
+      'prod-tattooarte.s3.sa-east-1.amazonaws.com',
+    ],
   },
 };
 
