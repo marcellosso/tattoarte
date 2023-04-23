@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Link from 'next/link';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';

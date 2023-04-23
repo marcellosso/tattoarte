@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Link from 'next/link';
 import AppNavbar from '@/components/navbars/app-navbar';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';

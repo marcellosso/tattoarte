@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { FC, useState } from 'react';
 import LoadingImage from './loading-image';
 

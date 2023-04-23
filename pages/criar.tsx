@@ -7,7 +7,7 @@ import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import React, { FC, useMemo, useState } from 'react';
 
 import { toast } from 'react-toastify';
