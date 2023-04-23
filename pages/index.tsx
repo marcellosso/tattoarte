@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import MainNavbar from '@/components/navbars/main-navbar';

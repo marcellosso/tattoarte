@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { FC } from 'react';
 
 interface ILoadingState {
@@ -19,7 +19,10 @@ const LoadingState: FC<ILoadingState> = ({ isLoading, label }) => {
             priority
             quality={100}
             className=" ml-1 animate-bounce"
-          />
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
           <span className="text-letter text-sm font-extrabold">{label}</span>
         </div>
       </div>
