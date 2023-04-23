@@ -1,4 +1,4 @@
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { Generation } from '@prisma/client';
 

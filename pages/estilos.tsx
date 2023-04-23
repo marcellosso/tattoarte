@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { Generation, User } from '@prisma/client';
 import { FC } from 'react';
 import MainNavbar from '@/components/navbars/main-navbar';

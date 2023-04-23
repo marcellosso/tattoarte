@@ -1,4 +1,4 @@
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { withApiAuthRequired, getSession, Session } from '@auth0/nextjs-auth0';
 import { User } from '@prisma/client';
 import Stripe from 'stripe';

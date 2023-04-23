@@ -1,5 +1,5 @@
 import { PriceTabEnum } from '@/types';
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { PrismaClient, User } from '@prisma/client';
 import { Console } from 'console';
 import { buffer } from 'micro';

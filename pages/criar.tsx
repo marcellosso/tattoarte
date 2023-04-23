@@ -2,7 +2,7 @@ import tattooStyles from '@/assets/tattoo-styles';
 import AppNavbar from '@/components/navbars/app-navbar';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { User } from '@prisma/client';
@@ -168,7 +168,7 @@ const App: FC<IAPP> = ({ user }) => {
                 />
               </div>
 
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <label className="relative inline-flex items-center">
                   <input
                     type="checkbox"
@@ -191,7 +191,7 @@ const App: FC<IAPP> = ({ user }) => {
                     )}
                   </span>
                 </label>
-              </div>
+              </div> */}
 
               <div className="mb-3">
                 <label className="relative inline-flex items-center ">

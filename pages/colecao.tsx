@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AppNavbar from '@/components/navbars/app-navbar';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { Generation, User } from '@prisma/client';
 import { FC, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';

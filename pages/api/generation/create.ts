@@ -1,22 +1,20 @@
-import prisma from '@/utils/use-prisma';
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { User } from '@prisma/client';
-import { Configuration, OpenAIApi } from 'openai';
 
-import fs, { WriteStream } from 'fs';
-import { v4 } from 'uuid';
 import { ParamsType } from '@/types';
-('uuid');
+import Replicate from 'replicate';
+import { v4 } from 'uuid';
+import { prisma } from '@/utils/use-prisma';
+import axios from 'axios';
 
-const IMAGE_NAME_PATTERN = '(?=img).+?(?=.png)';
+import fs from 'fs';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN!,
 });
-const openai = new OpenAIApi(configuration);
 
 // long vertical tattoo flash design of a skull with flowers coming out of its head, in black and white ink tattoo style, clean white background
-const DEFAULT_PROMPT = 'On a flat white background, create a tattoo art';
+const DEFAULT_PROMPT = 'HD On a flat white background, create a tattoo art';
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
@@ -27,7 +25,6 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     if (!user.subscribed) {
       let creditsToDeduce = 1;
-      if (params.isHD) creditsToDeduce += 2;
       if (params.isPrivate) creditsToDeduce += 2;
 
       if (user.credits == 0 || (user.credits || 0) < creditsToDeduce) {
@@ -42,68 +39,62 @@ module.exports = withApiAuthRequired(async (req, res) => {
     if (params.tattooStyle) prompt += ` ${params.tattooStyle} style`;
     if (params.artistInspiration)
       prompt += ` inspired by ${params.artistInspiration}`;
-    if (params.colors)
-      prompt += ` using these colors: ${params.colors.join(' ')}`;
+    // if (params.isHD) prompt += `, HD`;
 
-    // const response = await openai.createImage({
-    //   prompt: prompt,
-    //   n: 1,
-    //   size: params.isHD ? '1024x1024' : '512x512',
-    //   response_format: 'b64_json',
-    // });
-    // const images = response.data.data;
-
-    const images = [
+    const output = (await replicate.run(
+      'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
       {
-        b64_json: '/images/generated/img-test1.png',
-      },
-      {
-        b64_json: '/images/generated/img-test2.png',
-      },
-      {
-        b64_json: '/images/generated/img-test3.png',
-      },
-      {
-        b64_json: '/images/generated/img-test4.png',
-      },
-    ];
+        input: {
+          num_outputs: 4,
+          prompt:
+            'mdjrny-v4 style a highly detailed matte painting of a man on a hill watching a rocket launch in the distance by studio ghibli, makoto shinkai, by artgerm, by wlop, by greg rutkowski, volumetric lighting, octane render, 4 k resolution, trending on artstation, masterpiece',
+        },
+      }
+    )) as string[];
 
-    // const imageNames = [] as string[];
+    const imageNames = [] as string[];
 
-    const imageNames = ['img-test', 'img-test2', 'img-test3', 'img-test4'];
+    await Promise.all(
+      output.map(async (image, idx) => {
+        const imageName = v4();
 
-    images.forEach(async (image, idx) => {
-      // const imageName = v4();
-      const imageName = imageNames[idx];
+        const imageBufferResponse = await axios.get(image, {
+          responseType: 'arraybuffer',
+        });
+        const imageB64 = Buffer.from(
+          imageBufferResponse.data,
+          'binary'
+        ).toString('base64');
 
-      // await fs.writeFileSync(
-      //   `public/images/generated/${imageName}.png`,
-      //   image.b64_json as string,
-      //   'base64'
-      // );
+        await fs.writeFileSync(
+          `public\\images\\generated\\${imageName}.png`,
+          imageB64 as string,
+          'base64'
+        );
 
-      // imageNames.push(imageName);
+        imageNames.push(imageName);
 
-      const generationObj = {
-        prompt: params.prompt,
-        style: params.tattooStyle,
-        image_name: imageName,
-        is_hd: params.isHD || false,
-        is_private: params.isPrivate || false,
-      };
+        const generationObj = {
+          prompt: params.prompt,
+          style: params.tattooStyle,
+          image_name: imageName,
+          is_hd: params.isHD || false,
+          is_private: params.isPrivate || false,
+        };
 
-      await prisma.generation.create({
-        data: {
-          ...generationObj,
-          authorName: user.name as string,
-          author: {
-            connect: {
-              id: user.id,
+        await prisma.generation.create({
+          data: {
+            ...generationObj,
+            authorName: user.name as string,
+            author: {
+              connect: {
+                id: user.id,
+              },
             },
           },
-        },
-      });
-    });
+        });
+      })
+    );
 
     user = await prisma.user.update({
       where: {
@@ -117,6 +108,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     res.status(200).json({ images: imageNames, newUserData: user });
   } catch (err) {
+    // console.log(err);
     res.status(500).send(err);
   }
 });

@@ -1,4 +1,4 @@
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {

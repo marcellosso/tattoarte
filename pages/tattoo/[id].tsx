@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
-import prisma from '@/utils/use-prisma';
+import { prisma } from '@/utils/use-prisma';
 import { Generation, User } from '@prisma/client';
 import { FC, useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
