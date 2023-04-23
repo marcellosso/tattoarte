@@ -67,45 +67,48 @@ module.exports = withApiAuthRequired(async (req, res) => {
       prompt += `, art by ${params.artistInspiration}`;
 
     prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
+    const output = (await replicate.run(
+      'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
+      {
+        input: {
+          num_outputs: 4,
+          prompt,
+        },
+      }
+    )) as string[];
 
-    // const output = (await replicate.run(
-    //   'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
-    //   {
-    //     input: {
-    //       num_outputs: 1,
-    //       prompt,
-    //     },
-    //   }
-    // )) as string[];
-
-    const output = [
-      'https://replicate.delivery/pbxt/Ufj2XWeDiwmlq0bnCWlbDV7fHpQRZpMzKSK76SMDpvWTbpphA/out-0.png',
-    ];
+    // const output = [
+    //   'https://replicate.delivery/pbxt/Ufj2XWeDiwmlq0bnCWlbDV7fHpQRZpMzKSK76SMDpvWTbpphA/out-0.png',
+    // ];
 
     let images = [] as string[];
 
-    if (!user.freeTrial) {
-      await Promise.all(
-        output.map(async (image, idx) => {
-          const imageName = v4();
+    await Promise.all(
+      output.map(async (image, idx) => {
+        const imageName = v4();
 
-          const imageResponse = await axios.get(image, {
-            responseType: 'arraybuffer',
-          });
+        const imageResponse = await axios.get(image, {
+          responseType: 'arraybuffer',
+        });
 
-          const s3UploadResponse = await s3
-            .upload({
-              Bucket: process.env.AWS_BUCKET_NAME!,
-              Key: `generations/${user.id}/${imageName}.png`,
-              Body: imageResponse.data,
-              ACL: 'public-read',
-            })
-            .promise();
+        const uploadKey = user.freeTrial
+          ? `tmp/${imageName}.png`
+          : `generations/${user.id}/${imageName}.png`;
 
-          const imageUrl = s3UploadResponse.Location;
+        const s3UploadResponse = await s3
+          .upload({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: uploadKey,
+            Body: imageResponse.data,
+            ACL: 'public-read',
+          })
+          .promise();
 
-          images.push(imageUrl);
+        const imageUrl = s3UploadResponse.Location;
 
+        images.push(imageUrl);
+
+        if (!user.freeTrial) {
           const generationObj = {
             prompt: params.prompt,
             style: params.tattooStyle,
@@ -125,11 +128,9 @@ module.exports = withApiAuthRequired(async (req, res) => {
               },
             },
           });
-        })
-      );
-    } else {
-      images = output;
-    }
+        }
+      })
+    );
 
     user = await prisma.user.update({
       where: {
