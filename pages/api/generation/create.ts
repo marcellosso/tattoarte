@@ -134,7 +134,9 @@ module.exports = withApiAuthRequired(async (req, res) => {
           });
         }
       })
-    );
+    ).catch((err) => {
+      throw err;
+    });
 
     user = await prisma.user.update({
       where: {
