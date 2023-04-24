@@ -66,15 +66,15 @@ const App: FC<IAPP> = ({ user }) => {
   }, [user]);
 
   return (
-    <>
+    <main>
       <AppNavbar user={userData} />
 
       {openMarketingModal && (
         <MarketingModal setOpenMarketingModal={setOpenMarketingModal} />
       )}
 
-      <main className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 bg-primary text-letter">
-        <section className="flex w-screen h-full">
+      <section className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 bg-primary text-letter">
+        <div className="flex w-screen h-full">
           <div className="bg-secondary w-1/5 h-full shadow-lg shadow-gray-500">
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-md font-bold text-letter text-center divide-letter py-2 px-0">
@@ -312,7 +312,7 @@ const App: FC<IAPP> = ({ user }) => {
               )}
             </div>
           </div>
-        </section>
+        </div>
         {user.freeTrial && (
           <div className="w-screen h-9 bg-detail flex items-center justify-center p-2">
             <span className="text-primary text-xs font-bold">
@@ -327,8 +327,8 @@ const App: FC<IAPP> = ({ user }) => {
             </Link>
           </div>
         )}
-      </main>
-    </>
+      </section>
+    </main>
   );
 };
 

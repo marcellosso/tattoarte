@@ -5,6 +5,7 @@ import PriceCard from '@/components/price-card';
 import { GetServerSidePropsContext } from 'next';
 import { FC, useMemo, useState } from 'react';
 import { PriceTabEnum } from '@/types';
+import Footer from '@/components/footer';
 
 interface IPrice {
   defaultPriceTab: PriceTabEnum;
@@ -17,10 +18,10 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
   const displayProducts = useMemo(() => products[priceTab], [priceTab]);
 
   return (
-    <>
+    <main>
       <MainNavbar />
-      <main className="flex min-h-screen h-screen flex-col items-center pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
-        <section className="overflow-scroll scrollbar-hide">
+      <section className="flex min-h-screen h-screen flex-col items-center pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
+        <div className="overflow-scroll scrollbar-hide">
           <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6">
             <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
               <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-detail">
@@ -76,9 +77,11 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
               ))}
             </div>
           </div>
-        </section>
-      </main>
-    </>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
   );
 };
 
