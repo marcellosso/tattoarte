@@ -92,7 +92,7 @@ const App: FC<IAPP> = ({ user }) => {
             </div>
 
             <div className="p-4">
-              {params.prompt.length >= maxPromptLenght && (
+              {params.prompt.length >= maxPromptLenght && !user.subscribed && (
                 <div
                   className="flex p-4 mb-4 text-sm border rounded-lg bg-primary text-blue-400 border-blue-800"
                   role="alert"
@@ -317,7 +317,7 @@ const App: FC<IAPP> = ({ user }) => {
           <div className="w-screen h-9 bg-detail flex items-center justify-center p-2">
             <span className="text-primary text-xs font-bold">
               Seu teste permite gerar 12 tatuagens. Compre o passe de acesso
-              para criar tatuagens ilimitadas (IAs são caras)
+              para criar tatuagens ilimitadas
             </span>
             <Link
               href="/precos?tab=package"

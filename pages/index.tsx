@@ -141,6 +141,7 @@ const Home = () => {
               </div>
             </div>
           </div>
+          {/* TODO Talvez remover */}
           <Image
             fill
             priority
