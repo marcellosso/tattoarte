@@ -21,3 +21,7 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.rotateY {
+  transform: rotateY(180deg);
+}

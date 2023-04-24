@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import Link from 'next/link';
 import { Oswald } from 'next/font/google';
 
@@ -14,11 +14,12 @@ const Logo = () => {
         height={40}
         priority
         style={{
-          maxWidth: "100%",
-          height: "auto"
-        }} />
+          maxWidth: '100%',
+          height: 'auto',
+        }}
+      />
       <span
-        className={`${oswald.className} self-center text-2xl font-semibold whitespace-nowrap dark:text-white ml-2`}
+        className={`${oswald.className} self-center text-2xl font-semibold whitespace-nowrap dark:text-white ml-2 hidden md:block`}
       >
         Tattoo<span className="font-bold text-detail">Arte</span>
       </span>

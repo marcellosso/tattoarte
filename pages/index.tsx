@@ -33,16 +33,16 @@ const Home = () => {
   return (
     <main>
       <MainNavbar />
-      <section className="flex min-h-screen h-screen flex-col items-center pt-8 pb-0 from-secondary to-gray-800 bg-gradient-to-b text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 from-secondary to-gray-800 bg-gradient-to-b text-letter">
         <section>
           <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 mt-6 mb-2">
             <div className="mx-auto max-w-screen-md text-center">
-              <h1 className="mb-4 text-4xl tracking-tight font-bold text-letter">
+              <h1 className="mb-4 text-xl sm:text-2xñ md:text-4xl tracking-tight font-bold text-letter">
                 CRIE TATUAGENS{' '}
                 <span className="text-detail font-extrabold">ÚNICAS</span> COM{' '}
                 <span className="text-detail font-extrabold">IA</span>
               </h1>
-              <p className="mb-4 font-normal text-letter sm:text-md">
+              <p className="mb-4 font-normal text-letter text-xs sm:text-sm md:text-md">
                 Caso possua uma ideia para uma{' '}
                 <span className="text-detail font-bold uppercase">
                   tatuagem
@@ -61,8 +61,8 @@ const Home = () => {
                 todos possam encontrar algo que lhes agrade.
               </p>
               <div className="flex flex-col w-full max-w-screen-sm items-center justify-center mx-auto gap-4">
-                <div className="relative w-full">
-                  <div className="absolute -left-2 flex items-center gap-2 top-1">
+                <div className="relative w-full mt-5 md:mt-0">
+                  <div className="absolute -left-2 flex items-center gap-2 -top-6 md:top-1">
                     <span className="text-xs text-letter font-light">
                       Oferta por tempo limitado
                     </span>
@@ -72,8 +72,23 @@ const Home = () => {
                       strokeWidth={1.5}
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
+                      className="text-letter w-4 h-4 block md:hidden rotateY"
                       aria-hidden="true"
-                      className="text-letter w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3"
+                      />
+                    </svg>
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      className="text-letter w-4 h-4 hidden md:block"
                     >
                       <path
                         strokeLinecap="round"
@@ -92,7 +107,7 @@ const Home = () => {
                 {user ? (
                   <Link
                     href="/criar"
-                    className="font-bold text-primary p-3 rounded-md bg-detail hover:bg-yellow-500"
+                    className="font-bold text-primary text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
                   >
                     3 créditos gratuítos - Crie sua arte agora
                   </Link>
@@ -132,21 +147,20 @@ const Home = () => {
           </div>
         </section>
         <section className="h-full w-full relative flex items-center justify-center">
-          <div className="h-full w-full flex items-center justify-center px-12">
-            <div className="h-full w-1/4 flex items-center justify-center">
-              <div className="w-72 h-72 z-30 md:-mt-10 relative rounded-md shadow-lg">
+          <div className="h-full w-full flex flex-col md:flex-row items-center justify-center px-4 sm:px-8 md:px-12">
+            <div className="h-full w-full md:w-1/4 flex items-center justify-center gap-2 md:gap-0">
+              <div className="w-1/2 h-48 md:w-72 md:h-72 z-30 md:-mt-10 relative rounded-md shadow-lg">
                 <Image
                   fill
-                  className="rounded-md"
-                  style={{
-                    objectFit: 'contain',
-                  }}
+                  className="rounded-md object-cover md:object-contain"
                   priority
                   src="/images/tattoo-example-1.webp"
                   alt="Tatuagem criada por nossa Inteligencia Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
                 />
-                <div className="bg-primary opacity-100 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-1 left-1">
-                  <span className="text-detail">Aquarela</span>
+                <div className="bg-primary opacity-100 h-5 w-24 md:h-10 md:w-26 p-2 flex items-center justify-center md:rounded-xl absolute top-0 md:top-1 left-0 md:left-1">
+                  <span className="text-detail text-xs md:text-lg">
+                    Aquarela
+                  </span>
                 </div>
                 <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0">
                   <span className="text-xs overflow-ellipsis overflow-hidden">
@@ -154,8 +168,30 @@ const Home = () => {
                   </span>
                 </div>
               </div>
+              <div className="w-1/2 h-48 md:w-72 md:h-72 z-30 md:-mt-10 relative rounded-md shadow-lg block md:hidden">
+                <Image
+                  fill
+                  className="rounded-md"
+                  style={{
+                    objectFit: 'contain',
+                  }}
+                  priority
+                  src="/images/tattoo-example-2.webp"
+                  alt="Tatuagem criada por nossa Inteligencia Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeca, fundo cinza."
+                />
+                <div className="bg-primary opacity-100 h-5 w-24 md:h-10 md:w-26 p-2 flex items-center justify-center md:rounded-xl absolute top-0 md:top-1 left-0 md:left-1">
+                  <span className="text-detail text-xs md:text-lg">
+                    Minimalista
+                  </span>
+                </div>
+                <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0">
+                  <span className="text-xs overflow-ellipsis overflow-hidden">
+                    Uma caveira com rosas
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="h-full w-1/2 z-30 md:-mt-10 rounded-md shadow-md shadow-gray-50">
+            <div className="h-full md:w-1/2 w-full z-30 mt-0 md:-mt-10 rounded-md shadow-md shadow-gray-50">
               <video
                 autoPlay
                 muted
@@ -167,7 +203,7 @@ const Home = () => {
               </video>
             </div>
             <div className="h-full w-1/4 flex items-center justify-center">
-              <div className="w-72 h-72 z-30 md:-mt-10 relative rounded-md shadow-lg">
+              <div className="w-72 h-72 z-30 md:-mt-10 relative rounded-md shadow-lg hidden md:block">
                 <Image
                   fill
                   className="rounded-md"

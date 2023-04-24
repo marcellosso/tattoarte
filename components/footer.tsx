@@ -17,7 +17,15 @@ const Footer = () => {
             height: 'auto',
           }}
         />
-        <div className="flex md:order-2 items-center">
+
+        <div className="items-center justify-between flex w-auto ">
+          <ul className="flex p-0 font-medium md:space-x-8 mt-0">
+            <NavbarLink label="Descobrir" href="/descobrir" />
+            <NavbarLink label="Estilos" href="/estilos" />
+            <NavbarLink label="Preços" href="/precos" />
+          </ul>
+        </div>
+        <div className="hidden md:flex items-center">
           <>
             <Link
               href="/criar"
@@ -26,16 +34,6 @@ const Footer = () => {
               Crie sua arte
             </Link>
           </>
-        </div>
-        <div
-          className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-          id="navbar-sticky"
-        >
-          <ul className="flex flex-col p-4 md:p-0  font-medium border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-            <NavbarLink label="Descobrir" href="/descobrir" />
-            <NavbarLink label="Estilos" href="/estilos" />
-            <NavbarLink label="Preços" href="/precos" />
-          </ul>
         </div>
       </div>
     </footer>
