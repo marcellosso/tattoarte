@@ -33,7 +33,7 @@ const Home = () => {
   return (
     <main>
       <MainNavbar />
-      <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 from-secondary to-gray-800 bg-gradient-to-b text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 from-secondary to-gray-800 bg-gradient-to-b text-letter overflow-y-scroll scrollbar-hide">
         <section>
           <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 mt-6 mb-2">
             <div className="mx-auto max-w-screen-md text-center">
@@ -107,7 +107,7 @@ const Home = () => {
                 {user ? (
                   <Link
                     href="/criar"
-                    className="font-bold text-primary text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
+                    className="font-bold text-primary text-xs sm:text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
                   >
                     3 créditos gratuítos - Crie sua arte agora
                   </Link>
@@ -147,51 +147,48 @@ const Home = () => {
           </div>
         </section>
         <section className="h-full w-full relative flex items-center justify-center">
-          <div className="h-full w-full flex flex-col md:flex-row items-center justify-center px-4 sm:px-8 md:px-12">
-            <div className="h-full w-full md:w-1/4 flex items-center justify-center gap-2 md:gap-0">
-              <div className="w-1/2 h-48 md:w-72 md:h-72 z-30 md:-mt-10 relative rounded-md shadow-lg">
+          <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center px-4 sm:px-8 lg:px-12 mb-4 lg:mb-2">
+            <div className="h-full w-full lg:w-1/4 flex items-center justify-center gap-3 lg:gap-0 mb-2 lg:mb-0">
+              <div className="w-1/2 h-48 md:h-64 lg:w-72 lg:h-72 z-30 lg:-mt-10 relative rounded-md shadow-lg">
                 <Image
                   fill
-                  className="rounded-md object-cover md:object-contain"
+                  className="rounded-md object-cover lg:object-contain"
                   priority
                   src="/images/tattoo-example-1.webp"
                   alt="Tatuagem criada por nossa Inteligencia Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
                 />
-                <div className="bg-primary opacity-100 h-5 w-24 md:h-10 md:w-26 p-2 flex items-center justify-center md:rounded-xl absolute top-0 md:top-1 left-0 md:left-1">
-                  <span className="text-detail text-xs md:text-lg">
+                <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-lg absolute top-0 lg:top-1 left-0 lg:left-1">
+                  <span className="text-detail text-xs lg:text-lg">
                     Aquarela
                   </span>
                 </div>
                 <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0">
-                  <span className="text-xs overflow-ellipsis overflow-hidden">
+                  <span className="text-2xs sm:text-sm lg:text-md overflow-ellipsis overflow-hidden">
                     Um pescador de ilusoes
                   </span>
                 </div>
               </div>
-              <div className="w-1/2 h-48 md:w-72 md:h-72 z-30 md:-mt-10 relative rounded-md shadow-lg block md:hidden">
+              <div className="w-1/2 h-48 md:h-64 lg:w-72 lg:h-72 z-30 lg:-mt-10 relative rounded-md shadow-lg block lg:hidden">
                 <Image
                   fill
-                  className="rounded-md"
-                  style={{
-                    objectFit: 'contain',
-                  }}
+                  className="rounded-md object-cover lg:object-contain"
                   priority
                   src="/images/tattoo-example-2.webp"
                   alt="Tatuagem criada por nossa Inteligencia Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeca, fundo cinza."
                 />
-                <div className="bg-primary opacity-100 h-5 w-24 md:h-10 md:w-26 p-2 flex items-center justify-center md:rounded-xl absolute top-0 md:top-1 left-0 md:left-1">
-                  <span className="text-detail text-xs md:text-lg">
+                <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-xl absolute top-0 lg:top-1 left-0 lg:left-1">
+                  <span className="text-detail text-xs lg:text-lg">
                     Minimalista
                   </span>
                 </div>
                 <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0">
-                  <span className="text-xs overflow-ellipsis overflow-hidden">
+                  <span className="text-2xs sm:text-sm lg:text-md overflow-ellipsis overflow-hidden">
                     Uma caveira com rosas
                   </span>
                 </div>
               </div>
             </div>
-            <div className="h-full md:w-1/2 w-full z-30 mt-0 md:-mt-10 rounded-md shadow-md shadow-gray-50">
+            <div className="h-full lg:w-1/2 w-full z-30 mt-0 lg:-mt-10 rounded-md shadow-md shadow-gray-50">
               <video
                 autoPlay
                 muted
@@ -203,7 +200,7 @@ const Home = () => {
               </video>
             </div>
             <div className="h-full w-1/4 flex items-center justify-center">
-              <div className="w-72 h-72 z-30 md:-mt-10 relative rounded-md shadow-lg hidden md:block">
+              <div className="w-72 h-72 z-30 lg:-mt-10 relative rounded-md shadow-lg hidden lg:block">
                 <Image
                   fill
                   className="rounded-md"
@@ -218,7 +215,7 @@ const Home = () => {
                   <span className="text-detail">Minimalista</span>
                 </div>
                 <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0">
-                  <span className="text-xs overflow-ellipsis overflow-hidden">
+                  <span className="text-2xs sm:text-sm lg:text-md overflow-ellipsis overflow-hidden">
                     Uma caveira com rosas
                   </span>
                 </div>

@@ -20,14 +20,14 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
   return (
     <main>
       <MainNavbar />
-      <section className="flex min-h-screen h-screen flex-col items-center pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center pt-6 md:pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
         <div className="overflow-scroll scrollbar-hide">
           <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6">
             <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
-              <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-detail">
+              <h2 className="mb-4 text-md sm:text-xl md:text-3xl tracking-tight font-extrabold text-detail text-center">
                 Cria ou ache um design perfeito para suas tatuagens
               </h2>
-              <p className="mb-10 font-light text-letter sm:text-md">
+              <p className="mb-10 font-light text-letter text-xs sm:text-md">
                 Nossa IA artista de tatuagens é capaz de gerar designs
                 personalizados ilimitados para você, em apenas segundos, baseado
                 em seu gosto pessoal e suas ideias. Você pode criar designs para
@@ -42,7 +42,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
               </p>
               <Link
                 href="/criar"
-                className="font-bold text-primary p-3 rounded-md bg-detail hover:bg-yellow-500"
+                className="font-bold text-[0.55rem] xs:text-xs sm:text-sm md:text-md text-primary p-2 xs:p-3 rounded-md bg-detail hover:bg-yellow-500"
               >
                 3 créditos gratuítos - Crie sua arte agora
               </Link>
@@ -71,7 +71,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
               </div>
             </div>
 
-            <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0 ">
+            <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
               {displayProducts.map((product) => (
                 <PriceCard product={product} />
               ))}

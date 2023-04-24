@@ -18,16 +18,18 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
       <div className="flex justify-center items-center my-4">
         <div className="flex flex-col items-center">
           {product.priceBeforeDiscount && (
-            <span className="mr-2 text-md font-normal line-through text-letter">
+            <span className="mr-2 text-xs xs:text-md font-normal line-through text-letter">
               {product.priceBeforeDiscount}
             </span>
           )}
-          <span className="mr-2 text-2xl font-extrabold text-detail">
+          <span className="mr-2 text-lg xs:text-2xl font-extrabold text-detail">
             {product.price}
           </span>
         </div>
         {product.priceDetail && (
-          <span className="text-sm font-thin ml-1">{product.priceDetail}</span>
+          <span className="text-2xs xs:text-sm font-thin ml-1">
+            {product.priceDetail}
+          </span>
         )}
       </div>
 

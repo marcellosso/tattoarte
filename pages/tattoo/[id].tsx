@@ -18,8 +18,8 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   return (
     <>
       <MainNavbar />
-      <main className="flex min-h-screen h-screen flex-col items-center p-12 pt-24 bg-primary text-letter">
-        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6 relative pt-2">
+      <main className="flex min-h-screen h-screen flex-col items-center p-6 pt-12 md:p-12 md:pt-24 bg-primary text-letter">
+        <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-3 md:p-6 relative pt-2">
           {openFullscreenImageModal && (
             <div
               className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hover:cursor-pointer"
@@ -40,19 +40,19 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </div>
           )}
           <div className="flex flex-col items-center w-full h-full">
-            <span className="text-gray-200 text-xs">
+            <span className="text-gray-200 text-2xs sm:text-xs">
               Criado em:{' '}
               {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
             </span>
-            <span className="text-gray-400 text-md font-bold">
+            <span className="text-gray-400 text-sm sm:text-md font-bold">
               TATUAGEM {generation.style.toUpperCase()}
             </span>
-            <span className=" text-gray-400 text-sm">
+            <span className=" text-gray-400 text-xs sm:text-sm">
               por{' '}
               {generation.authorId ? (
                 <Link
                   href={`/colecao?userId=${generation.authorId}`}
-                  className="text-detail font-bold hover:text-yellow-600"
+                  className="text-detail text-sm sm:text-md font-bold hover:text-yellow-600"
                 >
                   {generation.authorName}
                 </Link>
@@ -62,19 +62,19 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                 </span>
               )}
             </span>
-            <h2 className="text-detail font-bold text-2xl">
+            <h2 className="text-detail font-bold text-lg sm:text-xl md:text-2xl text-center">
               {generation.prompt}
             </h2>
-            <p className="text-letter font-md mb-6">
+            <p className="text-letter text-sm md:text-md mb-4 md:mb-6 text-center">
               Tatuagem criada com ajuda de nossa Inteligencia Artificial (IA).
             </p>
             <Link
               href="/criar"
-              className="mb-6 flex items-center justify-center bg-detail hover:scale-105 text-lg bg-gradient-to-r w-1/5 font-bold text-primary p-3 rounded-md"
+              className="mb-3 md:mb-6 flex items-center justify-center bg-detail hover:scale-105 text-xs xs:text-sm sm:text-md md:text-lg sm:w-1/3 md:w-1/2 lg:w-1/5 font-bold text-primary p-3 rounded-md"
             >
               Crie sua própria tatuagem
             </Link>
-            <div className="w-[512px] h-[512px] relative hover:scale-105 hover:cursor-pointer">
+            <div className="h-1/2 w-full sm:h-[512px] sm:w-[512px] hover:scale-105 hover:cursor-pointer relative">
               <Image
                 src={generation.imageUrl}
                 alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
