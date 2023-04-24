@@ -120,7 +120,7 @@ const UserAvatar: FC<IUserAvatar> = ({
         )}
         <div
           id="userDropdown"
-          className={`z-100 ml-20 absolute mt-2 rounded-md shadow bg-primary ${
+          className={`z-100 ml-20 absolute mt-2 max-sm:right-2 md:max-lg:ml-12 rounded-md shadow bg-primary ${
             isUserDropdownOpen ? 'block' : 'hidden'
           }`}
         >
