@@ -10,7 +10,7 @@ export default {
       price: 'Gratuíto',
       priceDetail: '',
       perks: [
-        'Até 3 artes de tatuagem',
+        'Até 12 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Limite de 100 caracteres ao descrever tatuagem',
@@ -30,7 +30,7 @@ export default {
       price: 'R$ 19,90',
       priceDetail: '(pagamento único)',
       perks: [
-        'Até 10 artes de tatuagem',
+        'Até 40 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Artes privadas',
@@ -51,7 +51,7 @@ export default {
       price: 'R$ 89,90',
       priceDetail: '(pagamento único)',
       perks: [
-        'Até 50 artes de tatuagem',
+        'Até 200 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Artes privadas',
@@ -74,7 +74,7 @@ export default {
       price: 'Gratuíto',
       priceDetail: '',
       perks: [
-        'Até 3 artes de tatuagem',
+        'Até 12 artes de tatuagem',
         'Designer pessoal IA de tattoo',
         'Acesso a coleção pessoal',
         'Limite de 100 caracteres ao descrever tatuagem',
