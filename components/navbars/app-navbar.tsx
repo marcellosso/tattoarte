@@ -16,14 +16,14 @@ interface IAppNavbar {
 const AppNavbar: FC<IAppNavbar> = ({ user }) => {
   return (
     <nav className="bg-navbar fixed w-full z-20 top-0 left-0 shadow-lg max-h-12 p-2 py-1">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
+      <div className="max-w-screen-xl flex md:flex-wrap items-center justify-between mx-auto">
         <Logo />
-        <ul className="flex md:p-0 font-medium border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+        <ul className="flex md:p-0 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0">
           <NavbarLink
             label="Colecao"
             href="/colecao"
             icon={
-              <div className="h-6 w-6 mr-2">
+              <div className="h-6 w-6 mr-2 hidden md:block">
                 <svg
                   fill="none"
                   stroke="currentColor"
@@ -45,7 +45,7 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
             label="Criar"
             href="/criar"
             icon={
-              <div className="h-6 w-6 mr-2">
+              <div className="h-6 w-6 mr-2 hidden md:block">
                 <svg
                   fill="none"
                   stroke="currentColor"
@@ -69,12 +69,11 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
             }
           />
         </ul>
-        {/* </div> */}
-        <div className="flex md:order-2 items-center ">
+        <div className="flex items-center">
           {!user.subscribed && (
             <Link
               href="/precos?tab=package"
-              className={`${oswald.className} bg-gradient-to-r font-bold text-letter text-sm p-2 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+              className={`${oswald.className} bg-gradient-to-r font-bold text-letter text-sm p-2 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500 hidden md:block`}
             >
               Compre o passe de acesso
             </Link>

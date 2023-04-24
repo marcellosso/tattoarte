@@ -16,7 +16,7 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
       onClick={() => setOpenMarketingModal(false)}
     >
       <div
-        className="bg-secondary w-1/3 h-2/5 rounded-md p-4 flex flex-col items-center justify-center relative"
+        className="bg-secondary w-11/12 h-96 md:w-1/2 md:h-2/5 lg:w-1/3 rounded-md p-4 flex flex-col items-center justify-center relative"
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -41,14 +41,14 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
         </div>
         <Logo />
 
-        <h1 className="text-letter font-bold text-2xl mt-3">
+        <h1 className="text-letter font-bold text-lg md:text-2xl mt-2 md:mt-3">
           Crie tatuagens ilimtadas
         </h1>
-        <h2 className="text-letter font-thin text-sm mb-3">
+        <h2 className="text-letter font-thin text-xs md:text-sm mb-3">
           Obtenha acesso a criações ilimitadas com um único pagamento.
         </h2>
 
-        <div className="bg-yellow-50 w-4/5 h-16 rounded-lg border-yellow-400 border-2 my-4 p-2">
+        <div className="bg-yellow-50 w-full md:w-4/5 h-16 rounded-lg border-yellow-400 border-2 my-4 p-2">
           <div className="flex h-full items-center">
             <div className="w-6 h-6">
               <svg
@@ -67,11 +67,11 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
                 />
               </svg>
             </div>
-            <div className="ml-4">
-              <h3 className="text-yellow-600 font-bold">
+            <div className="ml-2 md:ml-4">
+              <h3 className="text-yellow-600 font-bold text-sm md:text-md">
                 Seu acesso total expirou!
               </h3>
-              <span className="text-yellow-600 text-xs">
+              <span className="text-yellow-600 text-2xs md:text-xs line-clamp-2">
                 Compra um novo passe para ter acesso ilimitado novamente.
               </span>
             </div>
@@ -80,17 +80,17 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
 
         <Link
           href="/precos?tab=package"
-          className={`${oswald.className} bg-gradient-to-r w-1/2 font-bold text-center text-lg text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+          className={`${oswald.className} bg-gradient-to-r w-3/4 md:w-1/2 font-bold text-center text-md md:text-lg text-letter p-2 md:p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
         >
           Compre o passe de acesso
         </Link>
         <Link href="/precos">
-          <span className="text-gray-400 text-xs underline underline-offset-4 hover:text-gray-50 mt-2">
+          <span className="text-gray-400 text-2xs md:text-xs underline underline-offset-4 hover:text-gray-50 mt-2">
             Ou compre creditos avulsos para utilizar!
           </span>
         </Link>
 
-        <p className="text-letter text-sm font-semibold mt-4">
+        <p className="text-letter text-xs md:text-sm font-semibold mt-4">
           <span className="text-detail font-bold">Pagamento único</span>, você
           não será cobrado novamente.
         </p>
