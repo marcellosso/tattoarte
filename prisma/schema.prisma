@@ -20,9 +20,9 @@ model Generation {
   is_hd       Boolean? @default(false)
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
-  author      User     @relation(fields: [authorId], references: [id])
   authorName  String   @map(name: "author_name")
-  authorId    String   @map(name: "author_id")
+  author      User?    @relation(fields: [authorId], references: [id])
+  authorId    String?  @map(name: "author_id")
   is_favorite Boolean? @default(false)
   is_private  Boolean? @default(false)
 

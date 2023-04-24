@@ -67,6 +67,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       prompt += `, art by ${params.artistInspiration}`;
 
     prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
+
     const output = (await replicate.run(
       'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
       {
@@ -91,14 +92,10 @@ module.exports = withApiAuthRequired(async (req, res) => {
           responseType: 'arraybuffer',
         });
 
-        const uploadKey = user.freeTrial
-          ? `tmp/${imageName}.png`
-          : `generations/${user.id}/${imageName}.png`;
-
         const s3UploadResponse = await s3
           .upload({
             Bucket: process.env.AWS_BUCKET_NAME!,
-            Key: uploadKey,
+            Key: `generations/${user.id}/${imageName}.png`,
             Body: imageResponse.data,
             ACL: 'public-read',
           })
@@ -108,15 +105,15 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
         images.push(imageUrl);
 
-        if (!user.freeTrial) {
-          const generationObj = {
-            prompt: params.prompt,
-            style: params.tattooStyle,
-            imageName: imageName,
-            imageUrl,
-            is_private: params.isPrivate || false,
-          };
+        const generationObj = {
+          prompt: params.prompt,
+          style: params.tattooStyle,
+          imageName: imageName,
+          imageUrl,
+          is_private: params.isPrivate || false,
+        };
 
+        if (!user.freeTrial) {
           await prisma.generation.create({
             data: {
               ...generationObj,
@@ -126,6 +123,13 @@ module.exports = withApiAuthRequired(async (req, res) => {
                   id: user.id,
                 },
               },
+            },
+          });
+        } else {
+          await prisma.generation.create({
+            data: {
+              ...generationObj,
+              authorName: user.name as string,
             },
           });
         }
