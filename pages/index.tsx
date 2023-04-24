@@ -17,7 +17,7 @@ const Home = () => {
       <MainNavbar />
       <section className="flex min-h-screen h-screen flex-col items-center pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
         <section>
-          <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 mt-6">
+          <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 mt-6 mb-2">
             <div className="mx-auto max-w-screen-md text-center">
               <h1 className="mb-4 text-4xl tracking-tight font-bold text-letter">
                 CRIE TATUAGENS{' '}
@@ -113,7 +113,7 @@ const Home = () => {
                 muted
                 loop
                 controls
-                className="max-w-full max-h-full w-full border border-detail shadow-lg rounded-md object-fill"
+                className="max-w-full max-h-full w-full h-full border border-detail shadow-lg rounded-md object-fill"
               >
                 <source src="/videos/demo.mp4" />
               </video>
