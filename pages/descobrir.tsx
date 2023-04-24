@@ -36,7 +36,7 @@ const Discover: FC<IDiscover> = ({ generations }) => {
               <Link
                 key={generation.id}
                 href={`/tattoo/${generation.id}`}
-                className="h-[174px] w-[174px] xs:h-[146px] xs:w-[146px] sm:h-[256px] sm:w-[256px] md:h-[224px] md:w-[224px] rounded-md hover:scale-105 relative group"
+                className="h-full w-full min-h-[174px] min-w-[174px] xs:min-h-[146px] xs:min-w-[146px] sm:min-h-[256px] sm:min-w-[256px] md:min-h-[224px] md:min-w-[224px] rounded-md md:hover:scale-105 relative group"
               >
                 <Image
                   src={generation.imageUrl}

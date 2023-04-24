@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import Link from 'next/link';
 import AppNavbar from '@/components/navbars/app-navbar';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -89,150 +89,155 @@ const Collection: FC<ICollection> = ({
     }
   }, [debouncedLocalGenerations, isOwner]);
 
-  return <>
-    <AppNavbar user={user} />
-    <main className="flex min-h-screen h-screen flex-col items-center p-12 pt-16 bg-primary text-letter overflow-hidden">
-      <h1 className="text-3xl font-bold">
-        Coleção de <span className="text-detail">{ownerName}</span>
-      </h1>
+  return (
+    <>
+      <AppNavbar user={user} />
+      <main className="flex min-h-screen h-screen flex-col items-center p-8 md:p-12 pt-16 bg-primary text-letter overflow-hidden">
+        <h1 className="text-sm xs:text-lg sm:text-xl md:text-3xl font-bold">
+          Coleção de <span className="text-detail">{ownerName}</span>
+        </h1>
 
-      <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-6 relative">
-        <div
-          className={`absolute -top-8 left-0 p-3 font-bold rounded-ss-lg ${
-            tabs == 'all'
-              ? 'bg-gray-900 text-detail'
-              : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
-          }`}
-          onClick={() => isOwner && setTabs('all')}
-        >
-          <span>Todas</span>
-        </div>
-
-        {isOwner && (
+        <div className="bg-secondary h-full w-full mt-12 md:mt-8 lg:mt-4 rounded-md shadow-2xl p-6 relative">
           <div
-            className={`absolute -top-8 left-16 ml-2 p-3 font-bold rounded-se-lg ${
-              tabs == 'favorites'
+            className={`absolute -top-8 left-0 p-3 font-bold rounded-ss-lg ${
+              tabs == 'all'
                 ? 'bg-gray-900 text-detail'
                 : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
             }`}
-            onClick={() => isOwner && setTabs('favorites')}
+            onClick={() => isOwner && setTabs('all')}
           >
-            <span>Favoritas</span>
+            <span className="text-sm md:text-md">Todas</span>
           </div>
-        )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5 mt-2 overflow-y-scroll scrollbar-hide">
-          {generationsToShow.map((generation) => (
-            <Link
-              key={generation.id}
-              href={`/tattoo/${generation.id}`}
-              className="h-[256px] w-[256px] rounded-md hover:scale-105 relative group"
+          {isOwner && (
+            <div
+              className={`absolute -top-8 left-12 ml-2 p-3 font-bold rounded-se-lg ${
+                tabs == 'favorites'
+                  ? 'bg-gray-900 text-detail'
+                  : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
+              }`}
+              onClick={() => isOwner && setTabs('favorites')}
             >
-              <Image
-                src={generation.imageUrl}
-                alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
-                priority
-                className="rounded-md"
-                fill
-                sizes="100vw"
-                style={{
-                  objectFit: "cover"
-                }} />
-              {generation.is_private && (
-                <div className="h-6 w-6 absolute left-0 top-0 z-10 opacity-100 group-hover:opacity-0 group-hover:top-2 transition-all">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    className="text-primary"
-                    strokeWidth={1.5}
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      className="fill-detail"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
+              <span className="text-sm md:text-md">Favoritas</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 pb-6 md:pb-2 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5 overflow-y-scroll scrollbar-hide place-items-center">
+            {generationsToShow.map((generation) => (
+              <Link
+                key={generation.id}
+                href={`/tattoo/${generation.id}`}
+                className="h-full w-full min-h-[126px] min-w-[126px] sm:min-h-[226px] sm:min-w-[226px] md:min-h-[204px] md:min-w-[204px] lg:min-h-[256px] lg:min-w-[256px] rounded-md md:hover:scale-105 relative group"
+              >
+                <Image
+                  src={generation.imageUrl}
+                  alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
+                  priority
+                  className="rounded-md"
+                  fill
+                  sizes="100vw"
+                  style={{
+                    objectFit: 'cover',
+                  }}
+                />
+                {generation.is_private && (
+                  <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-5 sm:right-6 lg:left-0 top-0 z-10 opacity-100 lg:group-hover:opacity-0 lg:group-hover:top-2 transition-all">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      className="text-primary"
+                      strokeWidth={1.5}
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        className="fill-detail"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+                      />
+                    </svg>
+                  </div>
+                )}
+                <div className="bg-primary opacity-100 lg:opacity-0 h-6 sm:h-10 w-26 p-2 flex items-center justify-center sm:rounded-xl absolute top-0 left-0 sm:top-2 sm:left-2 lg:group-hover:opacity-100 transition-all overflow-ellipsis">
+                  <span className="text-detail text-2xs sm:text-md overflow-ellipsis overflow-hidden">
+                    {generation.style}
+                  </span>
                 </div>
-              )}
-              <div className="bg-primary opacity-0 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-2 left-2 group-hover:opacity-100 transition-all overflow-ellipsis">
-                <span className="text-detail">{generation.style}</span>
-              </div>
-              <div className="bg-primary opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 group-hover:opacity-100 transition-all">
-                <span className="text-xs overflow-ellipsis overflow-hidden">
-                  {generation.prompt}
-                </span>
-              </div>
-              {isOwner && (
-                <>
-                  {generation.is_favorite ? (
-                    <div className="h-6 w-6 absolute right-0 top-0 z-10 transition-all">
-                      <svg
-                        fill="none"
-                        stroke="currentColor"
-                        className="text-primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          updateLocalGenerationsState(
-                            false,
-                            generation.id,
-                            'is_favorite'
-                          );
-                        }}
-                        strokeWidth={1.5}
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="fill-red-600 hover:fill-red-900"
-                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        />
-                      </svg>
-                    </div>
-                  ) : (
-                    <div className="h-6 w-6 absolute right-0 top-0 opacity-0 group-hover:opacity-100 transition-all z-10 group-hover:top-2">
-                      <svg
-                        fill="none"
-                        stroke="currentColor"
-                        className="text-primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          updateLocalGenerationsState(
-                            true,
-                            generation.id,
-                            'is_favorite'
-                          );
-                        }}
-                        strokeWidth={1.5}
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="fill-detail hover:fill-yellow-500"
-                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        />
-                      </svg>
-                    </div>
-                  )}
-                </>
-              )}
-            </Link>
-          ))}
+                <div className="bg-primary opacity-100 lg:opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 lg:group-hover:opacity-100 transition-all">
+                  <span className="text-2xs sm:text-xs overflow-ellipsis overflow-hidden">
+                    {generation.prompt}
+                  </span>
+                </div>
+                {isOwner && (
+                  <>
+                    {generation.is_favorite ? (
+                      <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 z-10 transition-all lg:group-hover:top-2">
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            updateLocalGenerationsState(
+                              false,
+                              generation.id,
+                              'is_favorite'
+                            );
+                          }}
+                          strokeWidth={1.5}
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="fill-red-600 hover:fill-red-900"
+                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                          />
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all z-10 lg:group-hover:top-2">
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            updateLocalGenerationsState(
+                              true,
+                              generation.id,
+                              'is_favorite'
+                            );
+                          }}
+                          strokeWidth={1.5}
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="fill-detail hover:fill-yellow-500"
+                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </>
+                )}
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
-    </main>
-  </>;
+      </main>
+    </>
+  );
 };
 
 export const getServerSideProps = withPageAuthRequired({

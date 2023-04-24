@@ -39,9 +39,9 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
                   key={style}
                   href={`/descobrir?estilo=${style}`}
                   // className="h-[256px] w-[256px] rounded-md hover:scale-105 relative bg-secondary p-2"
-                  className="h-[174px] w-[174px] xs:h-[146px] xs:w-[146px] sm:h-[256px] sm:w-[256px] md:h-[224px] md:w-[224px] rounded-md hover:scale-105 relative bg-secondary p-2"
+                  className="h-full w-full min-h-[174px] min-w-[174px] xs:min-h-[146px] xs:min-w-[146px] sm:min-h-[256px] sm:min-w-[256px] md:min-h-[224px] md:min-w-[224px] rounded-md hover:scale-105 relative bg-secondary p-2"
                 >
-                  <div className="h-[144px] xs:h-[116px] sm:h-[226px] md:h-[194px] w-full relative">
+                  <div className="h-5/6 min-h-[144px] xs:min-h-[116px] sm:min-h-[226px] md:min-h-[194px] w-full relative">
                     <Image
                       src={`/images/estilos/${style.toLowerCase()}.jpg`}
                       alt={`Tatuagem com estilo: ${style}`}

@@ -69,7 +69,9 @@ const UserAvatar: FC<IUserAvatar> = ({
       <div className="flex items-center ml-3">
         {isSubscribed ? (
           <div className={CREDITS_CONTAINER_CSS}>
-            <span className="font-bold text-detail">Acesso Total</span>
+            <span className="font-bold text-detail text-[0.55rem] sm:text-sm md:text-md">
+              Acesso Total
+            </span>
           </div>
         ) : (
           <Link
