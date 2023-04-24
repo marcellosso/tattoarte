@@ -7,6 +7,10 @@
   --background-color: #222831;
 }
 
+body {
+  background-color: rgb(17 24 39);
+}
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

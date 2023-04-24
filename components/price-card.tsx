@@ -12,7 +12,7 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
       <h3 className="text-2xl font-bold text-detail">{product.name}</h3>
       {product.priceBeforeDiscount && (
         <span className="text-md font-extrabold text-letter">
-          Promoção por tempo limitado
+          Oferta limitada
         </span>
       )}
       <div className="flex justify-center items-center my-4">
