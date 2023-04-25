@@ -4,7 +4,7 @@ import NavbarLink from './navbars/navbar-link';
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary w-full h-12 relative bottom-0 left-0">
+    <footer className="bg-secondary w-full h-12 relative bottom-0 left-0 hidden lg:block">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto h-full">
         <Image
           src="/images/tattooarte-logo.png"
