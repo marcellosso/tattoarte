@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import LoadingState from './loading-state';
 
 const CREDITS_CONTAINER_CSS =
-  'bg-primary text-letter text-xs font-normal mr-2 p-2  h-full rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700';
+  'bg-primary text-letter text-xs font-normal mr-1 sx:mr-2 p-1 xs:p-2 h-full max-xs:w-full rounded-xl xs:rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700';
 
 interface IUserAvatar {
   credits?: number;
@@ -69,7 +69,7 @@ const UserAvatar: FC<IUserAvatar> = ({
       <div className="flex items-center ml-3">
         {isSubscribed ? (
           <div className={CREDITS_CONTAINER_CSS}>
-            <span className="font-bold text-detail text-[0.55rem] sm:text-sm md:text-md">
+            <span className="font-bold text-detail text-[0.45rem]  xs:text-[0.55rem] sm:text-sm md:text-md">
               Acesso Total
             </span>
           </div>
@@ -105,9 +105,11 @@ const UserAvatar: FC<IUserAvatar> = ({
         <div
           id="userAvatar"
           onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-          className="relative inline-flex items-center justify-center w-10 h-10 shadow-inner overflow-hidden rounded-full bg-primary hover:bg-gray-700 hover:cursor-pointer"
+          className="relative inline-flex items-center justify-center w-10 h-6 xs:w-10 xs:h-10 shadow-inner overflow-hidden rounded-full bg-primary hover:bg-gray-700 hover:cursor-pointer"
         >
-          <span className="text-letter font-bold">{userInitials}</span>
+          <span className="text-letter font-bold text-xs xs:text-lg">
+            {userInitials}
+          </span>
         </div>
       </div>
 
