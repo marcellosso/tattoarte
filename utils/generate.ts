@@ -10,7 +10,7 @@ const generateImage = async (params: ParamsType, userInfo: User) => {
     });
     return data;
   } catch (err: any) {
-    throw err.response?.data || err.message;
+    throw err.response?.data || err.message || err;
   }
 };
 

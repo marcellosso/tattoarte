@@ -12,23 +12,17 @@ import { toast } from 'react-toastify';
 interface ICollection {
   user: User;
   generations: Generation[];
-  ownerName: string;
   isOwner: boolean;
 }
 
-const Collection: FC<ICollection> = ({
-  user,
-  generations,
-  ownerName,
-  isOwner,
-}) => {
+const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
   const [localGenerations, setLocalGenerations] =
     useState<Generation[]>(generations);
 
   const [tabs, setTabs] = useState('all');
   const debouncedLocalGenerations = useDebounce(
     localGenerations,
-    1500
+    1
   ) as Generation[];
 
   const updateLocalGenerationsState = (
@@ -57,9 +51,12 @@ const Collection: FC<ICollection> = ({
 
   const updateGenerations = async (updateGenerations: Generation[]) => {
     try {
-      await axios.put('/api/generation/update', { updateGenerations });
+      await axios.put('/api/generation/update', {
+        updateGenerations,
+        userId: user.id,
+      });
     } catch (err: any) {
-      toast.error(err.message as string, {
+      toast.error(err.response?.data || err.message || err, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -94,7 +91,8 @@ const Collection: FC<ICollection> = ({
       <AppNavbar user={user} />
       <main className="flex min-h-screen h-screen flex-col items-center p-8 md:p-12 pt-16 bg-primary text-letter overflow-hidden">
         <h1 className="text-sm xs:text-lg sm:text-xl md:text-3xl font-bold">
-          Coleção de <span className="text-detail">{ownerName}</span>
+          Coleção de{' '}
+          <span className="text-detail">{generations[0].authorName}</span>
         </h1>
 
         <div className="bg-secondary h-full w-full mt-12 md:mt-8 lg:mt-4 rounded-md shadow-2xl p-6 relative">
@@ -257,20 +255,6 @@ export const getServerSideProps = withPageAuthRequired({
     let generationsFromUser = [] as Generation[];
 
     const isSameUser = queryId == user?.id;
-    let ownerName = user?.name;
-
-    if (!isSameUser) {
-      const owner = (await prisma.user.findUnique({
-        where: {
-          id: queryId as string,
-        },
-        select: {
-          name: true,
-        },
-      })) as User;
-
-      ownerName = owner?.name;
-    }
 
     generationsFromUser =
       (await prisma.generation.findMany({
@@ -289,7 +273,6 @@ export const getServerSideProps = withPageAuthRequired({
       props: {
         user: JSON.parse(JSON.stringify(user)),
         generations: JSON.parse(JSON.stringify(generationsFromUser)),
-        ownerName,
         isOwner: isSameUser,
       },
     };

@@ -49,8 +49,8 @@ const UserAvatar: FC<IUserAvatar> = ({
       });
       await router.push(data.url);
       setLoading(false);
-    } catch (err) {
-      toast.error(err as string, {
+    } catch (err: any) {
+      toast.error(err.response?.data || err.message || err, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
