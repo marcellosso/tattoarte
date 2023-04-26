@@ -72,7 +72,7 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const generationCount = {} as Record<string, number>;
 
   await Promise.all(
@@ -89,6 +89,7 @@ export const getServerSideProps = async () => {
     props: {
       generationCount: generationCount,
     },
+    revalidate: 60,
   };
 };
 

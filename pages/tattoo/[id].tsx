@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';
-import { Generation, User } from '@prisma/client';
+import type { Generation } from '@prisma/client';
 import { FC, useState } from 'react';
-import { GetServerSidePropsContext } from 'next';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 import MainNavbar from '@/components/navbars/main-navbar';
+import { useRouter } from 'next/router';
 
 interface ITattoo {
   generation: Generation;
@@ -14,6 +14,31 @@ interface ITattoo {
 const Tattoo: FC<ITattoo> = ({ generation }) => {
   const [openFullscreenImageModal, setOpenFullscreenImageModal] =
     useState(false);
+
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return (
+      <div className="flex flex-col items-center h-screen w-screen justify-center">
+        <Image
+          src={`/images/tattooarte-logo.png`}
+          alt="Logo TattooArte. Robo representando IA e uma maquina de tatuagem."
+          width={100}
+          height={100}
+          priority
+          quality={100}
+          className=" ml-1 animate-bounce"
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
+        <span className="text-letter text-sm font-extrabold">
+          Carregando...
+        </span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -28,7 +53,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               <div className="w-[1024px] h-[768px] my-2 md:my-0 rounded-md flex items-center justify-center relative">
                 <Image
                   src={generation.imageUrl}
-                  alt="Arte de tatuagem criada pela inteligencia artificial - TattooArte!"
+                  alt={`Arte de tatuagem criada pela inteligencia artificial com prompt: ${generation.prompt} - TattooArte!`}
                   className="rounded-md"
                   fill
                   sizes="100vw"
@@ -70,7 +95,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </p>
             <Link
               href="/criar"
-              className="mb-3 md:mb-6 flex items-center justify-center bg-detail hover:scale-105 text-xs xs:text-sm sm:text-md md:text-lg sm:w-1/3 md:w-1/2 lg:w-1/5 font-bold text-primary p-3 rounded-md"
+              className="mb-3 md:mb-6 flex items-center justify-center bg-detail hover:scale-105 text-xs xs:text-sm sm:text-md md:text-lg sm:w-1/3 md:w-1/2 lg:w-1/3 xl:w-1/4 font-bold text-primary p-3 rounded-md"
             >
               Crie sua própria tatuagem
             </Link>
@@ -95,11 +120,21 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   );
 };
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { query } = context;
-  const generationId = query?.id;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const generations = await prisma.generation.findMany();
+
+  const paths = generations.map((gen) => ({
+    params: { id: gen.id },
+  }));
+
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const generationId = params?.id;
 
   const generation =
     (await prisma.generation.findFirst({
@@ -110,7 +145,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      generation: JSON.parse(JSON.stringify(generation)),
+      generation: JSON.parse(JSON.stringify(generation || {})),
     },
   };
 };

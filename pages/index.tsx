@@ -1,35 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import MainNavbar from '@/components/navbars/main-navbar';
 import Footer from '@/components/footer';
 
 const Home = () => {
-  const { user, isLoading } = useUser();
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center h-screen w-screen justify-center">
-        <Image
-          src={`/images/tattooarte-logo.png`}
-          alt="Logo TattooArte. Robo representando IA e uma maquina de tatuagem."
-          width={100}
-          height={100}
-          priority
-          quality={100}
-          className=" ml-1 animate-bounce"
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-          }}
-        />
-        <span className="text-letter text-sm font-extrabold">
-          Carregando...
-        </span>
-      </div>
-    );
-  }
-
   return (
     <main>
       <MainNavbar />
@@ -104,45 +78,19 @@ const Home = () => {
                     Compre o passe de acesso
                   </Link>
                 </div>
-                {user ? (
-                  <Link
-                    href="/criar"
-                    className="font-bold text-primary text-xs sm:text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
-                  >
-                    3 créditos gratuítos - Crie sua arte agora
-                  </Link>
-                ) : (
-                  <Link
-                    href="/api/auth/login"
-                    className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55"
-                  >
-                    <svg
-                      className="w-4 h-4 mr-2 -ml-1"
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fab"
-                      data-icon="google"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 488 512"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-                      ></path>
-                    </svg>
-                    Login com Google
-                  </Link>
-                )}
+                <Link
+                  href="/criar"
+                  className="font-bold text-primary text-xs sm:text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
+                >
+                  3 créditos gratuítos - Crie sua arte agora
+                </Link>
               </div>
-              {!user && (
-                <p className="mt-6">
-                  <span className="font-bold text-detail">
-                    3 créditos gratuítos
-                  </span>{' '}
-                  para começar a criar suas artes!
-                </p>
-              )}
+              <p className="mt-6">
+                <span className="font-bold text-detail">
+                  3 créditos gratuítos
+                </span>{' '}
+                para começar a criar suas artes!
+              </p>
             </div>
           </div>
         </section>

@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
-import { Generation } from '@prisma/client';
+import type { Generation } from '@prisma/client';
 import { FC } from 'react';
 import MainNavbar from '@/components/navbars/main-navbar';
-import { GetServerSidePropsContext } from 'next';
+import type { GetServerSideProps } from 'next';
 
 interface IDiscover {
   generations: Generation[];
@@ -67,9 +67,12 @@ const Discover: FC<IDiscover> = ({ generations }) => {
   );
 };
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=120, stale-while-revalidate=180'
+  );
+
   const { query } = context;
   const style = query.estilo || undefined;
 

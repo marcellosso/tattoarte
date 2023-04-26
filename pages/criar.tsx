@@ -14,7 +14,9 @@ import { toast } from 'react-toastify';
 import handleUserSubscription from '@/utils/user-subscription';
 import Link from 'next/link';
 import MarketingModal from '@/components/marketing-modal';
-import { ParamsType } from '@/types';
+import type { ParamsType } from '@/types';
+
+import { useForm } from 'react-hook-form';
 
 const oswald = Oswald({ subsets: ['latin'] });
 interface IAPP {
@@ -22,24 +24,19 @@ interface IAPP {
 }
 
 const App: FC<IAPP> = ({ user }) => {
+  const { register, handleSubmit, watch } = useForm<ParamsType>();
   const [userData, setUserData] = useState(user);
 
   const [openMarketingModal, setOpenMarketingModal] = useState(
     !user?.subscribed && user?.credits! <= 0
   );
 
-  const [params, setParams] = useState<ParamsType>({
-    prompt: '',
-    tattooStyle: 'Minimalista',
-    colorsStyle: 'Colorful',
-  } as ParamsType);
-
   const [images, setImages] = useState<string[]>([]);
   const [loadingImages, setLoadingImages] = useState(false);
 
   const [toggleForm, setToggleForm] = useState(true);
 
-  const handleCreate = async () => {
+  const handleCreate = async (params: ParamsType) => {
     setLoadingImages(true);
     setToggleForm(false);
 
@@ -59,8 +56,10 @@ const App: FC<IAPP> = ({ user }) => {
         theme: 'dark',
       });
     }
+
     setLoadingImages(false);
   };
+  const promptVal = watch('prompt') || '';
 
   const maxPromptLenght = useMemo(() => {
     if (user?.freeTrial) return 100;
@@ -99,36 +98,36 @@ const App: FC<IAPP> = ({ user }) => {
               <div className="h-0.5 md:h-1 w-full bg-letter" />
             </div>
 
-            {toggleForm && (
-              <div className="p-2 lg:p-4 max-md:flex max-md:flex-col max-md:gap-4">
-                {params.prompt.length >= maxPromptLenght &&
-                  !user.subscribed && (
-                    <div
-                      className="flex p-4 mb-4 text-sm border rounded-lg bg-primary text-blue-400 border-blue-800"
-                      role="alert"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="flex-shrink-0 inline w-4 h-4 mr-3"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                      <Link
-                        href="/precos"
-                        className="text-xs hover:text-blue-600"
-                      >
-                        Você atingiu o limite de caracteres!
-                      </Link>
-                    </div>
-                  )}
+            <div
+              className={`p-2 lg:p-4 ${
+                toggleForm ? 'max-md:flex' : 'max-md:hidden'
+              } max-md:flex-col max-md:gap-4`}
+            >
+              {promptVal.length >= maxPromptLenght && !user.subscribed && (
+                <div
+                  className="flex p-4 mb-4 text-sm border rounded-lg bg-primary text-blue-400 border-blue-800"
+                  role="alert"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="flex-shrink-0 inline w-4 h-4 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <Link href="/precos" className="text-xs hover:text-blue-600">
+                    Você atingiu o limite de caracteres!
+                  </Link>
+                </div>
+              )}
 
+              <form onSubmit={handleSubmit(handleCreate)}>
                 <div className="mb-3 relative">
                   <label
                     htmlFor="prompt"
@@ -136,17 +135,14 @@ const App: FC<IAPP> = ({ user }) => {
                   >
                     Descreva sua tattoo
                   </label>
-                  {params.prompt.length > maxPromptLenght - 15 && (
+                  {promptVal.length > maxPromptLenght - 15 && (
                     <div className="text-xs text-gray-400 text-right absolute right-2 bottom-2">
-                      {params.prompt.length} / {maxPromptLenght}
+                      {promptVal.length} / {maxPromptLenght}
                     </div>
                   )}
                   <textarea
                     id="prompt"
-                    value={params.prompt}
-                    onChange={(e) =>
-                      setParams({ ...params, prompt: e.target.value })
-                    }
+                    {...register('prompt', { maxLength: maxPromptLenght })}
                     rows={4}
                     maxLength={maxPromptLenght}
                     className="placeholder-shown:text-2xs md:placeholder-shown:text-md max-w-full max-h-48 lg:max-h-64 h-20 md:h-32 lg:h-48 block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
@@ -162,10 +158,7 @@ const App: FC<IAPP> = ({ user }) => {
                     Cores
                   </label>
                   <select
-                    value={params.colorsStyle}
-                    onChange={(e) =>
-                      setParams({ ...params, colorsStyle: e.target.value })
-                    }
+                    {...register('colorsStyle')}
                     id="countries"
                     className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                   >
@@ -182,10 +175,7 @@ const App: FC<IAPP> = ({ user }) => {
                     Estilo
                   </label>
                   <select
-                    value={params.tattooStyle}
-                    onChange={(e) =>
-                      setParams({ ...params, tattooStyle: e.target.value })
-                    }
+                    {...register('tattooStyle')}
                     id="estilo"
                     className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                   >
@@ -208,18 +198,11 @@ const App: FC<IAPP> = ({ user }) => {
                     </span>
                   </label>
                   <input
-                    value={params.artistInspiration}
-                    onChange={(e) =>
-                      setParams({
-                        ...params,
-                        artistInspiration: e.target.value,
-                      })
-                    }
+                    {...register('artistInspiration')}
                     type="text"
                     id="first_name"
                     className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 placeholder:text-2xs bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
                     placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"
-                    required
                   />
                 </div>
 
@@ -227,13 +210,7 @@ const App: FC<IAPP> = ({ user }) => {
                   <label className="relative inline-flex items-center">
                     <input
                       type="checkbox"
-                      checked={params.isPrivate || false}
-                      onChange={(_) =>
-                        setParams({
-                          ...params,
-                          isPrivate: !params.isPrivate,
-                        })
-                      }
+                      {...register('isPrivate')}
                       className="sr-only peer"
                       disabled={user?.freeTrial!}
                     />
@@ -261,8 +238,7 @@ const App: FC<IAPP> = ({ user }) => {
 
                 {userData.credits! > 0 || userData.subscribed ? (
                   <button
-                    type="button"
-                    onClick={handleCreate}
+                    type="submit"
                     disabled={loadingImages}
                     className={`flex items-center justify-center text-sm md:text-xl bg-gradient-to-r w-full font-bold text-primary p-2 md:p-3 rounded-md ${
                       loadingImages
@@ -296,8 +272,8 @@ const App: FC<IAPP> = ({ user }) => {
                     Compre o passe de acesso
                   </Link>
                 )}
-              </div>
-            )}
+              </form>
+            </div>
             <button
               type="button"
               onClick={() => setToggleForm(!toggleForm)}

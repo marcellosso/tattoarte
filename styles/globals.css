@@ -9,6 +9,7 @@
 
 body {
   background-color: rgb(17 24 39);
+  overscroll-behavior: none;
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */

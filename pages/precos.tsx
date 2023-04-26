@@ -13,7 +13,6 @@ interface IPrice {
 
 const Price: FC<IPrice> = ({ defaultPriceTab }) => {
   const [priceTab, setPriceTab] = useState(defaultPriceTab);
-  console.log(priceTab);
 
   const displayProducts = useMemo(() => products[priceTab], [priceTab]);
 
