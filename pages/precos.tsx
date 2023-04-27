@@ -23,9 +23,9 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
         <div className="overflow-scroll scrollbar-hide">
           <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6">
             <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
-              <h2 className="mb-4 text-md sm:text-xl md:text-3xl tracking-tight font-extrabold text-detail text-center">
+              <h1 className="mb-4 text-md sm:text-xl md:text-3xl tracking-tight font-extrabold text-detail text-center">
                 Cria ou ache um design perfeito para suas tatuagens
-              </h2>
+              </h1>
               <p className="mb-10 font-light text-letter text-xs sm:text-md">
                 Nossa IA artista de tatuagens é capaz de gerar designs
                 personalizados ilimitados para você, em apenas segundos, baseado
