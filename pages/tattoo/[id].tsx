@@ -6,6 +6,7 @@ import { FC, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import MainNavbar from '@/components/navbars/main-navbar';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 interface ITattoo {
   generation: Generation;
@@ -22,7 +23,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
       <div className="flex flex-col items-center h-screen w-screen justify-center">
         <Image
           src={`/images/tattooarte-logo.png`}
-          alt="Logo TattooArte. Robo representando IA e uma maquina de tatuagem."
+          alt="Logo TattooArtIA. Robo representando IA e uma maquina de tatuagem."
           width={100}
           height={100}
           priority
@@ -41,9 +42,77 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   }
 
   return (
-    <>
+    <main>
+      <Head>
+        <title>
+          {`${generation.prompt} - Tatuagem gerada por IA - Crie a sua tattoo |
+          TattooArtIA`}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content={`${generation.prompt} - Tatuagem criada por nossa inteligência artificial pelo usuário ${generation.authorName}. 
+          Venha usufruir de nossa IA poderosa e ache uma ideia perfeita e única para sua proxima tatuagem!`}
+        />
+
+        {/* Twitter */}
+        <meta
+          name="twitter:title"
+          content={`${generation.prompt} - Tatuagem gerada por IA -
+          Crie a sua tattoo | TattooArtIA`}
+        />
+        <meta
+          name="twitter:description"
+          content={`${generation.prompt} - Tatuagem criada por nossa inteligência artificial pelo usuário ${generation.authorName}. 
+          Venha usufruir de nossa IA poderosa e ache uma ideia perfeita e única para sua proxima tatuagem!`}
+        />
+        <meta name="twitter:creator" content="@tattooartia" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:url"
+          content={`https://www.tattooartia.com/tattoo/${generation.id}`}
+        />
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content={`${generation.prompt} - Tatuagem gerada por IA -
+          Crie a sua tattoo | TattooArtIA`}
+        />
+        <meta
+          property="og:description"
+          content={`${generation.prompt} - Tatuagem criada por nossa inteligência artificial pelo usuário ${generation.authorName}. 
+          Venha usufruir de nossa IA poderosa e ache uma ideia perfeita e única para sua proxima tatuagem!`}
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={`https://www.tattooartia.com/tattoo/${generation.id}`}
+        />
+
+        {/* Dynamic */}
+        {/* Twitter */}
+        <meta
+          name="twitter:image"
+          content={`https://db0f-186-137-149-202.ngrok-free.app/api/og?generationUrl=${generation.imageUrl}&generationAuthor=${generation.authorName}&generationPrompt=${generation.prompt}`}
+        />
+        <meta
+          name="twitter:image:alt"
+          content={`${generation.prompt} - Tatuagem criada por nossa inteligência artificial pelo usuário ${generation.authorName}!`}
+        />
+
+        {/* Open Graph */}
+        <meta
+          property="og:image"
+          content={`https://db0f-186-137-149-202.ngrok-free.app/api/og?generationUrl=${generation.imageUrl}&generationAuthor=${generation.authorName}&generationPrompt=${generation.prompt}`}
+        />
+        <meta
+          property="og:image:alt"
+          content={`${generation.prompt} - Tatuagem criada por nossa inteligência artificial pelo usuário ${generation.authorName}!`}
+        />
+      </Head>
       <MainNavbar />
-      <main className="flex min-h-screen h-screen flex-col items-center p-6 pt-12 md:p-12 md:pt-24 bg-primary text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center p-6 pt-12 md:p-12 md:pt-24 bg-primary text-letter">
         <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-3 md:p-6 relative pt-2">
           {openFullscreenImageModal && (
             <div
@@ -69,9 +138,9 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               Criado em:{' '}
               {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
             </span>
-            <span className="text-gray-400 text-sm sm:text-md font-bold">
+            <h1 className="text-gray-400 text-sm sm:text-md font-bold">
               TATUAGEM {generation.style.toUpperCase()}
-            </span>
+            </h1>
             <span className=" text-gray-400 text-xs sm:text-sm">
               por{' '}
               {generation.authorId ? (
@@ -115,8 +184,8 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </div>
           </div>
         </div>
-      </main>
-    </>
+      </section>
+    </main>
   );
 };
 

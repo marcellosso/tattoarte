@@ -6,6 +6,7 @@ import { GetServerSidePropsContext } from 'next';
 import { FC, useMemo, useState } from 'react';
 import { PriceTabEnum } from '@/types';
 import Footer from '@/components/footer';
+import Head from 'next/head';
 
 interface IPrice {
   defaultPriceTab: PriceTabEnum;
@@ -18,6 +19,64 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
 
   return (
     <main>
+      <Head>
+        <title>
+          Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
+          pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
+        />
+
+        {/* <!-- Twitter Meta Tags --> */}
+        <meta
+          name="twitter:title"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+        <meta name="twitter:creator" content="@tattooartia" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.tattooartia.com/" />
+        <meta property="twitter:domain" content="tattooartia.com" />
+        <meta
+          name="twitter:description"
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
+          pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
+        />
+        <meta
+          name="twitter:image"
+          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+        />
+        <meta
+          name="twitter:image:alt"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+
+        {/* <!-- Facebook Meta Tags --> */}
+        <meta property="og:url" content="https://www.tattooartia.com/" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+        <meta
+          property="og:description"
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
+          pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
+        />
+        <meta
+          property="og:image"
+          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+        />
+        <meta
+          property="og:image:alt"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+      </Head>
       <MainNavbar />
       <section className="flex min-h-screen h-screen flex-col items-center pt-6 md:pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
         <div className="overflow-scroll scrollbar-hide">

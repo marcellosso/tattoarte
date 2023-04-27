@@ -5,6 +5,7 @@ import type { Generation } from '@prisma/client';
 import { FC } from 'react';
 import MainNavbar from '@/components/navbars/main-navbar';
 import type { GetServerSideProps } from 'next';
+import Head from 'next/head';
 
 interface IDiscover {
   generations: Generation[];
@@ -13,6 +14,72 @@ interface IDiscover {
 const Discover: FC<IDiscover> = ({ generations }) => {
   return (
     <main>
+      <Head>
+        <title>
+          Explore e Descubra tatuagens criadas pela comunidade - Crie tatuagens
+          únicas | TattooArtIA
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta
+          name="description"
+          content="Sua próxima tatuagem está aqui esperando por você! Explore e descubra tatuagens criadas pela comunidade e crie tattoos Únicas para você! 
+          Dezenas de designs de alta qualidade criados pela comunidade, descubra um perfeito para você ou crie você mesmo!"
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:title"
+          content="Explore e Descubra tatuagens criadas pela comunidade - Crie tatuagens
+          únicas | TattooArtIA"
+        />
+        <meta
+          name="twitter:description"
+          content="Sua próxima tatuagem está aqui esperando por você! Explore e descubra tatuagens criadas pela comunidade e crie tattoos Únicas para você! 
+          Dezenas de designs de alta qualidade criados pela comunidade, descubra um perfeito para você ou crie você mesmo!"
+        />
+        <meta name="twitter:creator" content="@tattooartia" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:url"
+          content="https://www.tattooartia.com/descobrir"
+        />
+        <meta property="twitter:domain" content="tattooartia.com" />
+        <meta
+          name="twitter:image"
+          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+        />
+        <meta
+          name="twitter:image:alt"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+
+        {/* Open Graph */}
+        <meta
+          property="og:url"
+          content="https://www.tattooartia.com/descobrir"
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Explore e Descubra tatuagens criadas pela comunidade - Crie tatuagens
+          únicas | TattooArtIA"
+        />
+        <meta
+          property="og:description"
+          content="Sua próxima tatuagem está aqui esperando por você! Explore e descubra tatuagens criadas pela comunidade e crie tattoos Únicas para você! 
+          Dezenas de designs de alta qualidade criados pela comunidade, descubra um perfeito para você ou crie você mesmo!"
+        />
+        <meta
+          property="og:image"
+          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+        />
+        <meta
+          property="og:image:alt"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+      </Head>
       <MainNavbar />
       <section className="flex min-h-screen h-screen px-2 flex-col items-center pt-16 md:pt-24 pb-0 bg-secondary text-letter">
         <h1 className="text-md md:text-3xl font-bold text-center">

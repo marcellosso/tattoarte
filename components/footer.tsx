@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto h-full">
         <Image
           src="/images/tattooarte-logo.png"
-          alt="TattoArte logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
+          alt="TattooArtIA logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
           width={40}
           height={40}
           priority

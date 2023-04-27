@@ -4,6 +4,7 @@ import { prisma } from '@/utils/use-prisma';
 import { FC } from 'react';
 import MainNavbar from '@/components/navbars/main-navbar';
 import tattooStyles from '@/assets/tattoo-styles';
+import Head from 'next/head';
 interface IEstilos {
   generationCount: Record<string, number>;
 }
@@ -11,6 +12,69 @@ interface IEstilos {
 const Estilos: FC<IEstilos> = ({ generationCount }) => {
   return (
     <main>
+      <Head>
+        <title>
+          Explore todos os estilos de tatuagens disponiveis - Crie tatuagens
+          únicas | TattooArtIA
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta
+          name="description"
+          content="Sua próxima tatuagem está aqui esperando por você! 
+          Explore e descubra os diversos estilos de tattoo disponiveis para nossa IA utilizar e criar um design perfeito para sua tatuagem!"
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:title"
+          content="Explore todos os estilos de tatuagens disponiveis - Crie tatuagens
+          únicas | TattooArtIA"
+        />
+        <meta
+          name="twitter:description"
+          content="Sua próxima tatuagem está aqui esperando por você! 
+          Explore e descubra os diversos estilos de tattoo disponiveis para nossa IA utilizar e criar um design perfeito para sua tatuagem!"
+        />
+        <meta name="twitter:creator" content="@tattooartia" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="tattooartia.com" />
+        <meta
+          property="twitter:url"
+          content="https://www.tattooartia.com/estilos"
+        />
+        <meta
+          name="twitter:image"
+          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+        />
+        <meta
+          name="twitter:image:alt"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+
+        {/* Open Graph */}
+        <meta property="og:url" content="https://www.tattooartia.com/estilos" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Explore todos os estilos de tatuagens disponiveis - Crie tatuagens
+          únicas | TattooArtIA"
+        />
+        <meta
+          property="og:description"
+          content="Sua próxima tatuagem está aqui esperando por você! 
+          Explore e descubra os diversos estilos de tattoo disponiveis para nossa IA utilizar e criar um design perfeito para sua tatuagem!"
+        />
+        <meta
+          property="og:image"
+          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+        />
+        <meta
+          property="og:image:alt"
+          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+        />
+      </Head>
       <MainNavbar />
       <section className="flex min-h-screen h-screen flex-col items-center px-2 pt-16 md:pt-24 pb-0 bg-secondary text-letter">
         <h1 className="text-md md:text-3xl font-bold text-center">

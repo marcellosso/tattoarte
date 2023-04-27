@@ -9,7 +9,7 @@ const Logo = () => {
     <Link href="/" className="flex items-center justify-center">
       <Image
         src="/images/tattooarte-logo.png"
-        alt="TattoArte logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
+        alt="TattooArtIA logo - Robo e maquina de tatuagem desenhados a mao. Gere tatuagens usando IA"
         width={40}
         height={40}
         priority
@@ -19,9 +19,9 @@ const Logo = () => {
         }}
       />
       <span
-        className={`${oswald.className} self-center text-2xl font-semibold whitespace-nowrap dark:text-white ml-2 hidden md:block`}
+        className={`${oswald.className} self-center text-2xl font-bold whitespace-nowrap dark:text-white ml-2 hidden md:block`}
       >
-        Tattoo<span className="font-bold text-detail">Arte</span>
+        TattooArt<span className="font-extrabold text-detail">IA</span>
       </span>
     </Link>
   );
