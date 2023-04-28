@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
+import { Analytics } from '@vercel/analytics/react';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { Source_Code_Pro } from 'next/font/google';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
         }
       `}</style>
       <Component {...pageProps} />
+      <Analytics />
       <ToastContainer />
     </UserProvider>
   );
