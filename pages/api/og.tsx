@@ -21,10 +21,6 @@ const sourceCodeProBoldFontP = fetch(
   new URL('../../public/fonts/SourceCodePro-Bold.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
-const sourceCodeProBlackFontP = fetch(
-  new URL('../../public/fonts/SourceCodePro-Black.ttf', import.meta.url)
-).then((res) => res.arrayBuffer());
-
 export default async function handler(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const generationUrl = searchParams.get('generationUrl');
@@ -44,14 +40,9 @@ export default async function handler(request: NextRequest) {
   }
 
   const imageData = await image;
-  const [
-    sourceCodeProRegularFont,
-    sourceCodeProBoldFont,
-    sourceCodeProBlackFont,
-  ] = await Promise.all([
+  const [sourceCodeProRegularFont, sourceCodeProBoldFont] = await Promise.all([
     sourceCodeProRegularFontP,
     sourceCodeProBoldFontP,
-    sourceCodeProBlackFontP,
   ]);
 
   return new ImageResponse(
@@ -110,7 +101,7 @@ export default async function handler(request: NextRequest) {
                 }}
               >
                 TattooArt
-                <span style={{ fontWeight: 900, color: '#FFD369' }}>IA</span>
+                <span style={{ fontWeight: 700, color: '#FFD369' }}>IA</span>
               </span>
             </div>
             {generationAuthor && (
@@ -124,7 +115,7 @@ export default async function handler(request: NextRequest) {
               >
                 Arte criada por
                 <span
-                  style={{ color: '#FFD369', fontWeight: 900, marginLeft: 5 }}
+                  style={{ color: '#FFD369', fontWeight: 700, marginLeft: 5 }}
                 >
                   {generationAuthor}
                 </span>
@@ -174,12 +165,6 @@ export default async function handler(request: NextRequest) {
           data: sourceCodeProBoldFont,
           style: 'normal',
           weight: 700,
-        },
-        {
-          name: 'SourceCodePro',
-          data: sourceCodeProBlackFont,
-          style: 'normal',
-          weight: 900,
         },
       ],
     }
