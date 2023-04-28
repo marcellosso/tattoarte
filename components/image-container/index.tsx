@@ -43,7 +43,10 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
         </div>
       )}
       {images?.map((image) => (
-        <div className="md:w-[420px] 2xl:w-[640px] w-full h-full min-h-[320px] md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative hover:scale-105">
+        <div
+          key={image}
+          className="md:w-[420px] 2xl:w-[640px] w-full h-full min-h-[320px] md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative hover:scale-105"
+        >
           <Image
             src={image}
             alt="Arte de tatuagem criada pela inteligencia artificial - TattooArtIA!"

@@ -48,7 +48,7 @@ const Discover: FC<IDiscover> = ({ generations }) => {
         <meta property="twitter:domain" content="tattooartia.com" />
         <meta
           name="twitter:image"
-          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+          content="https://6ef9-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
         />
         <meta
           name="twitter:image:alt"
@@ -73,7 +73,7 @@ const Discover: FC<IDiscover> = ({ generations }) => {
         />
         <meta
           property="og:image"
-          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+          content="https://6ef9-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
         />
         <meta
           property="og:image:alt"

@@ -37,7 +37,7 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
 
       <ul role="list" className="mb-8 space-y-4 text-left">
         {product.perks.map((perk) => (
-          <li className="flex items-center space-x-3">
+          <li key={perk} className="flex items-center space-x-3">
             <CheckmarkIcon />
             <span>{perk}</span>
           </li>

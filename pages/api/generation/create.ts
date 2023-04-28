@@ -28,7 +28,8 @@ const SUFFIX_DEFAULT_PROMPT = ', clean white background, HD, without borders';
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
     let prompt = '';
-    let { params, user } = req.body as { params: ParamsType; user: User };
+    let { user } = req.body as { user: User };
+    const { params } = req.body as { params: ParamsType };
 
     let newCredits = user.credits || 0;
 
@@ -82,7 +83,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
     //   'https://replicate.delivery/pbxt/Ufj2XWeDiwmlq0bnCWlbDV7fHpQRZpMzKSK76SMDpvWTbpphA/out-0.png',
     // ];
 
-    let images = [] as string[];
+    const images = [] as string[];
 
     await Promise.all(
       output.map(async (image, idx) => {

@@ -1,4 +1,3 @@
-import processPayments from '@/utils/payment';
 import { User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Link from 'next/link';

@@ -48,7 +48,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
         />
         <meta
           name="twitter:image"
-          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+          content="https://6ef9-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
         />
         <meta
           name="twitter:image:alt"
@@ -70,7 +70,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
         />
         <meta
           property="og:image"
-          content="https://db0f-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+          content="https://6ef9-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
         />
         <meta
           property="og:image:alt"
@@ -131,7 +131,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
 
             <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
               {displayProducts.map((product) => (
-                <PriceCard product={product} />
+                <PriceCard key={product.name} product={product} />
               ))}
             </div>
           </div>
