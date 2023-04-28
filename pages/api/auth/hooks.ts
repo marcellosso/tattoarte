@@ -7,6 +7,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 module.exports = async (req: any, res: any) => {
   const { name, email, secret } = req.body;
+  console.log('red - ', req);
+  console.log('BODY - ', req.body);
 
   console.log('SECRET - ', secret);
   console.log('ENV SECRET - ', process.env.AUTH0_HOOK_SECRET);
