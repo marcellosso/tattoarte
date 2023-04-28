@@ -26,8 +26,8 @@ export default {
     },
     {
       name: '10 Créditos',
-      priceBeforeDiscount: 'R$ 29,90',
-      price: 'R$ 19,90',
+      priceBeforeDiscount: 'R$ 29,99',
+      price: 'R$ 19,99',
       priceDetail: '(pagamento único)',
       perks: [
         'Até 40 artes de tatuagem',
@@ -38,7 +38,7 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment('price_1My6yGICcQQfNZPtQthPj7Vk')}
+          onClick={() => processPayment(process.env.PRICE_10_CREDITS ?? '')}
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre 10 créditos
@@ -47,8 +47,8 @@ export default {
     },
     {
       name: '50 Créditos',
-      priceBeforeDiscount: 'R$ 109,90',
-      price: 'R$ 89,90',
+      priceBeforeDiscount: 'R$ 99,99',
+      price: 'R$ 79,99',
       priceDetail: '(pagamento único)',
       perks: [
         'Até 200 artes de tatuagem',
@@ -59,7 +59,7 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment('price_1My735ICcQQfNZPt3b1VxeKq')}
+          onClick={() => processPayment(process.env.PRICE_50_CREDITS ?? '')}
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre 50 créditos
@@ -90,7 +90,7 @@ export default {
     },
     {
       name: 'Acesso Total - 7 dias',
-      priceBeforeDiscount: 'R$ 69,90',
+      priceBeforeDiscount: 'R$ 69,99',
       price: 'R$ 49,99',
       priceDetail: '(pagamento único)',
       perks: [
@@ -105,7 +105,7 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment('price_1My757ICcQQfNZPtaHd1Sav9')}
+          onClick={() => processPayment(process.env.PRICE_7_DAYS_ACCESS ?? '')}
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre o Acesso Total
@@ -114,8 +114,8 @@ export default {
     },
     {
       name: 'Acesso Total - 30 dias',
-      priceBeforeDiscount: 'R$ 129,90',
-      price: 'R$ 109,90',
+      priceBeforeDiscount: 'R$ 139,99',
+      price: 'R$ 119,99',
       priceDetail: '(pagamento único)',
       perks: [
         '30 dias de acesso a IA',
@@ -129,7 +129,7 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment('price_1My77OICcQQfNZPtIUH5qXZF')}
+          onClick={() => processPayment(process.env.PRICE_30_DAYS_ACCESS ?? '')}
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre o Acesso Total

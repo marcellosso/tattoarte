@@ -9,6 +9,7 @@
     "@typescript-eslint/no-unused-vars": 1,
     "@typescript-eslint/no-non-null-asserted-optional-chain": 1,
     "react/no-unescaped-entities": 1,
-    "semi": [1, "always"]
+    "semi": [1, "always"],
+    "import/no-anonymous-default-export": 0
   }
 }

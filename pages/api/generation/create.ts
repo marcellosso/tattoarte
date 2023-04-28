@@ -19,7 +19,7 @@ const s3 = new S3({
 });
 
 const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN!,
+  auth: process.env.REPLICATE_API_TOKEN || '',
 });
 
 const PREFIX_DEFAULT_PROMPT = 'mdjrny-v4 style tattoo flash design of ';
@@ -86,7 +86,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
     const images = [] as string[];
 
     await Promise.all(
-      output.map(async (image, idx) => {
+      output.map(async (image) => {
         const imageName = v4();
 
         const imageResponse = await axios.get(image, {
@@ -95,7 +95,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
         const s3UploadResponse = await s3
           .upload({
-            Bucket: process.env.AWS_BUCKET_NAME!,
+            Bucket: process.env.AWS_BUCKET_NAME ?? '',
             Key: `generations/${user.id}/${imageName}.png`,
             Body: imageResponse.data,
             ACL: 'public-read',
@@ -139,13 +139,34 @@ module.exports = withApiAuthRequired(async (req, res) => {
       throw err;
     });
 
+    const newUserGenerationCount = (user.generationCount || 0) + 1;
+
+    if (
+      newUserGenerationCount == 20 ||
+      newUserGenerationCount == 50 ||
+      newUserGenerationCount == 100
+    ) {
+      const userMessage = `ALERT\n\nUser ${user.name} (${user.id}) has generated ${newUserGenerationCount} generations.`;
+      await axios.post(
+        process.env.SLACK_ALARM_WEBHOOK_URL ?? '',
+        {
+          text: userMessage,
+        },
+        {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      );
+    }
+
     user = await prisma.user.update({
       where: {
-        email: user.email!,
+        email: user.email ?? '',
       },
       data: {
         credits: newCredits,
-        generationCount: (user.generationCount || 0) + 1,
+        generationCount: newUserGenerationCount,
       },
     });
 

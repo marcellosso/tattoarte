@@ -94,7 +94,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
         {/* Twitter */}
         <meta
           name="twitter:image"
-          content={`https://6ef9-186-137-149-202.ngrok-free.app/api/og?generationUrl=${generation.imageUrl}&generationAuthor=${generation.authorName}&generationPrompt=${generation.prompt}`}
+          content={`${process.env.SITE_URL}api/og?generationUrl=${generation.imageUrl}&generationAuthor=${generation.authorName}&generationPrompt=${generation.prompt}`}
         />
         <meta
           name="twitter:image:alt"
@@ -104,7 +104,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
         {/* Open Graph */}
         <meta
           property="og:image"
-          content={`https://6ef9-186-137-149-202.ngrok-free.app/api/og?generationUrl=${generation.imageUrl}&generationAuthor=${generation.authorName}&generationPrompt=${generation.prompt}`}
+          content={`${process.env.SITE_URL}api/og?generationUrl=${generation.imageUrl}&generationAuthor=${generation.authorName}&generationPrompt=${generation.prompt}`}
         />
         <meta
           property="og:image:alt"

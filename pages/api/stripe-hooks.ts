@@ -1,11 +1,11 @@
 import { PriceTabEnum } from '@/types';
 import { prisma } from '@/utils/use-prisma';
-import { PrismaClient, User } from '@prisma/client';
-import { Console } from 'console';
+import { User } from '@prisma/client';
 import { buffer } from 'micro';
+import type { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
 
@@ -21,10 +21,10 @@ export default async (req: any, res: any) => {
     event = stripe.webhooks.constructEvent(
       reqBuffer,
       signature,
-      process.env.STRIPE_SIGNING_SECRET!
+      process.env.STRIPE_SIGNING_SECRET ?? ''
     );
 
-    const { metadata } = event.data.object as any;
+    const { metadata } = event.data.object as Record<string, any>;
 
     switch (event.type) {
       case 'charge.succeeded':
@@ -39,12 +39,13 @@ export default async (req: any, res: any) => {
 
           const products = await stripe.products.list();
           const product = products.data.find(
-            (product: any) => product.default_price == metadata?.productId
+            (product: Record<string, any>) =>
+              product.default_price == metadata?.productId
           );
 
           if (product?.metadata?.productType == PriceTabEnum.PACKAGE) {
             newUserData.credits =
-              user.credits! + parseInt(product?.metadata?.productAmount);
+              (user.credits ?? 0) + parseInt(product?.metadata?.productAmount);
           } else if (product?.metadata?.productType == PriceTabEnum.ACCESS) {
             newUserData.subscribed = true;
             newUserData.subscriptionDuration = parseInt(

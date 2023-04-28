@@ -100,7 +100,7 @@ const App: FC<IAPP> = ({ user }) => {
         />
         <meta
           name="twitter:image"
-          content="https://6ef9-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+          content={`${process.env.SITE_URL}images/og-tattooart.jpg`}
         />
         <meta
           name="twitter:image:alt"
@@ -122,7 +122,7 @@ const App: FC<IAPP> = ({ user }) => {
         />
         <meta
           property="og:image"
-          content="https://6ef9-186-137-149-202.ngrok-free.app/images/og-tattooart.jpg"
+          content={`${process.env.SITE_URL}images/og-tattooart.jpg`}
         />
         <meta
           property="og:image:alt"
