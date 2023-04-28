@@ -5,10 +5,6 @@ export const config = {
   runtime: 'edge',
 };
 
-const image = fetch(
-  new URL('../../public/images/tattooarte-logo.png', import.meta.url)
-).then((res) => res.arrayBuffer());
-
 const sourceCodeProRegularFontP = fetch(
   new URL('../../public/fonts/SourceCodePro-Regular.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
@@ -23,7 +19,6 @@ export default async function handler(request: NextRequest) {
   const generationAuthor = searchParams.get('generationAuthor');
   const generationPrompt = searchParams.get('generationPrompt');
 
-  const imageData = await image;
   const [sourceCodeProRegularFont, sourceCodeProBoldFont] = await Promise.all([
     sourceCodeProRegularFontP,
     sourceCodeProBoldFontP,
@@ -76,7 +71,6 @@ export default async function handler(request: NextRequest) {
                 alignItems: 'center',
               }}
             >
-              <img width="60" height="60" src={imageData as any} />
               <span
                 style={{
                   fontWeight: 700,
