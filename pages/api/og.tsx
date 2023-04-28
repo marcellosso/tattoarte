@@ -9,10 +9,6 @@ const image = fetch(
   new URL('../../public/images/tattooarte-logo.png', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
-const imageDefault = fetch(
-  new URL('../../public/images/og-tattooart.jpg', import.meta.url)
-).then((res) => res.arrayBuffer());
-
 const sourceCodeProRegularFontP = fetch(
   new URL('../../public/fonts/SourceCodePro-Regular.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
@@ -26,18 +22,6 @@ export default async function handler(request: NextRequest) {
   const generationUrl = searchParams.get('generationUrl');
   const generationAuthor = searchParams.get('generationAuthor');
   const generationPrompt = searchParams.get('generationPrompt');
-
-  const imageDefaultData = await imageDefault;
-
-  if (!generationUrl) {
-    return new ImageResponse(
-      <img width="1200" height="630" src={imageDefaultData as any} />,
-      {
-        width: 1200,
-        height: 630,
-      }
-    );
-  }
 
   const imageData = await image;
   const [sourceCodeProRegularFont, sourceCodeProBoldFont] = await Promise.all([
@@ -71,7 +55,7 @@ export default async function handler(request: NextRequest) {
           <img
             width="420"
             height="420"
-            src={generationUrl}
+            src={generationUrl ?? ''}
             style={{
               borderRadius: 20,
             }}
