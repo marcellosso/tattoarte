@@ -87,9 +87,8 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
               </h1>
               <p className="mb-10 font-light text-letter text-xs sm:text-md">
                 Nossa IA artista de tatuagens é capaz de gerar designs
-                personalizados ilimitados em apenas segundos, baseado em seu
-                gosto pessoal e suas ideias. Você pode criar designs para
-                tatuagens de{' '}
+                personalizados ilimitados em segundos, baseado em seu gosto
+                pessoal e suas ideias. Você pode criar designs para tatuagens de{' '}
                 <span className="text-detail font-bold">animais</span>,{' '}
                 <span className="text-detail font-bold">flores</span>,{' '}
                 <span className="text-detail font-bold">símbolos</span> e, até
