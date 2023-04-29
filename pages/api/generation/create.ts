@@ -3,20 +3,9 @@ import { User } from '@prisma/client';
 
 import { ParamsType } from '@/types';
 import Replicate from 'replicate';
-import { v4 } from 'uuid';
-import { prisma } from '@/utils/use-prisma';
 import axios from 'axios';
 
-import S3 from 'aws-sdk/clients/s3';
-
 import { englishTattooStyles } from '@/assets/tattoo-styles';
-
-const s3 = new S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
-  signatureVersion: 'v4',
-});
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN || '',
@@ -80,95 +69,18 @@ module.exports = withApiAuthRequired(async (req, res) => {
     )) as string[];
 
     // const output = [
-    //   'https://replicate.delivery/pbxt/Ufj2XWeDiwmlq0bnCWlbDV7fHpQRZpMzKSK76SMDpvWTbpphA/out-0.png',
+    //   'https://replicate.delivery/pbxt/eRFcnOLtIAyZBigLGEQO6HWiWRec6kJndEeMmpP9xFPXLVAgA/out-0.png',
     // ];
 
-    const images = [] as string[];
-
-    await Promise.all(
-      output.map(async (image) => {
-        const imageName = v4();
-
-        const imageResponse = await axios.get(image, {
-          responseType: 'arraybuffer',
-        });
-
-        const s3UploadResponse = await s3
-          .upload({
-            Bucket: process.env.AWS_BUCKET_NAME ?? '',
-            Key: `generations/${user.id}/${imageName}.png`,
-            Body: imageResponse.data,
-            ACL: 'public-read',
-          })
-          .promise();
-
-        const imageUrl = s3UploadResponse.Location;
-
-        images.push(imageUrl);
-
-        const generationObj = {
-          prompt: params.prompt,
-          style: params.tattooStyle,
-          imageName: imageName,
-          imageUrl,
-          is_private: params.isPrivate || false,
-        };
-
-        if (!user.freeTrial) {
-          await prisma.generation.create({
-            data: {
-              ...generationObj,
-              authorName: user.name as string,
-              author: {
-                connect: {
-                  id: user.id,
-                },
-              },
-            },
-          });
-        } else {
-          await prisma.generation.create({
-            data: {
-              ...generationObj,
-              authorName: user.name as string,
-            },
-          });
-        }
-      })
-    ).catch((err) => {
-      throw err;
-    });
+    const images = output;
 
     const newUserGenerationCount = (user.generationCount || 0) + 1;
 
-    if (
-      newUserGenerationCount == 20 ||
-      newUserGenerationCount == 50 ||
-      newUserGenerationCount == 100
-    ) {
-      const userMessage = `ALERT\n\nUser ${user.name} (${user.id}) has generated ${newUserGenerationCount} generations.`;
-      await axios.post(
-        process.env.SLACK_ALARM_WEBHOOK_URL ?? '',
-        {
-          text: userMessage,
-        },
-        {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        }
-      );
-    }
-
-    user = await prisma.user.update({
-      where: {
-        email: user.email ?? '',
-      },
-      data: {
-        credits: newCredits,
-        generationCount: newUserGenerationCount,
-      },
-    });
+    user = {
+      ...user,
+      credits: newCredits,
+      generationCount: newUserGenerationCount,
+    };
 
     res.status(200).json({ images, newUserData: user });
   } catch (err) {

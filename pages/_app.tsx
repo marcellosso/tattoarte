@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
 
-const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] });
+const sourceCodePro = Source_Code_Pro({ subsets: ['latin'], display: 'swap' });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
