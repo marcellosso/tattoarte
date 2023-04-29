@@ -89,14 +89,13 @@ const Home = () => {
                 você gosta, você poderá criar um design{' '}
                 <span className="text-detail font-bold uppercase">
                   único e perfeito
-                </span>
-                e ainda terá à disposição uma infinidade de opções para que
-                todos possam encontrar algo que lhes agrade.
+                </span>{' '}
+                e ainda terá à disposição uma infinidade de opções.
               </p>
               <div className="flex flex-col w-full max-w-screen-sm items-center justify-center mx-auto gap-4">
                 <div className="relative w-full mt-5 md:mt-0">
                   <div className="absolute -left-2 flex items-center gap-2 -top-6 md:top-1">
-                    <span className="text-xs text-letter font-light">
+                    <span className="text-xs text-letter font-light animate-pulse">
                       Oferta por tempo limitado
                     </span>
                     <svg
