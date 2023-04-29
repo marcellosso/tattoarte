@@ -14,7 +14,7 @@ export default async function middleware(
 ): Promise<Response | undefined> {
   const ip = request.ip ?? '127.0.0.1';
   const { success } = await rateLimit.limit(ip);
-  console.log('request on middleware - ', request);
+
   return success
     ? NextResponse.next()
     : new NextResponse('Limite de chamadas atingido, vai com calma!', {

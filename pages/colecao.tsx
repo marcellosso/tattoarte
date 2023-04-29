@@ -151,7 +151,9 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
       <section className="flex min-h-screen h-screen flex-col items-center p-8 md:p-12 pt-16 bg-primary text-letter overflow-hidden">
         <h1 className="text-sm xs:text-lg sm:text-xl md:text-3xl font-bold">
           Coleção de{' '}
-          <span className="text-detail">{generations[0].authorName}</span>
+          <span className="text-detail">
+            {generations[0]?.authorName || user.name}
+          </span>
         </h1>
 
         <div className="bg-secondary h-full w-full mt-12 md:mt-8 lg:mt-4 rounded-md shadow-2xl p-6 relative">

@@ -7,11 +7,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 module.exports = async (req: any, res: any) => {
   const { name, email, secret } = req.body;
-  console.log('red - ', req);
-  console.log('BODY - ', req.body);
-
-  console.log('SECRET - ', secret);
-  console.log('ENV SECRET - ', process.env.AUTH0_HOOK_SECRET);
   if (secret === process.env.AUTH0_HOOK_SECRET) {
     try {
       const customer = await stripe.customers.create({
@@ -22,7 +17,6 @@ module.exports = async (req: any, res: any) => {
         data: { email, name, stripeId: customer.id },
       });
 
-      console.log('created user ID - ', user.id);
       res.status(200).json(user.id);
     } catch (err) {
       res.status(500).send(err);
