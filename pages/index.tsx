@@ -64,6 +64,10 @@ const Home = () => {
           property="og:image:alt"
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
+        <meta
+          name="google-site-verification"
+          content="ffZ_-cy0-_bgVD36C25pYT39CdP6aXu3hhx3FNd-En4"
+        />
       </Head>
       <MainNavbar />
       <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 from-secondary to-gray-800 bg-gradient-to-b text-letter overflow-y-scroll scrollbar-hide">
