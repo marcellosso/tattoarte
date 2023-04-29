@@ -18,7 +18,9 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment(process.env.PRICE_10_CREDITS ?? '')}
+          onClick={() =>
+            processPayment(process.env.NEXT_PUBLIC_PRICE_10_CREDITS ?? '')
+          }
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre 10 créditos
@@ -39,7 +41,9 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment(process.env.PRICE_50_CREDITS ?? '')}
+          onClick={() =>
+            processPayment(process.env.NEXT_PUBLIC_PRICE_50_CREDITS ?? '')
+          }
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre 50 créditos
@@ -85,7 +89,9 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment(process.env.PRICE_7_DAYS_ACCESS ?? '')}
+          onClick={() =>
+            processPayment(process.env.NEXT_PUBLIC_PRICE_7_DAYS_ACCESS ?? '')
+          }
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre o Acesso Total
@@ -109,7 +115,9 @@ export default {
       ],
       callToAction: (
         <button
-          onClick={() => processPayment(process.env.PRICE_30_DAYS_ACCESS ?? '')}
+          onClick={() =>
+            processPayment(process.env.NEXT_PUBLIC_PRICE_30_DAYS_ACCESS ?? '')
+          }
           className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
         >
           Compre o Acesso Total

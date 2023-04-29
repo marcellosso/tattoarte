@@ -100,7 +100,7 @@ const App: FC<IAPP> = ({ user }) => {
         />
         <meta
           name="twitter:image"
-          content={`${process.env.SITE_URL}images/og-tattooart.jpg`}
+          content={`${process.env.NEXT_PUBLIC_SITE_URL}images/og-tattooart.jpg`}
         />
         <meta
           name="twitter:image:alt"
@@ -122,7 +122,7 @@ const App: FC<IAPP> = ({ user }) => {
         />
         <meta
           property="og:image"
-          content={`${process.env.SITE_URL}images/og-tattooart.jpg`}
+          content={`${process.env.NEXT_PUBLIC_SITE_URL}images/og-tattooart.jpg`}
         />
         <meta
           property="og:image:alt"
