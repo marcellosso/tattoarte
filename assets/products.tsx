@@ -5,26 +5,6 @@ import Link from 'next/link';
 export default {
   access: [
     {
-      name: 'Teste',
-      priceBeforeDiscount: '',
-      price: 'Gratuíto',
-      priceDetail: '',
-      perks: [
-        'Até 12 artes de tatuagem',
-        'Designer pessoal IA de tattoo',
-        'Acesso a coleção pessoal',
-        'Limite de 100 caracteres ao descrever tatuagem',
-      ],
-      callToAction: (
-        <Link
-          href="/criar"
-          className="font-bold text-primary p-3 mb-3 rounded-md bg-detail hover:bg-yellow-500"
-        >
-          Crie agora
-        </Link>
-      ),
-    },
-    {
       name: '10 Créditos',
       priceBeforeDiscount: 'R$ 29,99',
       price: 'R$ 19,99',
@@ -66,8 +46,6 @@ export default {
         </button>
       ),
     },
-  ],
-  package: [
     {
       name: 'Teste',
       priceBeforeDiscount: '',
@@ -88,6 +66,8 @@ export default {
         </Link>
       ),
     },
+  ],
+  package: [
     {
       name: 'Acesso Total - 7 dias',
       priceBeforeDiscount: 'R$ 69,99',
@@ -134,6 +114,26 @@ export default {
         >
           Compre o Acesso Total
         </button>
+      ),
+    },
+    {
+      name: 'Teste',
+      priceBeforeDiscount: '',
+      price: 'Gratuíto',
+      priceDetail: '',
+      perks: [
+        'Até 12 artes de tatuagem',
+        'Designer pessoal IA de tattoo',
+        'Acesso a coleção pessoal',
+        'Limite de 100 caracteres ao descrever tatuagem',
+      ],
+      callToAction: (
+        <Link
+          href="/criar"
+          className="font-bold text-primary p-3 mb-3 rounded-md bg-detail hover:bg-yellow-500"
+        >
+          Crie agora
+        </Link>
       ),
     },
   ],

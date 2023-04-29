@@ -87,7 +87,7 @@ const Discover: FC<IDiscover> = ({ generations }) => {
           <span className="text-detail">usuários</span>!
         </h1>
         <p className="text-letter text-center text-xs md:text-lg mb-3">
-          Veja o que outros estão criando usando nossa Inteligencia Artificial
+          Veja o que outros estão criando usando nossa Inteligência Artificial
           (IA) artista de tatuagens!
         </p>
         <Link
@@ -107,7 +107,7 @@ const Discover: FC<IDiscover> = ({ generations }) => {
               >
                 <Image
                   src={generation.imageUrl}
-                  alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
+                  alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
                   priority
                   className="rounded-md"
                   loader={() => generation.imageUrl}

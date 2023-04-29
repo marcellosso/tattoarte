@@ -78,7 +78,7 @@ const App: FC<IAPP> = ({ user }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -94,7 +94,7 @@ const App: FC<IAPP> = ({ user }) => {
         <meta property="twitter:domain" content="tattooartia.com" />
         <meta
           name="twitter:description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -116,7 +116,7 @@ const App: FC<IAPP> = ({ user }) => {
         />
         <meta
           property="og:description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />

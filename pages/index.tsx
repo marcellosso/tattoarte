@@ -14,7 +14,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -30,7 +30,7 @@ const Home = () => {
         <meta property="twitter:domain" content="tattooartia.com" />
         <meta
           name="twitter:description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -52,7 +52,7 @@ const Home = () => {
         />
         <meta
           property="og:description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligencia Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -85,12 +85,12 @@ const Home = () => {
                 <span className="text-detail font-bold uppercase">
                   inteligência artificial
                 </span>{' '}
-                pode ajudá-lo a gerar um em poucos segundos. Com base no que
+                pode ajudá-lo a gerar uma em poucos segundos. Com base no que
                 você gosta, você poderá criar um design{' '}
                 <span className="text-detail font-bold uppercase">
                   único e perfeito
                 </span>
-                , ainda terá à disposição uma infinidade de opções para que
+                e ainda terá à disposição uma infinidade de opções para que
                 todos possam encontrar algo que lhes agrade.
               </p>
               <div className="flex flex-col w-full max-w-screen-sm items-center justify-center mx-auto gap-4">
@@ -146,7 +146,7 @@ const Home = () => {
               </div>
               <p className="mt-6">
                 <span className="font-bold text-detail">
-                  3 créditos gratuítos
+                  3 créditos gratuitos
                 </span>{' '}
                 para começar a criar suas artes!
               </p>
@@ -162,7 +162,7 @@ const Home = () => {
                   className="rounded-md object-cover lg:object-contain"
                   priority
                   src="/images/tattoo-example-1.webp"
-                  alt="Tatuagem criada por nossa Inteligencia Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
+                  alt="Tatuagem criada por nossa Inteligência Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
                 />
                 <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-lg absolute top-0 lg:top-1 left-0 lg:left-1">
                   <span className="text-detail text-xs lg:text-lg">
@@ -181,7 +181,7 @@ const Home = () => {
                   className="rounded-md object-cover lg:object-contain"
                   priority
                   src="/images/tattoo-example-2.webp"
-                  alt="Tatuagem criada por nossa Inteligencia Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeca, fundo cinza."
+                  alt="Tatuagem criada por nossa Inteligência Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeça, fundo cinza."
                 />
                 <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-xl absolute top-0 lg:top-1 left-0 lg:left-1">
                   <span className="text-detail text-xs lg:text-lg">
@@ -216,7 +216,7 @@ const Home = () => {
                   }}
                   priority
                   src="/images/tattoo-example-2.webp"
-                  alt="Tatuagem criada por nossa Inteligencia Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeca, fundo cinza."
+                  alt="Tatuagem criada por nossa Inteligência Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeça, fundo cinza."
                 />
                 <div className="bg-primary opacity-100 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-1 left-1">
                   <span className="text-detail">Minimalista</span>

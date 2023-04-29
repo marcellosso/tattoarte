@@ -122,7 +122,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               <div className="w-[1024px] h-[768px] my-2 md:my-0 rounded-md flex items-center justify-center relative">
                 <Image
                   src={generation.imageUrl}
-                  alt={`Arte de tatuagem criada pela inteligencia artificial com prompt: ${generation.prompt} - TattooArte!`}
+                  alt={`Arte de tatuagem criada pela inteligência artificial com prompt: ${generation.prompt} - TattooArte!`}
                   className="rounded-md"
                   fill
                   sizes="100vw"
@@ -160,7 +160,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               {generation.prompt}
             </h2>
             <p className="text-letter text-sm md:text-md mb-4 md:mb-6 text-center">
-              Tatuagem criada com ajuda de nossa Inteligencia Artificial (IA).
+              Tatuagem criada com ajuda de nossa Inteligência Artificial (IA).
             </p>
             <Link
               href="/criar"
@@ -171,7 +171,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             <div className="h-1/2 w-full sm:h-[512px] sm:w-[512px] hover:scale-105 hover:cursor-pointer relative">
               <Image
                 src={generation.imageUrl}
-                alt={`Tatuagem gerada por inteligencia artifical com o prompt: ${generation.prompt}`}
+                alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
                 priority
                 className="rounded-md"
                 onClick={() => setOpenFullscreenImageModal(true)}
