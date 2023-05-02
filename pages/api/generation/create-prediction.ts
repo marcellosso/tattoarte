@@ -58,21 +58,16 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
 
-    const output = (await replicate.run(
-      'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
-      {
-        input: {
-          num_outputs: 4,
-          prompt,
-        },
-      }
-    )) as string[];
+    const { id } = await replicate.predictions.create({
+      version:
+        '9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
+      input: {
+        prompt,
+        num_outputs: 4,
+      },
+    });
 
-    // const output = [
-    //   'https://replicate.delivery/pbxt/eRFcnOLtIAyZBigLGEQO6HWiWRec6kJndEeMmpP9xFPXLVAgA/out-0.png',
-    // ];
-
-    const images = output;
+    // const id = 'h4xsivqoqvdgplh3bpbhhsttaq';
 
     const newUserGenerationCount = (user.generationCount || 0) + 1;
 
@@ -82,7 +77,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       generationCount: newUserGenerationCount,
     };
 
-    res.status(200).json({ images, newUserData: user });
+    res.status(200).json({ predictionId: id, newUserData: user });
   } catch (err) {
     res.status(500).send(err);
   }

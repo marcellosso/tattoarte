@@ -29,7 +29,7 @@ const App: FC<IAPP> = ({ user }) => {
   const [userData, setUserData] = useState(user);
 
   const [openMarketingModal, setOpenMarketingModal] = useState(
-    !user?.subscribed && user?.credits! <= 0
+    !user?.subscribed && (user?.credits || 0) <= 0
   );
 
   const [images, setImages] = useState<string[]>([]);
@@ -295,7 +295,7 @@ const App: FC<IAPP> = ({ user }) => {
                   </label>
                 </div>
 
-                {userData.credits! > 0 || userData.subscribed ? (
+                {(userData.credits || 0) > 0 || userData.subscribed ? (
                   <button
                     type="submit"
                     disabled={loadingImages}

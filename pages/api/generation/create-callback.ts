@@ -104,7 +104,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       },
     });
 
-    res.status(200).json({});
+    res.status(200).json({ success: true });
   } catch (err) {
     res.status(500).send('Error updating user information');
   }
