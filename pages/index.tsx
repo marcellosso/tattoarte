@@ -9,12 +9,13 @@ const Home = () => {
     <main>
       <Head>
         <title>
-          Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA
+          Artista de Tatuagem IA - Crie tatuagens com Inteligência Artificial |
+          TattooArtIA
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Criar tatuagem com inteligência Artificial. Deixe nossa Inteligência Artificial criar tatuagens únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -22,7 +23,7 @@ const Home = () => {
         {/* <!-- Twitter Meta Tags --> */}
         <meta
           name="twitter:title"
-          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+          content="Artista de Tatuagem IA - Crie tatuagens com Inteligência Artificial | TattooArtIA"
         />
         <meta name="twitter:creator" content="@tattooartia" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -30,7 +31,7 @@ const Home = () => {
         <meta property="twitter:domain" content="tattooartia.com" />
         <meta
           name="twitter:description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Criar tatuagem com inteligência Artificial. Deixe nossa Inteligência Artificial criar tatuagens únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
@@ -40,7 +41,7 @@ const Home = () => {
         />
         <meta
           name="twitter:image:alt"
-          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+          content="Artista de Tatuagem IA - Crie tatuagens com Inteligência Artificial | TattooArtIA"
         />
 
         {/* <!-- Facebook Meta Tags --> */}
@@ -48,11 +49,11 @@ const Home = () => {
         <meta property="og:type" content="website" />
         <meta
           property="og:title"
-          content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
+          content="Artista de Tatuagem IA - Crie tatuagens com Inteligência Artificial | TattooArtIA"
         />
         <meta
           property="og:description"
-          content="Crie tatuagens Únicas com IA. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
+          content="Criar tatuagem com inteligência Artificial. Deixe nossa Inteligência Artificial criar tatuagens Únicas para você em segundos, de forma rápida e fácil. 
           Caso possua uma ideia para uma tatuagem, mas esteja tendo dificuldades em encontrar o desenho adequado, nossa tecnologia de IA
           pode ajudá-lo a gerar um em poucos segundos com base no que você gosta, irá te dar opções ilimitadas, sendo assim possível achar uma arte para todos."
         />
