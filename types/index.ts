@@ -11,10 +11,10 @@ export type ParamsType = {
 export type ProductType = {
   name: string;
   price: string;
+  priceId: string;
   priceBeforeDiscount: string;
   priceDetail: string;
   perks: string[];
-  callToAction: JSX.Element;
 };
 
 export enum PriceTabEnum {

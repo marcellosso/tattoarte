@@ -145,14 +145,14 @@ const Home = () => {
                   href="/criar"
                   className="font-bold text-primary text-xs sm:text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
                 >
-                  12 tatuagens gratuítas - Crie sua arte agora
+                  4 tatuagens gratuitas - Crie sua arte agora
                 </Link>
               </div>
               <p className="mt-6">
+                Crie sua arte agora e ganhe{' '}
                 <span className="font-bold text-detail">
-                  3 créditos gratuitos
-                </span>{' '}
-                para começar a criar suas artes!
+                  créditos gratuítos
+                </span>
               </p>
             </div>
           </div>

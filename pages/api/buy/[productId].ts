@@ -3,7 +3,7 @@ import { withApiAuthRequired, getSession, Session } from '@auth0/nextjs-auth0';
 import { User } from '@prisma/client';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
 
@@ -22,7 +22,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
     })) as User;
 
     const session = await stripe.checkout.sessions.create({
-      customer_email: user.email!,
+      customer_email: user.email ?? '',
       line_items: [
         {
           price: productId as string,

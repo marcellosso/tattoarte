@@ -1,4 +1,5 @@
 import { ProductType } from '@/types';
+import Link from 'next/link';
 import React, { FC } from 'react';
 import CheckmarkIcon from './icons/checkmark';
 
@@ -33,7 +34,12 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
         )}
       </div>
 
-      {product.callToAction}
+      <Link
+        href={`/checkout?priceId=${product.priceId}`}
+        className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
+      >
+        Compre 3 créditos
+      </Link>
 
       <ul role="list" className="mb-8 space-y-4 text-left">
         {product.perks.map((perk) => (

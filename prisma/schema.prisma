@@ -37,7 +37,7 @@ model User {
   subscribed           Boolean?     @default(false)
   subscriptionAt       DateTime?    @map(name: "subscribed_at")
   subscriptionDuration Int?         @default(0) @map(name: "subscription_duration")
-  credits              Int?         @default(3)
+  credits              Int?         @default(1)
   generationCount      Int?         @default(0) @map(name: "generation_count")
   freeTrial            Boolean?     @default(true) @map(name: "free_trial")
   stripeId             String       @unique @map(name: "stripe_id")

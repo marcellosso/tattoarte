@@ -1,7 +1,7 @@
 import { prisma } from '@/utils/use-prisma';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
 
@@ -14,7 +14,7 @@ module.exports = async (req: any, res: any) => {
       });
 
       const user = await prisma.user.create({
-        data: { email, name, stripeId: customer.id },
+        data: { email, name, stripeId: customer.id, credits: 1 },
       });
 
       res.status(200).json(user.id);

@@ -101,7 +101,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
                 href="/criar"
                 className="font-bold text-[0.55rem] xs:text-xs sm:text-sm md:text-md text-primary p-2 xs:p-3 rounded-md bg-detail hover:bg-yellow-500"
               >
-                3 créditos gratuitos - Crie sua arte agora
+                4 tatuagens gratuitas - Crie sua arte agora
               </Link>
             </div>
 

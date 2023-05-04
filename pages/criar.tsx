@@ -423,8 +423,8 @@ const App: FC<IAPP> = ({ user }) => {
         {user.freeTrial && (
           <div className="w-screen h-12 md:h-9 bg-detail flex items-center justify-center p-2">
             <span className="text-primary text-2xs md:text-xs font-bold">
-              Seu teste permite gerar 12 tatuagens. Compre o passe de acesso
-              para criar tatuagens ilimitadas
+              Seu teste permite gerar 4 tatuagens. Compre o passe de acesso para
+              criar tatuagens ilimitadas
             </span>
             <Link
               href="/precos?tab=package"
