@@ -121,7 +121,7 @@ const Discover: FC<IDiscover> = ({ generations }) => {
                   <span className="text-detail">{generation.style}</span>
                 </div>
                 <div className="bg-primary opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 group-hover:opacity-100 transition-all">
-                  <span className="text-xs overflow-ellipsis overflow-hidden">
+                  <span className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
                     {generation.prompt}
                   </span>
                 </div>

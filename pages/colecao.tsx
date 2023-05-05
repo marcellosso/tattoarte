@@ -225,7 +225,7 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
                   </span>
                 </div>
                 <div className="bg-primary opacity-100 lg:opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 lg:group-hover:opacity-100 transition-all">
-                  <span className="text-2xs sm:text-xs overflow-ellipsis overflow-hidden">
+                  <span className="text-2xs sm:text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
                     {generation.prompt}
                   </span>
                 </div>
