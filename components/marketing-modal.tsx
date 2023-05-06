@@ -25,7 +25,7 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
         >
           <svg
             fill="none"
-            className="text-detail hover:text-yellow-200"
+            className="text-detail hover:text-yellow-200 transition-all"
             stroke="currentColor"
             strokeWidth={1.5}
             viewBox="0 0 24 24"
@@ -80,12 +80,12 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
 
         <Link
           href="/precos?tab=package"
-          className={`${oswald.className} bg-gradient-to-r w-3/4 md:w-1/2 font-bold text-center text-md md:text-lg text-letter p-2 md:p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+          className={`${oswald.className} bg-gradient-to-r w-3/4 md:w-1/2 font-bold text-center text-md md:text-lg text-letter transition-all p-2 md:p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
         >
           Compre o passe de acesso
         </Link>
         <Link href="/precos">
-          <span className="text-gray-400 text-2xs md:text-xs underline underline-offset-4 hover:text-gray-50 mt-2">
+          <span className="text-gray-400 text-2xs md:text-xs underline underline-offset-4 hover:text-gray-50 transition-all mt-2">
             Ou compre creditos avulsos para utilizar!
           </span>
         </Link>

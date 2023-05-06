@@ -2,16 +2,60 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
 import type { Generation } from '@prisma/client';
-import { FC } from 'react';
+import { FC, useMemo, useState } from 'react';
 import MainNavbar from '@/components/navbars/main-navbar';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface IDiscover {
   generations: Generation[];
+  generationCount: number;
+  style: string;
 }
 
-const Discover: FC<IDiscover> = ({ generations }) => {
+const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
+  const [localGenerations, setLocalGenerations] =
+    useState<Generation[]>(generations);
+
+  const [loading, setLoading] = useState(false);
+
+  const remainingGeneration = useMemo(
+    () => Math.max(generationCount - localGenerations.length, 0),
+    [localGenerations, generationCount]
+  );
+
+  const generationCurrentCursor = useMemo(
+    () => localGenerations.at(-1)?.id,
+    [localGenerations]
+  );
+
+  const handlePaginate = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `/api/get-generations?generationCursor=${generationCurrentCursor}&generationStyle=${
+          style ?? ''
+        }`
+      );
+
+      setLocalGenerations([...localGenerations, ...data.generations]);
+    } catch (err) {
+      toast.error(err as string, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <main>
       <Head>
@@ -97,13 +141,13 @@ const Discover: FC<IDiscover> = ({ generations }) => {
           Crie sua própria arte
         </Link>
 
-        <div className="bg-primary h-full w-full mt-4 rounded-md p-6 overflow-y-scroll overflow-x-hidden scrollbar-hide">
-          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 w-full h-full grid-rows-none gap-5 place-items-center">
-            {generations.map((generation) => (
+        <div className="bg-primary h-full w-full mt-4 rounded-md p-6 overflow-y-scroll overflow-x-hidden scrollbar-hide flex flex-col items-center gap-5">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 w-full grid-rows-none gap-5 place-items-center">
+            {localGenerations.map((generation) => (
               <Link
                 key={generation.id}
                 href={`/tattoo/${generation.id}`}
-                className="h-full w-full min-h-[174px] min-w-[174px] xs:min-h-[146px] xs:min-w-[146px] sm:min-h-[256px] sm:min-w-[256px] md:min-h-[224px] md:min-w-[224px] rounded-md md:hover:scale-105 relative group"
+                className="h-full w-full min-h-[174px] min-w-[174px] xs:min-h-[146px] xs:min-w-[146px] sm:min-h-[256px] sm:min-w-[256px] md:min-h-[224px] md:min-w-[224px] rounded-md md:hover:scale-105 transition-all relative group"
               >
                 <Image
                   src={generation.imageUrl}
@@ -128,6 +172,29 @@ const Discover: FC<IDiscover> = ({ generations }) => {
               </Link>
             ))}
           </div>
+          {remainingGeneration != 0 && (
+            <>
+              {!loading ? (
+                <button
+                  className="border-detail p-2 border-2 text-letter hover:border-yellow-600 hover:text-gray-300 transition-all w-48 md:w-56 lg:w-64"
+                  onClick={handlePaginate}
+                >
+                  Carregar mais...
+                </button>
+              ) : (
+                <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 w-full grid-rows-none gap-5 place-items-center">
+                  {new Array(Math.min(remainingGeneration, 24))
+                    .fill(0)
+                    .map((_, idx) => (
+                      <div
+                        key={idx}
+                        className="h-full w-full min-h-[174px] min-w-[174px] xs:min-h-[146px] xs:min-w-[146px] sm:min-h-[256px] sm:min-w-[256px] md:min-h-[224px] md:min-w-[224px] rounded-md transition-all bg-gray-400 animate-pulse"
+                      />
+                    ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </section>
     </main>
@@ -157,9 +224,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ],
     })) || [];
 
+  const generationCount =
+    (await prisma.generation.count({
+      where: {
+        is_private: false,
+        style: style as string,
+      },
+    })) || 0;
+
   return {
     props: {
       generations: JSON.parse(JSON.stringify(generations)),
+      generationCount,
+      style: style ?? '',
     },
   };
 };

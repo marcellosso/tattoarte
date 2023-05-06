@@ -2,7 +2,7 @@ import { PriceTabEnum } from '@/types';
 import { prisma } from '@/utils/use-prisma';
 import { User } from '@prisma/client';
 import { buffer } from 'micro';
-import type { NextRequest, NextResponse } from 'next/server';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
@@ -11,9 +11,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 
 export const config = { api: { bodyParser: false } };
 
-export default async (req: any, res: any) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const reqBuffer = await buffer(req);
-  const signature = req.headers['stripe-signature'];
+  const signature = req.headers['stripe-signature'] as string;
 
   let event;
 
