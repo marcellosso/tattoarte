@@ -36,9 +36,9 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
 
       <Link
         href={`/checkout?priceId=${product.priceId}`}
-        className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500"
+        className="bg-gradient-to-r mb-3 font-bold text-center text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500 transition-all"
       >
-        Compre 3 créditos
+        Compre {product.name.split('-').at(-1)}
       </Link>
 
       <ul role="list" className="mb-8 space-y-4 text-left">
