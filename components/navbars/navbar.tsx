@@ -24,7 +24,7 @@ const MobileNavbarLink: FC<IMobileNavbarLink> = ({
     // className={`px-4 py-2 flex items-center`}
     className={`
       px-4 py-2 flex items-center
-       before:bg-detail  before:absolute before:w-1 before:transition-all before:duration-300 before:content-["  "] before:-ml-2
+       before:bg-detail  before:absolute before:w-1 before:transition-all before:duration-300 before:-ml-2
       ${isSelected ? 'before:h-1/2' : 'before:h-0'}
     `}
   >
