@@ -1,5 +1,4 @@
 import tattooStyles from '@/assets/tattoo-styles';
-import AppNavbar from '@/components/navbars/app-navbar';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
 import { prisma } from '@/utils/use-prisma';
@@ -129,13 +128,12 @@ const App: FC<IAPP> = ({ user }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <AppNavbar user={userData} />
 
       {openMarketingModal && (
         <MarketingModal setOpenMarketingModal={setOpenMarketingModal} />
       )}
 
-      <section className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 bg-primary text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 text-letter">
         <div className="flex flex-col lg:flex-row w-screen h-full">
           <div
             className={`bg-secondary w-full ${

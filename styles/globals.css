@@ -8,8 +8,21 @@
 }
 
 body {
-  background-color: rgb(17 24 39);
   overscroll-behavior: none;
+  background: linear-gradient(180deg, #0a0909 0%, #0a0909 17.71%, #292828 100%);
+}
+
+html {
+  font-family: var(--font-raleway);
+}
+
+.logo {
+  font-family: var(--font-source-code);
+}
+
+nav {
+  font-family: var(--font-source-code);
+  font-weight: 500;
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */

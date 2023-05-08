@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import AppNavbar from '@/components/navbars/app-navbar';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';
 import type { Generation, User } from '@prisma/client';
@@ -147,8 +146,7 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <AppNavbar user={user} />
-      <section className="flex min-h-screen h-screen flex-col items-center p-8 md:p-12 pt-16 bg-primary text-letter overflow-hidden">
+      <section className="flex min-h-screen h-screen flex-col items-center p-8 md:p-12 pt-16 text-letter overflow-hidden">
         <h1 className="text-sm xs:text-lg sm:text-xl md:text-3xl font-bold">
           Coleção de{' '}
           <span className="text-detail">

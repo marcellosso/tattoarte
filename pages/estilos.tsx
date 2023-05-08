@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
 import { FC } from 'react';
-import MainNavbar from '@/components/navbars/main-navbar';
 import tattooStyles from '@/assets/tattoo-styles';
 import Head from 'next/head';
 interface IEstilos {
@@ -75,8 +74,7 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <MainNavbar />
-      <section className="flex min-h-screen h-screen flex-col items-center px-2 pt-16 md:pt-24 pb-0 bg-secondary text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center px-2 pt-16 md:pt-24 pb-0 text-letter">
         <h1 className="text-md md:text-3xl font-bold text-center">
           <span className="text-detail">Estilos</span> de tatuagem
         </h1>

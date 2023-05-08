@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import MainNavbar from '@/components/navbars/main-navbar';
-import Footer from '@/components/footer';
 import Head from 'next/head';
 
 const Home = () => {
@@ -70,8 +68,7 @@ const Home = () => {
           content="ffZ_-cy0-_bgVD36C25pYT39CdP6aXu3hhx3FNd-En4"
         />
       </Head>
-      <MainNavbar />
-      <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 from-secondary to-gray-800 bg-gradient-to-b text-letter overflow-y-scroll scrollbar-hide">
+      <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 text-letter overflow-y-scroll scrollbar-hide">
         <section>
           <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 mt-6 mb-2">
             <div className="mx-auto max-w-screen-md text-center">
@@ -235,8 +232,6 @@ const Home = () => {
           </div>
         </section>
       </section>
-
-      <Footer />
     </main>
   );
 };

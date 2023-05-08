@@ -4,7 +4,6 @@ import { prisma } from '@/utils/use-prisma';
 import type { Generation } from '@prisma/client';
 import { FC, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import MainNavbar from '@/components/navbars/main-navbar';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
@@ -111,7 +110,6 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
           content={`${generation.prompt} - Tatuagem criada por nossa inteligência artificial pelo usuário ${generation.authorName}!`}
         />
       </Head>
-      <MainNavbar />
       <section className="flex min-h-screen h-screen flex-col items-center p-6 pt-12 md:p-12 md:pt-24 bg-primary text-letter">
         <div className="bg-secondary h-full w-full mt-4 rounded-md shadow-2xl p-3 md:p-6 relative pt-2">
           {openFullscreenImageModal && (

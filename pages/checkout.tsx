@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import MainNavbar from '@/components/navbars/main-navbar';
 import Head from 'next/head';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import axios from 'axios';
 import Image from 'next/image';
 import processPayment from '@/utils/payment';
-import Logo from '@/components/logo';
 
 type ProductInfo = {
   price: string;
@@ -131,8 +129,7 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
           content="ffZ_-cy0-_bgVD36C25pYT39CdP6aXu3hhx3FNd-En4"
         />
       </Head>
-      <MainNavbar />
-      <section className="flex min-h-screen h-screen px-2 flex-col items-center justify-center pt-16 md:pt-24 pb-0 bg-secondary text-letter">
+      <section className="flex min-h-screen h-screen px-2 flex-col items-center justify-center pt-16 md:pt-24 pb-0 text-letter">
         <h1 className="text-detail text-3xl font-extrabold mb-4">Checkout</h1>
         <div className="bg-primary w-full md:h-2/5 md:w-3/4 lg:h-1/3 lg:w-1/2 rounded-lg p-6 flex flex-col gap-5">
           <div className="w-full h-2/3 rounded-lg">

@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
 import type { Generation } from '@prisma/client';
 import { FC, useMemo, useState } from 'react';
-import MainNavbar from '@/components/navbars/main-navbar';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import axios from 'axios';
@@ -124,8 +123,7 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <MainNavbar />
-      <section className="flex min-h-screen h-screen px-2 flex-col items-center pt-16 md:pt-24 pb-0 bg-secondary text-letter">
+      <section className="flex min-h-screen h-screen px-2 flex-col items-center pt-16 md:pt-24 pb-0 text-letter">
         <h1 className="text-md md:text-3xl font-bold text-center">
           Descubra criações de outros{' '}
           <span className="text-detail">usuários</span>!

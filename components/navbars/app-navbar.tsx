@@ -78,11 +78,7 @@ const AppNavbar: FC<IAppNavbar> = ({ user }) => {
             </Link>
           )}
 
-          <UserAvatar
-            credits={user.credits as number}
-            isSubscribed={user.subscribed as boolean}
-            userStripeId={user.stripeId}
-          />
+          <UserAvatar />
         </div>
       </div>
     </nav>

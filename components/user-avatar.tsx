@@ -1,32 +1,20 @@
-import { useUser } from '@auth0/nextjs-auth0/client';
-import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { FC, useMemo, useState } from 'react';
-import { toast } from 'react-toastify';
-import LoadingState from './loading-state';
 
-const CREDITS_CONTAINER_CSS =
-  'bg-primary text-letter text-xs font-normal mr-1 sx:mr-2 p-1 xs:p-2 h-full max-xs:w-full rounded-xl xs:rounded-3xl shadow-inner flex flex-row items-center justify-center hover:cursor-pointer hover:bg-gray-700';
+const LINK_BEFORE_CSS =
+  'before:absolute before:bottom-0 before:left-0 before:bg-letter before:h-px before:w-1/3 before:translate-x-full';
 
 interface IUserAvatar {
-  credits?: number;
-  isSubscribed?: boolean;
-  userStripeId?: string;
+  userName: string;
+  userPicture: string;
 }
 
-const UserAvatar: FC<IUserAvatar> = ({
-  credits,
-  isSubscribed,
-  userStripeId,
-}) => {
-  const { user } = useUser();
+const UserAvatar: FC<IUserAvatar> = ({ userName, userPicture }) => {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-
   const userInitials = useMemo(() => {
-    const name = user?.name || '';
+    const name = userName || '';
     const initials = name
       .match(/(^\S\S?|\b\S)?/g)
       ?.join('')
@@ -35,82 +23,31 @@ const UserAvatar: FC<IUserAvatar> = ({
       .toUpperCase();
 
     return initials;
-  }, [user?.name]);
-
-  const router = useRouter();
-
-  const goToBilling = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get('/api/billing', {
-        params: {
-          customerId: userStripeId,
-        },
-      });
-      await router.push(data.url);
-      setLoading(false);
-    } catch (err: any) {
-      toast.error(err.response?.data || err.message || err, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
-  };
+  }, [userName]);
 
   return (
-    <div>
-      <LoadingState isLoading={loading} label="Redirecionando" />
-      <div className="flex items-center ml-3">
-        {isSubscribed ? (
-          <div className={CREDITS_CONTAINER_CSS}>
-            <span className="font-bold text-detail text-[0.45rem]  xs:text-[0.55rem] sm:text-sm md:text-md">
-              Acesso Total
-            </span>
-          </div>
+    <>
+      <div
+        id="userAvatar"
+        onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+        className="relative inline-flex items-center justify-center w-10 h-6 xs:w-10 xs:h-10 overflow-hidden rounded-full bg-detail hover:cursor-pointer -mr-5"
+      >
+        {userPicture ? (
+          <Image
+            src={userPicture}
+            alt={`Foto de perfil de ${userName}`}
+            priority
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: 'contain',
+            }}
+          />
         ) : (
-          <Link
-            href="/precos"
-            className={`${CREDITS_CONTAINER_CSS} hover:cursor-pointer hover:bg-gray-700`}
-          >
-            <div>
-              <span className="font-bold text-detail">{credits}&nbsp;</span>
-              Creditos
-            </div>
-            <div className="ml-2 h-5 w-5">
-              <svg
-                fill="none"
-                stroke="currentColor"
-                className="text-letter"
-                strokeWidth={1.5}
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-            </div>
-          </Link>
-        )}
-
-        <div
-          id="userAvatar"
-          onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-          className="relative inline-flex items-center justify-center w-10 h-6 xs:w-10 xs:h-10 shadow-inner overflow-hidden rounded-full bg-primary hover:bg-gray-700 hover:cursor-pointer"
-        >
-          <span className="text-letter font-bold text-xs xs:text-lg">
+          <span className="text-primary font-bold text-xs xs:text-lg">
             {userInitials}
           </span>
-        </div>
+        )}
       </div>
 
       <div>
@@ -122,18 +59,18 @@ const UserAvatar: FC<IUserAvatar> = ({
         )}
         <div
           id="userDropdown"
-          className={`z-100 ml-20 absolute mt-2 max-sm:right-2 md:max-lg:ml-12 rounded-md shadow bg-primary ${
+          className={`z-100 right-2 top-10 absolute mt-2 max-sm:right-2 md:max-lg:ml-12 rounded-md shadow bg-secondary ${
             isUserDropdownOpen ? 'block' : 'hidden'
           }`}
         >
           <ul
-            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+            className="pb-2 pt-1 text-sm text-gray-700 dark:text-gray-200"
             aria-labelledby="userAvatar"
           >
-            <li>
+            <li className="relative mb-2">
               <Link
                 href="/criar"
-                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center"
+                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg
@@ -160,10 +97,10 @@ const UserAvatar: FC<IUserAvatar> = ({
               </Link>
             </li>
 
-            <li>
+            <li className="relative mb-2">
               <Link
                 href="/colecao"
-                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center"
+                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg
@@ -185,36 +122,10 @@ const UserAvatar: FC<IUserAvatar> = ({
               </Link>
             </li>
 
-            <div className="h-0.5 w-full my-2 bg-letter opacity-70" />
-
-            <li>
-              <button
-                onClick={() => goToBilling()}
-                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center"
-              >
-                <div className="h-6 w-6 mr-2">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                    ></path>
-                  </svg>
-                </div>
-                Compras
-              </button>
-            </li>
-            <li>
+            <li className="relative mb-2">
               <Link
                 href="/api/auth/logout"
-                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center"
+                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg
@@ -239,7 +150,7 @@ const UserAvatar: FC<IUserAvatar> = ({
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
