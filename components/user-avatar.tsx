@@ -30,7 +30,7 @@ const UserAvatar: FC<IUserAvatar> = ({ userName, userPicture }) => {
       <div
         id="userAvatar"
         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-        className="relative inline-flex items-center justify-center w-10 h-6 xs:w-10 xs:h-10 overflow-hidden rounded-full bg-detail hover:cursor-pointer -mr-5"
+        className="relative inline-flex items-center justify-center w-8 h-8 xs:w-10 xs:h-10 overflow-hidden rounded-full bg-detail hover:cursor-pointer -mr-5"
       >
         {userPicture ? (
           <Image
@@ -125,7 +125,7 @@ const UserAvatar: FC<IUserAvatar> = ({ userName, userPicture }) => {
             <li className="relative mb-2">
               <Link
                 href="/api/auth/logout"
-                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center ${LINK_BEFORE_CSS}`}
+                className={`px-4 py-2 hover:bg-gray-600 hover:text-letter flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg
