@@ -135,7 +135,7 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
                       {generationCount[style]}
                     </span>
                   </div>
-                  <div className="bg-detail h-px w-1/2 mx-auto mt-1" />
+                  <div className="bg-detail h-px w-1/2 mt-1" />
                 </Link>
               );
             })}
