@@ -38,7 +38,7 @@ const App: FC<IAPP> = ({ user }) => {
 
   const handleCreate = async (params: ParamsType) => {
     setLoadingImages(true);
-    if (window.innerWidth <= 1024) setToggleForm(false);
+    setToggleForm(false);
 
     try {
       const response = await generateImage(params, userData);
@@ -196,183 +196,182 @@ const App: FC<IAPP> = ({ user }) => {
                   </Link>
                 </div>
               )}
-
-              {toggleForm && (
-                <form
-                  onSubmit={handleSubmit(handleCreate)}
-                  className="max-md:w-full"
-                >
-                  <div className="mb-3 relative focus:border-detail">
-                    <label
-                      htmlFor="prompt"
-                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
-                    >
-                      Descreva sua tattoo
-                    </label>
-                    {promptVal.length > maxPromptLenght - 15 && (
-                      <div className="text-xs text-gray-400 text-right absolute right-2 bottom-2">
-                        {promptVal.length} / {maxPromptLenght}
-                      </div>
-                    )}
-                    <textarea
-                      id="prompt"
-                      {...register('prompt', { maxLength: maxPromptLenght })}
-                      rows={4}
-                      maxLength={maxPromptLenght}
-                      className=" bg-primary
+              <form
+                onSubmit={handleSubmit(handleCreate)}
+                className={`${
+                  toggleForm ? 'block' : 'max-lg:hidden'
+                } max-md:w-full`}
+              >
+                <div className="mb-3 relative focus:border-detail">
+                  <label
+                    htmlFor="prompt"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                  >
+                    Descreva sua tattoo
+                  </label>
+                  {promptVal.length > maxPromptLenght - 15 && (
+                    <div className="text-xs text-gray-400 text-right absolute right-2 bottom-2">
+                      {promptVal.length} / {maxPromptLenght}
+                    </div>
+                  )}
+                  <textarea
+                    id="prompt"
+                    {...register('prompt', { maxLength: maxPromptLenght })}
+                    rows={4}
+                    maxLength={maxPromptLenght}
+                    className=" bg-primary
                     placeholder-shown:text-2xs md:placeholder-shown:text-md 
                     max-w-full max-h-48 lg:max-h-64 h-20 md:h-32 lg:h-48 
                     block p-2.5 w-full text-sm rounded-lg 
                     border border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
-                      placeholder="Um pescador viajando pelo espaço"
-                    />
-                  </div>
-
-                  <div className="w-full mb-3">
-                    <label
-                      htmlFor="cores"
-                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
-                    >
-                      Cores
-                    </label>
-                    <select
-                      {...register('colorsStyle')}
-                      id="countries"
-                      className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
-                    border-letter placeholder-gray-400 text-letter focus:border-detail"
-                    >
-                      <option value="Colorful">Colorido</option>
-                      <option value="Black and White">Preto e Branco</option>
-                    </select>
-                  </div>
-
-                  <div className="w-full mb-3">
-                    <label
-                      htmlFor="estilo"
-                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
-                    >
-                      Estilo
-                    </label>
-                    <select
-                      {...register('tattooStyle')}
-                      id="estilo"
-                      className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5  border-letter placeholder-gray-400 text-letter focus:border-detail"
-                    >
-                      {tattooStyles.map((tattoo, idx) => (
-                        <option key={idx} value={tattoo} className="py-4">
-                          {tattoo}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="mb-3">
-                    <label
-                      htmlFor="first_name"
-                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
-                    >
-                      Artistas para inspiração{' '}
-                      <span className="text-gray-400 text-2xs md:text-xs">
-                        (Opcional)
-                      </span>
-                    </label>
-                    <input
-                      {...register('artistInspiration')}
-                      type="text"
-                      id="first_name"
-                      className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 
-                    placeholder:text-2xs border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
-                      placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"
-                    />
-                  </div>
-
-                  <div className="mb-3">
-                    <label className="relative inline-flex items-center">
-                      <input
-                        type="checkbox"
-                        {...register('isPrivate')}
-                        className="sr-only peer"
-                        disabled={user?.freeTrial ?? true}
-                      />
-                      <div
-                        className={`w-11 h-6 ${
-                          user?.freeTrial
-                            ? 'cursor-not-allowed border-gray-500'
-                            : 'cursor-pointer border-letter'
-                        } border peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-600 rounded-full peer peer-checked:after:translate-x-full 
-                      peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
-                      after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-detail`}
-                      ></div>
-                      <span
-                        className={`ml-3 text-xs md:text-sm font-medium ${
-                          user?.freeTrial ? 'text-gray-500' : 'text-letter'
-                        }`}
-                      >
-                        Arte Privada{' '}
-                        {!user?.subscribed && (
-                          <span className="text-gray-400 text-xs">
-                            {!user?.freeTrial && '(+2 creditos)'}
-                          </span>
-                        )}
-                      </span>
-                    </label>
-                  </div>
-
-                  {(userData.credits || 0) > 0 || userData.subscribed ? (
-                    <button
-                      type="submit"
-                      disabled={loadingImages}
-                      className={`flex items-center justify-center text-sm md:text-xl bg-gradient-to-r w-full font-bold text-primary p-2 md:p-3 rounded-md ${
-                        loadingImages
-                          ? 'bg-gray-400'
-                          : 'bg-detail hover:scale-105'
-                      }`}
-                    >
-                      <div className="w-4 h-4 md:w-6 md:h-6 mr-2">
-                        <svg
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={1.5}
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
-                          />
-                        </svg>
-                      </div>
-                      Criar tattoo
-                    </button>
-                  ) : (
-                    <Link
-                      href="/precos?tab=package"
-                      className={`${oswald.className} text-center block bg-gradient-to-r w-full font-bold text-xl text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
-                    >
-                      Compre o passe de acesso
-                    </Link>
-                  )}
-                </form>
-              )}
-              {toggleForm && (
-                <div className="flex justify-center w-full">
-                  <Image
-                    src={`/images/tattoo-machine.png`}
-                    alt="Uma máquina de tatuagem, demonstrando o que poderia ser usado pela IA do TattooArtIA!"
-                    width={200}
-                    height={120}
-                    priority
-                    quality={100}
-                    className="hidden md:block rotate-12 mt-3 opacity-50 mr-2"
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                    }}
+                    placeholder="Um pescador viajando pelo espaço"
                   />
                 </div>
-              )}
+
+                <div className="w-full mb-3">
+                  <label
+                    htmlFor="cores"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                  >
+                    Cores
+                  </label>
+                  <select
+                    {...register('colorsStyle')}
+                    id="countries"
+                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
+                    border-letter placeholder-gray-400 text-letter focus:border-detail"
+                  >
+                    <option value="Colorful">Colorido</option>
+                    <option value="Black and White">Preto e Branco</option>
+                  </select>
+                </div>
+
+                <div className="w-full mb-3">
+                  <label
+                    htmlFor="estilo"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                  >
+                    Estilo
+                  </label>
+                  <select
+                    {...register('tattooStyle')}
+                    id="estilo"
+                    className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5  border-letter placeholder-gray-400 text-letter focus:border-detail"
+                  >
+                    {tattooStyles.map((tattoo, idx) => (
+                      <option key={idx} value={tattoo} className="py-4">
+                        {tattoo}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label
+                    htmlFor="first_name"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                  >
+                    Artistas para inspiração{' '}
+                    <span className="text-gray-400 text-2xs md:text-xs">
+                      (Opcional)
+                    </span>
+                  </label>
+                  <input
+                    {...register('artistInspiration')}
+                    type="text"
+                    id="first_name"
+                    className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 
+                    placeholder:text-2xs border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
+                    placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="relative inline-flex items-center">
+                    <input
+                      type="checkbox"
+                      {...register('isPrivate')}
+                      className="sr-only peer"
+                      disabled={user?.freeTrial ?? true}
+                    />
+                    <div
+                      className={`w-11 h-6 ${
+                        user?.freeTrial
+                          ? 'cursor-not-allowed border-gray-500'
+                          : 'cursor-pointer border-letter'
+                      } border peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-600 rounded-full peer peer-checked:after:translate-x-full 
+                      peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
+                      after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-detail`}
+                    ></div>
+                    <span
+                      className={`ml-3 text-xs md:text-sm font-medium ${
+                        user?.freeTrial ? 'text-gray-500' : 'text-letter'
+                      }`}
+                    >
+                      Arte Privada{' '}
+                      {!user?.subscribed && (
+                        <span className="text-gray-400 text-xs">
+                          {!user?.freeTrial && '(+2 creditos)'}
+                        </span>
+                      )}
+                    </span>
+                  </label>
+                </div>
+
+                {(userData.credits || 0) > 0 || userData.subscribed ? (
+                  <button
+                    type="submit"
+                    disabled={loadingImages}
+                    className={`flex items-center justify-center text-sm md:text-xl bg-gradient-to-r w-full font-bold text-primary p-2 md:p-3 rounded-md ${
+                      loadingImages
+                        ? 'bg-gray-400'
+                        : 'bg-detail hover:scale-105'
+                    }`}
+                  >
+                    <div className="w-4 h-4 md:w-6 md:h-6 mr-2">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
+                        />
+                      </svg>
+                    </div>
+                    Criar tattoo
+                  </button>
+                ) : (
+                  <Link
+                    href="/precos?tab=package"
+                    className={`${oswald.className} text-center block bg-gradient-to-r w-full font-bold text-xl text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+                  >
+                    Compre o passe de acesso
+                  </Link>
+                )}
+              </form>
+              <div className="flex justify-center w-full">
+                <Image
+                  src={`/images/tattoo-machine.png`}
+                  alt="Uma máquina de tatuagem, demonstrando o que poderia ser usado pela IA do TattooArtIA!"
+                  width={200}
+                  height={120}
+                  priority
+                  quality={100}
+                  className={`${
+                    toggleForm ? 'hidden md:block' : 'max-lg:hidden'
+                  } rotate-12 mt-3 opacity-50 mr-2`}
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+              </div>
             </div>
             <button
               type="button"
