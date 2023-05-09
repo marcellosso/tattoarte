@@ -45,12 +45,12 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
       {images?.map((image) => (
         <div
           key={image}
-          className="md:w-[420px] 2xl:w-[640px] w-full h-full min-h-[320px] md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative hover:scale-105"
+          className="md:w-[420px] 2xl:w-[640px] w-full h-full min-h-[320px] md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative "
         >
           <Image
             src={image}
             alt="Arte de tatuagem criada pela inteligência artificial - TattooArtIA!"
-            className="rounded-md hover:cursor-pointer"
+            className="rounded-md hover:cursor-pointer hover:opacity-60 transition-all duration-200"
             onClick={() => setOpenFullscreenImageModal(image)}
             fill
             sizes="100vw"
