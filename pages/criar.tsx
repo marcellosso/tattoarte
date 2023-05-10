@@ -141,31 +141,41 @@ const App: FC<IAPP> = ({ user }) => {
             } lg:w-1/5 lg:h-full  overflow-y-scroll scrollbar-hide max-md:flex max-md:justify-between max-md:flex-col`}
           >
             <div className="flex flex-col items-center justify-center">
-              {toggleForm && (
-                <>
-                  <h1 className="text-xs md:text-md font-bold text-letter text-center divide-letter md:py-2 px-0">
-                    Crie suas <span className="text-detail">tattoos</span>,{' '}
-                    {user?.name}!
-                  </h1>
-                  <span className="text-gray-400 text-2xs md:text-xs text-center pb-1 md:pb-3">
-                    Voce já criou
-                    <span className="text-detail">
-                      {' '}
-                      {(userData.generationCount || 0) * 4} tatuagens!
-                    </span>
-                  </span>
-                </>
-              )}
+              <h1
+                className={`
+              ${toggleForm ? 'max-md:block' : 'max-md:hidden'}
+              text-xs md:text-md font-bold text-letter text-center divide-letter md:py-2 px-0
+              `}
+              >
+                Crie suas <span className="text-detail">tattoos</span>,{' '}
+                {user?.name}!
+              </h1>
+              <span
+                className={`
+              ${toggleForm ? 'max-md:block' : 'max-md:hidden'}
+              text-gray-400 text-2xs md:text-xs text-center pb-1 md:pb-3
+              `}
+              >
+                Voce já criou
+                <span className="text-detail">
+                  {' '}
+                  {(userData.generationCount || 0) * 4} tatuagens!
+                </span>
+              </span>
               <Link
                 href="/precos"
                 className={`${
-                  toggleForm ? 'text-sm' : 'text-lg'
+                  toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
                 } text-detail text-center font-black pb-1 md:pb-3`}
               >
                 <span className="text-letter font-medium">Créditos:</span>{' '}
                 {userData.credits}
               </Link>
-              {toggleForm && <div className="h-px w-1/2 bg-detail" />}
+              <div
+                className={`${
+                  toggleForm ? 'max-md:block' : 'max-md:hidden'
+                } h-px w-1/2 bg-detail`}
+              />
             </div>
 
             <div

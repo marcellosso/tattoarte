@@ -150,9 +150,9 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
                 <Image
                   src={generation.imageUrl}
                   alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
-                  priority
                   className="rounded-md"
-                  loader={() => generation.imageUrl}
+                  placeholder="blur"
+                  blurDataURL="/images/tattoo-blur-load.webp"
                   fill
                   sizes="100vw"
                   style={{

@@ -189,6 +189,8 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                 className="rounded-md"
                 onClick={() => setOpenFullscreenImageModal(true)}
                 fill
+                placeholder="blur"
+                blurDataURL="/images/tattoo-blur-load.webp"
                 sizes="100vw"
                 style={{
                   objectFit: 'cover',

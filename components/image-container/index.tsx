@@ -53,6 +53,8 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
             className="rounded-md hover:cursor-pointer hover:opacity-60 transition-all duration-200"
             onClick={() => setOpenFullscreenImageModal(image)}
             fill
+            placeholder="blur"
+            blurDataURL="/images/tattoo-blur-load.webp"
             sizes="100vw"
             style={{
               objectFit: 'cover',
