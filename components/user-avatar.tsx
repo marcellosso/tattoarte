@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useMemo, useState } from 'react';
 
@@ -7,10 +6,9 @@ const LINK_BEFORE_CSS =
 
 interface IUserAvatar {
   userName: string;
-  userPicture: string;
 }
 
-const UserAvatar: FC<IUserAvatar> = ({ userName, userPicture }) => {
+const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   const userInitials = useMemo(() => {
@@ -30,24 +28,11 @@ const UserAvatar: FC<IUserAvatar> = ({ userName, userPicture }) => {
       <div
         id="userAvatar"
         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-        className="relative inline-flex items-center justify-center w-8 h-8 xs:w-10 xs:h-10 overflow-hidden rounded-full bg-detail hover:cursor-pointer -mr-5"
+        className="relative inline-flex items-center justify-center w-10 h-6 xs:w-10 xs:h-10 overflow-hidden rounded-full bg-detail hover:bg-yellow-500 hover:cursor-pointer transition-all duration-200  -mr-5"
       >
-        {userPicture ? (
-          <Image
-            src={userPicture}
-            alt={`Foto de perfil de ${userName}`}
-            priority
-            fill
-            sizes="100vw"
-            style={{
-              objectFit: 'contain',
-            }}
-          />
-        ) : (
-          <span className="text-primary font-bold text-xs xs:text-lg">
-            {userInitials}
-          </span>
-        )}
+        <span className="text-primary font-bold text-xs xs:text-lg">
+          {userInitials}
+        </span>
       </div>
 
       <div>

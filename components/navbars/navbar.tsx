@@ -21,7 +21,6 @@ const MobileNavbarLink: FC<IMobileNavbarLink> = ({
 }) => (
   <Link
     href={linkRoute}
-    // className={`px-4 py-2 flex items-center`}
     className={`
       px-4 py-2 flex items-center
        before:bg-detail  before:absolute before:w-1 before:transition-all before:duration-300 before:-ml-2
@@ -43,7 +42,7 @@ const MobileNavbar: FC<IMobileNavbar> = ({
 }) => (
   <div
     id="userDropdown"
-    className={`z-100 top-12 right-2 absolute rounded-bl-md bg-primary transition-all ease-linear transform duration-300 ${
+    className={`z-100 top-12 right-2 absolute rounded-bl-md bg-primary transition ease-linear transform duration-300 ${
       toggleMobileNavbar ? 'block' : 'hidden'
     }`}
   >
@@ -114,10 +113,11 @@ const Navbar = () => {
           >
             Crie sua arte
           </Link>
-          {user && (
-            <UserAvatar
-              userName={user.name ?? ''}
-              userPicture={user.picture ?? ''}
+          {user && <UserAvatar userName={user.name ?? ''} />}
+          {toggleMobileNavbar && (
+            <div
+              className="fixed top-0 left-0 bottom-0 right-0 bg-primary z-20 opacity-40"
+              onClick={() => setToggleMobileNavbar(false)}
             />
           )}
           <div

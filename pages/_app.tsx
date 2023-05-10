@@ -12,10 +12,12 @@ import NextNProgress from 'nextjs-progressbar';
 import Script from 'next/script';
 import Navbar from '@/components/navbars/navbar';
 
-const raleWay = Raleway({ subsets: ['latin'], display: 'swap' });
+const raleWay = Raleway({ subsets: ['latin'], display: 'swap', preload: true });
 
 const sourceCodePro = Source_Code_Pro({
   subsets: ['latin'],
+  display: 'swap',
+  preload: true,
 });
 
 export default function App({ Component, pageProps }: AppProps) {
