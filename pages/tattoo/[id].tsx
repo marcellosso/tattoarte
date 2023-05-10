@@ -52,17 +52,33 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
     );
   }
 
-  const renderUserTag = () => (
+  const renderUserTag = (isLink = false) => (
     <div className="flex items-end gap-2 mb-2 group">
       <div
         id="userAvatar"
-        className="inline-flex items-center justify-center w-8 h-8 xs:w-12 xs:h-12 overflow-hidden rounded-md bg-letter group-hover:bg-detail group-hover:cursor-pointer transition-all duration-300"
+        className={`
+        inline-flex items-center justify-center w-8 h-8 xs:w-12 xs:h-12 overflow-hidden rounded-md bg-letter 
+        ${
+          isLink
+            ? 'group-hover:bg-detail group-hover:cursor-pointer transition-all duration-300'
+            : ''
+        } 
+        `}
       >
         <span className="text-primary font-bold text-xs xs:text-lg">
           {userInitials}
         </span>
       </div>
-      <h4 className="text-letter text-xl sm:text-3xl font-extrabold group-hover:cursor-pointer group-hover:text-detail transition-all duration-300">
+      <h4
+        className={`
+      text-letter text-xl sm:text-3xl font-extrabold 
+      ${
+        isLink
+          ? 'group-hover:cursor-pointer group-hover:text-detail transition-all duration-300'
+          : ''
+      }
+      `}
+      >
         {generation?.authorName}
       </h4>
     </div>
@@ -174,7 +190,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             <div className="w-full sm:w-[512px] flex items-center gap-2">
               {generation.authorId ? (
                 <Link href={`/colecao?userId=${generation.authorId}`}>
-                  {renderUserTag()}
+                  {renderUserTag(true)}
                 </Link>
               ) : (
                 <h4>{renderUserTag()}</h4>
