@@ -18,7 +18,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   const router = useRouter();
 
   const userInitials = useMemo(() => {
-    const name = generation.authorName || '';
+    const name = generation?.authorName || '';
     const initials = name
       .match(/(^\S\S?|\b\S)?/g)
       ?.join('')
@@ -27,7 +27,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
       .toUpperCase();
 
     return initials;
-  }, [generation.authorName]);
+  }, [generation?.authorName]);
 
   if (router.isFallback) {
     return (
@@ -63,7 +63,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
         </span>
       </div>
       <h4 className="text-letter text-xl sm:text-3xl font-extrabold group-hover:cursor-pointer group-hover:text-detail transition-all duration-300">
-        {generation.authorName}
+        {generation?.authorName}
       </h4>
     </div>
   );
