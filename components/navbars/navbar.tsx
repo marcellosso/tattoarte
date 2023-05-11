@@ -121,7 +121,7 @@ const Navbar = () => {
             />
           )}
           <div
-            className="block lg:hidden space-y-2"
+            className="block lg:hidden space-y-2 z-100"
             onClick={() => setToggleMobileNavbar((prev) => !prev)}
           >
             <span

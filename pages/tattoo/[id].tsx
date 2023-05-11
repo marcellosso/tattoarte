@@ -218,7 +218,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               <span className="text-letter text-xs sm:text-sm font-light">
                 {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
               </span>
-              <div className="flex gap-4">
+              {/* <div className="flex gap-4">
                 <div className="flex items-center gap-1">
                   <svg
                     fill="none"
@@ -257,7 +257,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
 
                   <p className="font-bold text-md sm:text-xl">342</p>
                 </div>
-              </div>
+              </div> */}
             </div>
             <Link
               href="/criar"

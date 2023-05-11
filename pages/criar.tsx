@@ -247,7 +247,7 @@ const App: FC<IAPP> = ({ user }) => {
                   </label>
                   <select
                     {...register('colorsStyle')}
-                    id="countries"
+                    id="cores"
                     className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
                     border-letter placeholder-gray-400 text-letter focus:border-detail"
                   >
@@ -278,7 +278,7 @@ const App: FC<IAPP> = ({ user }) => {
 
                 <div className="mb-3">
                   <label
-                    htmlFor="first_name"
+                    htmlFor="inspiracao"
                     className="block mb-2 text-xs md:text-sm font-normal text-letter"
                   >
                     Artistas para inspiração{' '}
@@ -289,7 +289,7 @@ const App: FC<IAPP> = ({ user }) => {
                   <input
                     {...register('artistInspiration')}
                     type="text"
-                    id="first_name"
+                    id="inspiracao"
                     className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 
                     placeholder:text-2xs border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
                     placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"

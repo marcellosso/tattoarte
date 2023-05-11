@@ -82,7 +82,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
               Cria um design <span className="text-detail">perfeito</span> para
               suas tatuagens
             </h1>
-            <p className="mb-10 font-light text-letter text-xs sm:text-lg">
+            <h2 className="mb-10 font-light text-letter text-xs sm:text-lg">
               Nossa IA artista de tatuagens é capaz de gerar designs
               personalizados ilimitados em segundos, baseado em seu gosto
               pessoal e suas ideias. Você pode criar designs para tatuagens de{' '}
@@ -93,7 +93,7 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
               <span className="text-detail font-bold">complexos</span>,
               utilizando diversos elementos e{' '}
               <span className="text-detail font-bold">inspirações</span>.
-            </p>
+            </h2>
             <Link
               href="/criar"
               className="font-bold text-[0.55rem] xs:text-xs sm:text-sm md:text-lg text-primary px-5 xs:px-10 py-2 xs:py-3 rounded-md bg-detail hover:bg-yellow-500"
@@ -103,9 +103,9 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
           </div>
 
           <div className="flex w-full items-center justify-between mb-4">
-            <h2 className="font-medium text-sm sm:text-md md:text-3xl">
-              Encontre seu estilo favorito
-            </h2>
+            <h3 className="font-medium text-sm sm:text-md md:text-3xl">
+              Escolha a melhor opção para você
+            </h3>
             <div className="bg-detail h-0.5 w-1/3 sm:w-1/2" />
           </div>
 

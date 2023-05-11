@@ -78,26 +78,26 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
         <h1 className="text-md xs:text-xl md:text-4xl font-bold text-center">
           <span className="text-detail">Estilos</span> de tatuagem
         </h1>
-        <p className="text-letter text-center text-xs xs:text-sm md:text-lg mb-2 md:mb-0">
+        <h2 className="text-letter text-center text-xs xs:text-sm md:text-lg mb-2 md:mb-0">
           Veja todos os estilos disponíveis para utilizar com nosso{' '}
           <span className="text-detail">artista</span> IA.
-        </p>
-        <p className="text-letter text-center text-xs xs:text-sm md:text-lg mb-3">
+        </h2>
+        <h2 className="text-letter text-center text-xs xs:text-sm md:text-lg mb-3">
           Observe milhares de designs unícos e de alta qualidade, descubra o
           ideal para você ou crie um você mesmo!
-        </p>
+        </h2>
         <Link
           href="/criar"
-          className="mb-3 flex items-center font-bold justify-center bg-detail hover:scale-105 text-sm sm:text-md md:text-lg sm:w-1/3 lg:w-1/5 text-primary p-2 rounded-md"
+          className="mb-3 flex items-center font-bold justify-center bg-detail hover:scale-105 text-sm sm:text-md md:text-lg sm:w-1/3 lg:w-1/6 text-primary p-2 rounded-md"
         >
           Crie sua própria arte
         </Link>
 
-        <div className="h-full w-full mt-4 rounded-md p-6 ">
+        <div className="h-full w-full mt-4 rounded-md p-6">
           <div className="flex w-full items-center justify-between mb-2">
-            <h2 className="font-medium text-sm sm:text-md md:text-3xl">
+            <h3 className="font-medium text-sm sm:text-md md:text-3xl">
               Encontre seu estilo favorito
-            </h2>
+            </h3>
             <div className="bg-detail h-0.5 w-1/2" />
           </div>
           <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 w-full h-full grid-rows-none gap-5 place-items-center">
