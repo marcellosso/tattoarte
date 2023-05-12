@@ -22,8 +22,8 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
     if (generationCursor) {
       prismaCallObj.cursor = {
         id: generationCursor as string,
-        skip: 1,
       };
+      prismaCallObj.skip = 1;
     }
 
     const generations = (await prisma.generation.findMany(prismaCallObj)) || [];
