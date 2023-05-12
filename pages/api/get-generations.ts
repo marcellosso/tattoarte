@@ -12,7 +12,6 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
         style: (generationStyle || undefined) as string,
       },
       take: 24,
-      skip: 1,
       orderBy: [
         {
           createdAt: 'desc',
@@ -22,7 +21,8 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (generationCursor) {
       prismaCallObj.cursor = {
-        id: (generationCursor as string) || undefined,
+        id: generationCursor as string,
+        skip: 1,
       };
     }
 
