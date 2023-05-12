@@ -136,7 +136,7 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
             <div className="h-full w-full flex gap-3">
               <div
                 className={`${
-                  loadingProduct && 'bg-gray-400 animate-pulse'
+                  loadingProduct && 'bg-secondary animate-pulse'
                 } h-full w-1/3 md:w-1/6 rounded-md relative`}
               >
                 {!loadingProduct && (
@@ -156,7 +156,7 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
               <div className="flex flex-col h-full w-5/6 gap-2 p-2">
                 <div
                   className={`${
-                    loadingProduct && 'bg-gray-400 animate-pulse'
+                    loadingProduct && 'bg-secondary animate-pulse'
                   } w-full md:w-1/2 h-1/3 rounded-md`}
                 >
                   {!loadingProduct && (
@@ -167,7 +167,7 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
                 </div>
                 <div
                   className={`${
-                    loadingProduct && 'bg-gray-400 animate-pulse'
+                    loadingProduct && 'bg-secondary animate-pulse'
                   }  w-full h-2/3 rounded-md`}
                 >
                   {!loadingProduct && (
@@ -181,7 +181,7 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
           </div>
           <div
             className={`${
-              loadingProduct ? 'bg-gray-400 animate-pulse' : 'bg-gray-700'
+              loadingProduct ? 'bg-secondary animate-pulse' : 'bg-secondary'
             } w-full h-1/3 rounded-lg justify-between items-center flex p-2 md:p-4`}
           >
             {!loadingProduct && (

@@ -7,7 +7,7 @@ import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
-import React, { FC, useMemo, useRef, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import handleUserSubscription from '@/utils/user-subscription';
@@ -162,15 +162,25 @@ const App: FC<IAPP> = ({ user }) => {
                   {(userData.generationCount || 0) * 4} tatuagens!
                 </span>
               </span>
-              <Link
-                href="/precos"
-                className={`${
-                  toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
-                } text-detail text-center font-black pb-1 md:pb-3`}
-              >
-                <span className="text-letter font-medium">Créditos:</span>{' '}
-                {userData.credits}
-              </Link>
+              {!user.subscribed ? (
+                <Link
+                  href="/precos"
+                  className={`${
+                    toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
+                  } text-detail text-center font-black pb-1 md:pb-3`}
+                >
+                  <span className="text-letter font-medium">Créditos:</span>{' '}
+                  {userData.credits}
+                </Link>
+              ) : (
+                <span
+                  className={`${
+                    toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
+                  } text-letter text-center font-black pb-1 md:pb-3`}
+                >
+                  Acesso Total
+                </span>
+              )}
               <div
                 className={`${
                   toggleForm ? 'max-md:block' : 'max-md:hidden'
