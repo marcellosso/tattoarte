@@ -81,7 +81,7 @@ const Navbar = () => {
   const [toggleMobileNavbar, setToggleMobileNavbar] = useState(false);
 
   return (
-    <nav className="bg-navbar fixed w-full z-20 top-0 left-0 max-h-12 p-2 py-1">
+    <nav className="bg-navbar fixed w-full z-100 top-0 left-0 max-h-12 p-2 py-1">
       <div className="flex flex-wrap items-center justify-between mx-auto">
         <Logo />
 
