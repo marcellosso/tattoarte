@@ -110,7 +110,7 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
           alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
           className="rounded-md md:hover:opacity-60 transition-all duration-200"
           placeholder="blur"
-          blurDataURL="/images/tattoo-blur-load.webp"
+          blurDataURL="/images/blur-image.jpg"
           fill
           sizes="100vw"
           style={{

@@ -54,7 +54,7 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
             onClick={() => setOpenFullscreenImageModal(image)}
             fill
             placeholder="blur"
-            blurDataURL="/images/tattoo-blur-load.webp"
+            blurDataURL="/images/blur-image.jpg"
             sizes="100vw"
             style={{
               objectFit: 'cover',
