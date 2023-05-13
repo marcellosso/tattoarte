@@ -68,96 +68,148 @@ const Home = () => {
           content="ffZ_-cy0-_bgVD36C25pYT39CdP6aXu3hhx3FNd-En4"
         />
       </Head>
-      <section className="flex min-h-screen h-screen flex-col items-center pt-4 md:pt-8 pb-0 text-letter overflow-y-scroll scrollbar-hide">
-        <section>
-          <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 mt-6 mb-2">
-            <div className="mx-auto max-w-screen-md text-center">
-              <h1 className="mb-4 text-xl sm:text-2xñ md:text-4xl tracking-tight font-bold text-letter">
-                CRIE TATUAGENS{' '}
-                <span className="text-detail font-extrabold">ÚNICAS</span> COM{' '}
-                <span className="text-detail font-extrabold">IA</span>
-              </h1>
-              <p className="mb-4 font-normal text-letter text-xs sm:text-sm md:text-md">
-                Caso possua uma ideia para uma{' '}
-                <span className="text-detail font-bold uppercase">
-                  tatuagem
-                </span>
-                , mas esteja tendo dificuldades em encontrar o desenho adequado,
-                nossa tecnologia de{' '}
-                <span className="text-detail font-bold uppercase">
-                  inteligência artificial
-                </span>{' '}
-                pode ajudá-lo a gerar uma em poucos segundos. Com base no que
-                você gosta, você poderá criar um design{' '}
-                <span className="text-detail font-bold uppercase">
-                  único e perfeito
-                </span>{' '}
-                e ainda terá à disposição uma infinidade de opções.
-              </p>
-              <div className="flex flex-col w-full max-w-screen-sm items-center justify-center mx-auto gap-4">
-                <div className="relative w-full mt-5 md:mt-0">
-                  <div className="absolute -left-2 flex items-center gap-2 -top-6 md:top-1">
-                    <span className="text-xs text-letter font-light animate-pulse">
-                      Oferta por tempo limitado
-                    </span>
-                    <svg
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="text-letter w-4 h-4 block md:hidden rotateY"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3"
-                      />
-                    </svg>
-                    <svg
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                      className="text-letter w-4 h-4 hidden md:block"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </div>
-                  <Link
-                    href="/precos?tab=package"
-                    className={`bg-gradient-to-r font-bold text-letter text-sm p-2 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+      <section className="flex min-h-screen h-screen flex-col items-center pt-12 md:pt-24 pb-0 text-letter overflow-y-scroll scrollbar-hide">
+        <header className="min-h-screen min-w-screen relative">
+          <div className="flex gap-24 p-6 items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-12 w-1/2">
+              <div className="flex flex-col items-center gap-2">
+                <h1 className="text-letter text-lg sm:text-xl lg:text-4xl 2xl:text-5xl 3xl:text-6xl">
+                  CRIE TAUTAGENS
+                </h1>
+                <div className="h-1 w-1/4 bg-detail" />
+                <h1 className="text-letter text-lg sm:text-xl lg:text-4xl 2xl:text-5xl 3xl:text-6xl">
+                  <span className="text-detail">ÚNICAS</span> COM{' '}
+                  <span className="text-detail">IA</span>
+                </h1>
+                <div className="h-1 w-2/3 bg-detail" />
+              </div>
+
+              <div className="flex flex-col w-2/3 items-center gap-2">
+                <h2 className="font-bold text-lg text-center">
+                  Chega de tatuagens genéricas, crie uma tatuagem única em
+                  segundos de acordo com seu gosto. Escolhe entre diversos
+                  estilos para criar a sua próxima tatuagem!
+                </h2>
+                <div className="h-0.5 w-1/6 bg-detail" />
+              </div>
+
+              <div className="flex flex-col w-2/3 items-center gap-2">
+                <h3 className="font-bold text-lg text-center">
+                  Crie sua arte agora e ganhe{' '}
+                  <span className="text-detail">créditos gratuítos</span>
+                </h3>
+              </div>
+
+              <div className="flex flex-col w-1/2 relative gap-2 items-center">
+                <div className="flex gap-2 -ml-6">
+                  <span className="text-sm text-letter font-light animate-pulse -mt-2">
+                    Oferta por tempo limitado
+                  </span>
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-letter w-6 h-6"
+                    aria-hidden="true"
                   >
-                    Compre o passe de acesso
-                  </Link>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181"
+                    />
+                  </svg>
                 </div>
                 <Link
+                  href="/precos?tab=package"
+                  className={`bg-gradient-to-r w-2/3 font-bold text-letter text-sm md:text-lg p-2 text-center rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+                >
+                  Compre o passe de acesso
+                </Link>
+                <Link
                   href="/criar"
-                  className="font-bold text-primary text-xs sm:text-sm md:text-md p-3 rounded-md bg-detail hover:bg-yellow-500"
+                  className="font-bold text-primary text-center text-xs sm:text-sm md:text-lg p-3 rounded-md bg-detail hover:bg-yellow-500"
                 >
                   4 tatuagens gratuitas - Crie sua arte agora
                 </Link>
               </div>
-              <p className="mt-6">
-                Crie sua arte agora e ganhe{' '}
-                <span className="font-bold text-detail">
-                  créditos gratuítos
-                </span>
-              </p>
+
+              {/* <div className="relative w-full mt-5 md:mt-0">
+                <div className="absolute -left-2 flex items-center gap-2 -top-6 md:top-1">
+                  <span className="text-xs text-letter font-light animate-pulse">
+                    Oferta por tempo limitado
+                  </span>
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-letter w-4 h-4 block md:hidden rotateY"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3"
+                    />
+                  </svg>
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    className="text-letter w-4 h-4 hidden md:block"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                    />
+                  </svg>
+                </div>
+                <Link
+                  href="/precos?tab=package"
+                  className={`bg-gradient-to-r font-bold text-letter text-sm p-2 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+                >
+                  Compre o passe de acesso
+                </Link>
+              </div> */}
+            </div>
+
+            <div className="w-1/3 h-auto relative">
+              <Image
+                src={`/images/main-bg-big.png`}
+                alt="Uma máquina de um tablet com o TattooArtIA na página de criação de tatuagens"
+                priority
+                quality={100}
+                fill
+                className="staticImg"
+                sizes="100vw"
+              />
             </div>
           </div>
-        </section>
-        <section className="h-full w-full relative flex items-center justify-center">
-          <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center px-4 sm:px-8 lg:px-12 mb-4 lg:mb-2">
-            <div className="h-full w-full lg:w-1/4 flex items-center justify-center gap-3 lg:gap-0 mb-2 lg:mb-0">
-              <div className="w-1/2 h-48 md:h-64 lg:w-72 lg:h-72 z-30 lg:-mt-10 relative rounded-md shadow-lg">
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            className="h-16 w-16 mx-auto animate-pulse absolute left-1/2 bottom-24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </header>
+        <section className="bg-primary min-h-screen min-w-screen h-screen w-screen"></section>
+        {/* <div className="w-1/2 h-48 md:h-64 lg:w-72 lg:h-72 z-30 lg:-mt-10 relative rounded-md shadow-lg">
                 <Image
                   fill
                   className="rounded-md object-cover lg:object-contain"
@@ -195,8 +247,8 @@ const Home = () => {
                   </span>
                 </div>
               </div>
-            </div>
-            <div className="h-full lg:w-1/2 w-full z-30 mt-0 lg:-mt-10 rounded-md shadow-md shadow-gray-50">
+            </div> */}
+        {/* <div className="h-full lg:w-1/2 w-full z-30 mt-0 lg:-mt-10 rounded-md shadow-md shadow-gray-50">
               <video
                 autoPlay
                 muted
@@ -206,31 +258,7 @@ const Home = () => {
               >
                 <source src="/videos/demo.mp4" />
               </video>
-            </div>
-            <div className="h-full w-1/4 flex items-center justify-center">
-              <div className="w-72 h-72 z-30 lg:-mt-10 relative rounded-md shadow-lg hidden lg:block">
-                <Image
-                  fill
-                  className="rounded-md"
-                  style={{
-                    objectFit: 'contain',
-                  }}
-                  priority
-                  src="/images/tattoo-example-2.webp"
-                  alt="Tatuagem criada por nossa Inteligência Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira colorida com elementos psicodelicos em sua facee flores ao redor da cabeça, fundo cinza."
-                />
-                <div className="bg-primary opacity-100 h-10 w-26 p-2 flex items-center justify-center rounded-xl absolute top-1 left-1">
-                  <span className="text-detail">Minimalista</span>
-                </div>
-                <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0">
-                  <span className="text-2xs sm:text-sm lg:text-md overflow-ellipsis overflow-hidden">
-                    Uma caveira com rosas
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+            </div> */}
       </section>
     </main>
   );

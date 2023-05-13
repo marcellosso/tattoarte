@@ -50,3 +50,12 @@ nav {
 .rotateY {
   transform: rotateY(180deg);
 }
+
+.ellipseBg {
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.staticImg {
+  position: static !important;
+}
