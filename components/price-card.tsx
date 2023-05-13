@@ -9,7 +9,7 @@ interface IPriceCard {
 
 const PriceCard: FC<IPriceCard> = ({ product }) => {
   return (
-    <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border shadow border-gray-600 xl:p-6 bg-primary text-letter max-h-[95%]">
+    <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border shadow border-detail xl:p-6 bg-primary text-letter max-h-[95%]">
       <h3 className="text-2xl font-bold text-detail">{product.name}</h3>
       {product.priceBeforeDiscount && (
         <span className="text-md font-extrabold text-letter">

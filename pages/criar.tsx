@@ -1,5 +1,4 @@
 import tattooStyles from '@/assets/tattoo-styles';
-import AppNavbar from '@/components/navbars/app-navbar';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
 import { prisma } from '@/utils/use-prisma';
@@ -129,42 +128,74 @@ const App: FC<IAPP> = ({ user }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <AppNavbar user={userData} />
 
       {openMarketingModal && (
         <MarketingModal setOpenMarketingModal={setOpenMarketingModal} />
       )}
 
-      <section className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 bg-primary text-letter">
+      <section className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 text-letter">
         <div className="flex flex-col lg:flex-row w-screen h-full">
           <div
-            className={`bg-secondary w-full ${
+            className={`bg-primary w-full ${
               toggleForm ? 'max-lg:h-fit' : 'h-20 md:h-40'
-            } lg:w-1/5 lg:h-full shadow-lg shadow-gray-500 overflow-y-scroll scrollbar-hide max-md:flex max-md:justify-between max-md:flex-col`}
+            } lg:w-1/5 lg:h-full  overflow-y-scroll scrollbar-hide max-md:flex max-md:justify-between max-md:flex-col`}
           >
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-xs md:text-md font-bold text-letter text-center divide-letter md:py-2 px-0">
+              <h1
+                className={`
+              ${toggleForm ? 'max-md:block' : 'max-md:hidden'}
+              text-xs md:text-md font-bold text-letter text-center divide-letter md:py-2 px-0
+              `}
+              >
                 Crie suas <span className="text-detail">tattoos</span>,{' '}
                 {user?.name}!
               </h1>
-              <span className="text-gray-400 text-2xs md:text-xs text-center pb-1 md:pb-3">
+              <span
+                className={`
+              ${toggleForm ? 'max-md:block' : 'max-md:hidden'}
+              text-gray-400 text-2xs md:text-xs text-center pb-1 md:pb-3
+              `}
+              >
                 Voce já criou
                 <span className="text-detail">
                   {' '}
                   {(userData.generationCount || 0) * 4} tatuagens!
                 </span>
               </span>
-              <div className="h-0.5 md:h-1 w-full bg-letter" />
+              {!user.subscribed ? (
+                <Link
+                  href="/precos"
+                  className={`${
+                    toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
+                  } text-detail text-center font-black pb-1 md:pb-3`}
+                >
+                  <span className="text-letter font-medium">Créditos:</span>{' '}
+                  {userData.credits}
+                </Link>
+              ) : (
+                <span
+                  className={`${
+                    toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
+                  } text-letter text-center font-black pb-1 md:pb-3`}
+                >
+                  Acesso Total
+                </span>
+              )}
+              <div
+                className={`${
+                  toggleForm ? 'max-md:block' : 'max-md:hidden'
+                } h-px w-1/2 bg-detail`}
+              />
             </div>
 
             <div
               className={`p-2 lg:p-4 ${
                 toggleForm ? 'max-md:flex' : 'max-md:hidden'
-              } max-md:flex-col max-md:gap-4`}
+              } max-md:flex-col max-md:gap-4 max-md:items-center max-md:justify-center max-md:w-full`}
             >
               {promptVal.length >= maxPromptLenght && !user.subscribed && (
                 <div
-                  className="flex p-4 mb-4 text-sm border rounded-lg bg-primary text-blue-400 border-blue-800"
+                  className="flex p-4 mb-4 text-sm border rounded-lg  text-blue-400 border-blue-800"
                   role="alert"
                 >
                   <svg
@@ -185,12 +216,16 @@ const App: FC<IAPP> = ({ user }) => {
                   </Link>
                 </div>
               )}
-
-              <form onSubmit={handleSubmit(handleCreate)}>
-                <div className="mb-3 relative">
+              <form
+                onSubmit={handleSubmit(handleCreate)}
+                className={`${
+                  toggleForm ? 'block' : 'max-lg:hidden'
+                } max-md:w-full`}
+              >
+                <div className="mb-3 relative focus:border-detail">
                   <label
                     htmlFor="prompt"
-                    className="block mb-2 text-xs md:text-sm font-medium text-letter"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
                   >
                     Descreva sua tattoo
                   </label>
@@ -204,7 +239,11 @@ const App: FC<IAPP> = ({ user }) => {
                     {...register('prompt', { maxLength: maxPromptLenght })}
                     rows={4}
                     maxLength={maxPromptLenght}
-                    className="placeholder-shown:text-2xs md:placeholder-shown:text-md max-w-full max-h-48 lg:max-h-64 h-20 md:h-32 lg:h-48 block p-2.5 w-full text-sm rounded-lg bg-primary border border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
+                    className=" bg-primary
+                    placeholder-shown:text-2xs md:placeholder-shown:text-md 
+                    max-w-full max-h-48 lg:max-h-64 h-20 md:h-32 lg:h-48 
+                    block p-2.5 w-full text-sm rounded-lg 
+                    border border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
                     placeholder="Um pescador viajando pelo espaço"
                   />
                 </div>
@@ -212,14 +251,15 @@ const App: FC<IAPP> = ({ user }) => {
                 <div className="w-full mb-3">
                   <label
                     htmlFor="cores"
-                    className="block mb-2 text-xs md:text-sm font-medium text-letter"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
                   >
                     Cores
                   </label>
                   <select
                     {...register('colorsStyle')}
-                    id="countries"
-                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
+                    id="cores"
+                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
+                    border-letter placeholder-gray-400 text-letter focus:border-detail"
                   >
                     <option value="Colorful">Colorido</option>
                     <option value="Black and White">Preto e Branco</option>
@@ -229,14 +269,14 @@ const App: FC<IAPP> = ({ user }) => {
                 <div className="w-full mb-3">
                   <label
                     htmlFor="estilo"
-                    className="block mb-2 text-xs md:text-sm font-medium text-letter"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
                   >
                     Estilo
                   </label>
                   <select
                     {...register('tattooStyle')}
                     id="estilo"
-                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
+                    className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5  border-letter placeholder-gray-400 text-letter focus:border-detail"
                   >
                     {tattooStyles.map((tattoo, idx) => (
                       <option key={idx} value={tattoo} className="py-4">
@@ -248,8 +288,8 @@ const App: FC<IAPP> = ({ user }) => {
 
                 <div className="mb-3">
                   <label
-                    htmlFor="first_name"
-                    className="block mb-2 text-xs md:text-sm font-medium text-letter"
+                    htmlFor="inspiracao"
+                    className="block mb-2 text-xs md:text-sm font-normal text-letter"
                   >
                     Artistas para inspiração{' '}
                     <span className="text-gray-400 text-2xs md:text-xs">
@@ -259,8 +299,9 @@ const App: FC<IAPP> = ({ user }) => {
                   <input
                     {...register('artistInspiration')}
                     type="text"
-                    id="first_name"
-                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 placeholder:text-2xs bg-primary border-gray-600 placeholder-gray-400 text-letter focus:border-letter"
+                    id="inspiracao"
+                    className="border bg-primary text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 
+                    placeholder:text-2xs border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
                     placeholder="Tarsila do Amaral, Cândido Portinari, Romero Britto"
                   />
                 </div>
@@ -271,14 +312,16 @@ const App: FC<IAPP> = ({ user }) => {
                       type="checkbox"
                       {...register('isPrivate')}
                       className="sr-only peer"
-                      disabled={user?.freeTrial!}
+                      disabled={user?.freeTrial ?? true}
                     />
                     <div
                       className={`w-11 h-6 ${
                         user?.freeTrial
-                          ? 'cursor-not-allowed'
-                          : 'cursor-pointer'
-                      } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-600 rounded-full peer bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-detail`}
+                          ? 'cursor-not-allowed border-gray-500'
+                          : 'cursor-pointer border-letter'
+                      } border peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-600 rounded-full peer peer-checked:after:translate-x-full 
+                      peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
+                      after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-detail`}
                     ></div>
                     <span
                       className={`ml-3 text-xs md:text-sm font-medium ${
@@ -332,6 +375,23 @@ const App: FC<IAPP> = ({ user }) => {
                   </Link>
                 )}
               </form>
+              <div className="flex justify-center w-full">
+                <Image
+                  src={`/images/tattoo-machine.png`}
+                  alt="Uma máquina de tatuagem, demonstrando o que poderia ser usado pela IA do TattooArtIA!"
+                  width={200}
+                  height={120}
+                  priority
+                  quality={100}
+                  className={`${
+                    toggleForm ? 'hidden md:block' : 'max-lg:hidden'
+                  } rotate-12 mt-3 opacity-50 mr-2`}
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+              </div>
             </div>
             <button
               type="button"
@@ -376,7 +436,7 @@ const App: FC<IAPP> = ({ user }) => {
           <div
             className={`w-full ${
               toggleForm ? 'max-md:hidden max-lg:h-2/6' : 'h-5/6'
-            } lg:h-full lg:w-4/5 p-4 bg-primary`}
+            } lg:h-full lg:w-4/5 p-4 `}
           >
             <div className="bg-secondary h-full w-full rounded-lg shadow-xl drop-shadow-2xl p-3">
               {images?.length == 0 && !loadingImages ? (
@@ -388,7 +448,7 @@ const App: FC<IAPP> = ({ user }) => {
                     <p className="text-primary text-sm text-center">
                       Preencha os campos na sua esquerda, clique em{' '}
                       <span className="text-secondary font-bold">
-                        'Criar tattoo'
+                        Criar tattoo
                       </span>{' '}
                       e, com isso, nossa IA criará uma tatuagem{' '}
                       <span className="text-secondary font-bold">única</span>{' '}

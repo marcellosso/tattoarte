@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import MainNavbar from '@/components/navbars/main-navbar';
 import products from '@/assets/products';
 import PriceCard from '@/components/price-card';
 import { GetServerSidePropsContext } from 'next';
 import { FC, useMemo, useState } from 'react';
 import { PriceTabEnum } from '@/types';
-import Footer from '@/components/footer';
 import Head from 'next/head';
 
 interface IPrice {
@@ -77,67 +75,70 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <MainNavbar />
-      <section className="flex min-h-screen h-screen flex-col items-center pt-6 md:pt-8 pb-0 from-secondary to-primary bg-gradient-to-b text-letter">
-        <div className="overflow-scroll scrollbar-hide">
-          <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6">
-            <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
-              <h1 className="mb-4 text-md sm:text-xl md:text-3xl tracking-tight font-extrabold text-detail text-center">
-                Cria um design perfeito para suas tatuagens
-              </h1>
-              <p className="mb-10 font-light text-letter text-xs sm:text-md">
-                Nossa IA artista de tatuagens é capaz de gerar designs
-                personalizados ilimitados em segundos, baseado em seu gosto
-                pessoal e suas ideias. Você pode criar designs para tatuagens de{' '}
-                <span className="text-detail font-bold">animais</span>,{' '}
-                <span className="text-detail font-bold">flores</span>,{' '}
-                <span className="text-detail font-bold">símbolos</span> e, até
-                mesmo, designs{' '}
-                <span className="text-detail font-bold">complexos</span>,
-                utilizando diversos elementos e{' '}
-                <span className="text-detail font-bold">inspirações</span>.
-              </p>
-              <Link
-                href="/criar"
-                className="font-bold text-[0.55rem] xs:text-xs sm:text-sm md:text-md text-primary p-2 xs:p-3 rounded-md bg-detail hover:bg-yellow-500"
-              >
-                4 tatuagens gratuitas - Crie sua arte agora
-              </Link>
-            </div>
+      <section className="flex min-h-screen h-screen flex-col items-center pt-6 md:pt-8 pb-0 text-letter overflow-y-scroll overflow-x-hidden scrollbar-hide">
+        <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 flex flex-col items-center">
+          <div className="mx-auto max-w-screen-lg text-center mb-4 lg:mb-8">
+            <h1 className="mb-4 text-md sm:text-2xl md:text-4xl tracking-tight font-bold text-letter text-center">
+              Cria um design <span className="text-detail">perfeito</span> para
+              suas tatuagens
+            </h1>
+            <h2 className="mb-10 font-light text-letter text-xs sm:text-lg">
+              Nossa IA artista de tatuagens é capaz de gerar designs
+              personalizados ilimitados em segundos, baseado em seu gosto
+              pessoal e suas ideias. Você pode criar designs para tatuagens de{' '}
+              <span className="text-detail font-bold">animais</span>,{' '}
+              <span className="text-detail font-bold">flores</span>,{' '}
+              <span className="text-detail font-bold">símbolos</span> e, até
+              mesmo, designs{' '}
+              <span className="text-detail font-bold">complexos</span>,
+              utilizando diversos elementos e{' '}
+              <span className="text-detail font-bold">inspirações</span>.
+            </h2>
+            <Link
+              href="/criar"
+              className="font-bold text-[0.55rem] xs:text-xs sm:text-sm md:text-lg text-primary px-5 xs:px-10 py-2 xs:py-3 rounded-md bg-detail hover:bg-yellow-500"
+            >
+              4 tatuagens gratuitas - Crie sua arte agora
+            </Link>
+          </div>
 
-            <div className="flex items-center justify-center mb-4">
-              <div
-                className={`py-2 px-4 text-center mr-6 shadow border border-transparent hover:cursor-pointer hover:border-detail ${
-                  priceTab == PriceTabEnum.ACCESS
-                    ? 'bg-blue-700'
-                    : 'bg-gray-950 hover:cursor-pointer hover:border-detail'
-                }`}
-                onClick={() => setPriceTab(PriceTabEnum.ACCESS)}
-              >
-                Avulso
-              </div>
-              <div
-                className={`py-2 px-4 text-center mr-6 shadow border border-transparent ${
-                  priceTab == PriceTabEnum.PACKAGE
-                    ? 'bg-blue-700'
-                    : 'bg-gray-950 hover:cursor-pointer hover:border-detail'
-                }`}
-                onClick={() => setPriceTab(PriceTabEnum.PACKAGE)}
-              >
-                Pacote
-              </div>
-            </div>
+          <div className="flex w-full items-center justify-between mb-4">
+            <h3 className="font-medium text-sm sm:text-md md:text-3xl">
+              Escolha a melhor opção para você
+            </h3>
+            <div className="bg-detail h-0.5 w-1/3 sm:w-1/2" />
+          </div>
 
-            <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-              {displayProducts.map((product) => (
-                <PriceCard key={product.name} product={product} />
-              ))}
+          <div className="flex items-center justify-center mb-4 rounded-3xl bg-secondary p-1 w-48">
+            <div
+              className={`py-2 px-4 text-center rounded-3xl text-md sm:text-lg transition-all duration-300  ${
+                priceTab == PriceTabEnum.ACCESS
+                  ? 'bg-detail text-primary font-bold'
+                  : 'hover:cursor-pointer'
+              }`}
+              onClick={() => setPriceTab(PriceTabEnum.ACCESS)}
+            >
+              Avulso
             </div>
+            <div
+              className={`py-2 px-4 text-center rounded-3xl text-md sm:text-lg transition-all duration-300 ${
+                priceTab == PriceTabEnum.PACKAGE
+                  ? 'bg-detail text-primary font-bold'
+                  : 'hover:cursor-pointer'
+              }`}
+              onClick={() => setPriceTab(PriceTabEnum.PACKAGE)}
+            >
+              Pacote
+            </div>
+          </div>
+
+          <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
+            {displayProducts.map((product) => (
+              <PriceCard key={product.name} product={product} />
+            ))}
           </div>
         </div>
       </section>
-
-      <Footer />
     </main>
   );
 };

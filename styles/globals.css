@@ -8,11 +8,35 @@
 }
 
 body {
-  background-color: rgb(17 24 39);
   overscroll-behavior: none;
+  background: linear-gradient(180deg, #0a0909 0%, #0a0909 17.71%, #292828 100%);
+}
+
+html {
+  font-family: var(--font-raleway);
+}
+
+.logo {
+  font-family: var(--font-source-code);
+}
+
+nav {
+  font-family: var(--font-source-code);
+  font-weight: 500;
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-custom::-webkit-scrollbar {
+  background: #292828;
+  border-radius: 50px;
+  height: 0.65rem;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: rgba(255, 211, 105, 1);
+  border-radius: 50px;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -25,4 +49,13 @@ body {
 
 .rotateY {
   transform: rotateY(180deg);
+}
+
+.ellipseBg {
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.staticImg {
+  position: static !important;
 }

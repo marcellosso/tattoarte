@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import AppNavbar from '@/components/navbars/app-navbar';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';
 import type { Generation, User } from '@prisma/client';
@@ -20,11 +19,28 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
   const [localGenerations, setLocalGenerations] =
     useState<Generation[]>(generations);
 
-  const [tabs, setTabs] = useState('all');
+  const [topHeaderTabs, setTopHeaderTabs] = useState('favorites');
+
   const debouncedLocalGenerations = useDebounce(
     localGenerations,
     1
   ) as Generation[];
+
+  const userName = useMemo(() => {
+    return generations[0]?.authorName || user.name;
+  }, [user?.name, generations]);
+
+  const userInitials = useMemo(() => {
+    const name = userName || '';
+    const initials = name
+      .match(/(^\S\S?|\b\S)?/g)
+      ?.join('')
+      ?.match(/(^\S|\S$)?/g)
+      ?.join('')
+      .toUpperCase();
+
+    return initials;
+  }, [userName]);
 
   const updateLocalGenerationsState = (
     val: any,
@@ -44,11 +60,6 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
 
     setLocalGenerations(updatedLocalGenerations);
   };
-
-  const generationsToShow = useMemo(() => {
-    if (tabs === 'all') return localGenerations;
-    else return localGenerations.filter((gen) => gen.is_favorite);
-  }, [localGenerations, tabs]);
 
   const updateGenerations = async (updateGenerations: Generation[]) => {
     try {
@@ -86,6 +97,120 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
       }
     }
   }, [debouncedLocalGenerations, isOwner]);
+
+  const renderGeneration = (mGenerations = localGenerations) => {
+    return mGenerations.map((generation) => (
+      <Link
+        key={generation.id}
+        href={`/tattoo/${generation.id}`}
+        className="h-full w-full min-h-[126px] min-w-[126px] sm:min-h-[226px] sm:min-w-[226px] md:min-h-[204px] md:min-w-[204px] lg:min-h-[240px] lg:min-w-[240px] xl:min-h-[280px] xl:min-w-[280px] max-h-[280px] max-w-[280px] rounded-md transition-all relative group"
+      >
+        <Image
+          src={generation.imageUrl}
+          alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
+          className="rounded-md md:hover:opacity-60 transition-all duration-200"
+          placeholder="blur"
+          blurDataURL="/images/blur-image.jpg"
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+          }}
+        />
+        {generation.is_private && (
+          <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-5 sm:right-6 lg:left-0 top-0 z-10 opacity-100 lg:group-hover:opacity-0 lg:group-hover:top-2 transition-all">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              className="text-primary"
+              strokeWidth={1.5}
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                className="fill-detail"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+          </div>
+        )}
+        <div className="bg-primary opacity-100 lg:opacity-0 h-6 sm:h-10 w-26 p-2 flex items-center justify-center sm:rounded-xl absolute top-0 left-0 sm:top-2 sm:left-2 lg:group-hover:opacity-100 transition-all overflow-ellipsis">
+          <span className="text-detail text-2xs sm:text-md overflow-ellipsis overflow-hidden">
+            {generation.style}
+          </span>
+        </div>
+        <div className="bg-primary opacity-100 lg:opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 lg:group-hover:opacity-100 transition-all">
+          <span className="text-2xs sm:text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+            {generation.prompt}
+          </span>
+        </div>
+        {isOwner && (
+          <>
+            {generation.is_favorite ? (
+              <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 z-10 transition-all lg:group-hover:top-2">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  className="text-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    updateLocalGenerationsState(
+                      false,
+                      generation.id,
+                      'is_favorite'
+                    );
+                  }}
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="fill-red-600 hover:fill-red-900"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                  />
+                </svg>
+              </div>
+            ) : (
+              <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all z-10 lg:group-hover:top-2">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  className="text-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    updateLocalGenerationsState(
+                      true,
+                      generation.id,
+                      'is_favorite'
+                    );
+                  }}
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="fill-detail hover:fill-yellow-500"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                  />
+                </svg>
+              </div>
+            )}
+          </>
+        )}
+      </Link>
+    ));
+  };
 
   return (
     <main>
@@ -147,151 +272,156 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <AppNavbar user={user} />
-      <section className="flex min-h-screen h-screen flex-col items-center p-8 md:p-12 pt-16 bg-primary text-letter overflow-hidden">
-        <h1 className="text-sm xs:text-lg sm:text-xl md:text-3xl font-bold">
-          Coleção de{' '}
-          <span className="text-detail">
-            {generations[0]?.authorName || user.name}
-          </span>
-        </h1>
-
-        <div className="bg-secondary h-full w-full mt-12 md:mt-8 lg:mt-4 rounded-md shadow-2xl p-6 relative">
-          <div
-            className={`absolute -top-8 left-0 p-3 font-bold rounded-ss-lg ${
-              tabs == 'all'
-                ? 'bg-gray-900 text-detail'
-                : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
-            }`}
-            onClick={() => isOwner && setTabs('all')}
-          >
-            <span className="text-sm md:text-md">Todas</span>
-          </div>
-
-          {isOwner && (
-            <div
-              className={`absolute -top-8 left-12 ml-2 p-3 font-bold rounded-se-lg ${
-                tabs == 'favorites'
-                  ? 'bg-gray-900 text-detail'
-                  : 'bg-secondary hover:cursor-pointer hover:bg-gray-800 text-letter'
-              }`}
-              onClick={() => isOwner && setTabs('favorites')}
-            >
-              <span className="text-sm md:text-md">Favoritas</span>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 pb-6 md:pb-2 lg:grid-cols-4 2xl:md:grid-cols-6 w-full h-full grid-rows-none gap-5 overflow-y-scroll scrollbar-hide place-items-center">
-            {generationsToShow.map((generation) => (
-              <Link
-                key={generation.id}
-                href={`/tattoo/${generation.id}`}
-                className="h-full w-full min-h-[126px] min-w-[126px] sm:min-h-[226px] sm:min-w-[226px] md:min-h-[204px] md:min-w-[204px] lg:min-h-[256px] lg:min-w-[256px] rounded-md md:hover:scale-105 relative group"
+      <section className="flex h-screen items-center p-2 pt-16 text-letter max-md:overflow-y-scroll md:overflow-hidden">
+        <div className="flex flex-col md:flex-row h-full w-full gap-5">
+          <div className="md:h-full w-full md:w-1/5 pr-2 md:border-r-2 border-detail">
+            <div className="w-full h-full flex md:flex-col items-center max-md:justify-center max-md:gap-6">
+              <div
+                id="userAvatar"
+                className="relative inline-flex items-center justify-center w-16 h-16 xs:w-20 xs:h-20 md:h-16 md:w-16 overflow-hidden rounded-full bg-detail "
               >
+                <span className="text-primary font-bold max-xs:text-xs max-md:text-xl md:text-lg">
+                  {userInitials}
+                </span>
+              </div>
+              <div className="flex flex-col items-center pt-2">
+                <h1 className="font-extrabold text-lg xs:text-xl lg:text-3xl">
+                  {userName}
+                </h1>
+                <div className="h-px w-10/12 bg-detail my-2 md:my-2" />
+                <div className="flex w-full gap-10 lg:gap-16 items-center justify-center md:mt-2">
+                  <div className="text-center">
+                    <h2 className="text-xs lg:text-sm">Tatuagens</h2>
+                    <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
+                      {generations.length}
+                    </h2>
+                  </div>
+                  {/* <div className="text-center">
+                    <h2 className="text-xs lg:text-sm">Curtidas</h2>
+                    <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
+                      102
+                    </h2>
+                  </div> */}
+                </div>
+              </div>
+              {/* <h2 className="font-bold text-lg xs:text-xl md:text-3xl">
+                Conquistas
+              </h2>
+              <div className="flex pt-6 w-full items-center justify-center">
                 <Image
-                  src={generation.imageUrl}
-                  alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
+                  src={`/images/coins/bronze-coin.png`}
+                  alt="Moeda de bronze com um robo cravado - Conquista de 1 tatuagem criada!"
+                  width={200}
+                  height={200}
                   priority
-                  className="rounded-md"
-                  fill
-                  sizes="100vw"
+                  quality={100}
+                  className="rotate-[-54.5deg]"
                   style={{
-                    objectFit: 'cover',
+                    maxWidth: '100%',
+                    height: 'auto',
                   }}
                 />
-                {generation.is_private && (
-                  <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-5 sm:right-6 lg:left-0 top-0 z-10 opacity-100 lg:group-hover:opacity-0 lg:group-hover:top-2 transition-all">
-                    <svg
-                      fill="none"
-                      stroke="currentColor"
-                      className="text-primary"
-                      strokeWidth={1.5}
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        className="fill-detail"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                      />
-                    </svg>
-                  </div>
-                )}
-                <div className="bg-primary opacity-100 lg:opacity-0 h-6 sm:h-10 w-26 p-2 flex items-center justify-center sm:rounded-xl absolute top-0 left-0 sm:top-2 sm:left-2 lg:group-hover:opacity-100 transition-all overflow-ellipsis">
-                  <span className="text-detail text-2xs sm:text-md overflow-ellipsis overflow-hidden">
-                    {generation.style}
-                  </span>
-                </div>
-                <div className="bg-primary opacity-100 lg:opacity-0 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 lg:group-hover:opacity-100 transition-all">
-                  <span className="text-2xs sm:text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                    {generation.prompt}
-                  </span>
-                </div>
-                {isOwner && (
-                  <>
-                    {generation.is_favorite ? (
-                      <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 z-10 transition-all lg:group-hover:top-2">
-                        <svg
-                          fill="none"
-                          stroke="currentColor"
-                          className="text-primary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            updateLocalGenerationsState(
-                              false,
-                              generation.id,
-                              'is_favorite'
-                            );
-                          }}
-                          strokeWidth={1.5}
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="fill-red-600 hover:fill-red-900"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                          />
-                        </svg>
-                      </div>
-                    ) : (
-                      <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all z-10 lg:group-hover:top-2">
-                        <svg
-                          fill="none"
-                          stroke="currentColor"
-                          className="text-primary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            updateLocalGenerationsState(
-                              true,
-                              generation.id,
-                              'is_favorite'
-                            );
-                          }}
-                          strokeWidth={1.5}
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="fill-detail hover:fill-yellow-500"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </>
-                )}
-              </Link>
-            ))}
+                <Image
+                  src={`/images/coins/silver-coin.png`}
+                  alt="Moeda de prata com um robo cravado - Conquista de 5 tatuagens criada!"
+                  width={200}
+                  height={200}
+                  priority
+                  quality={100}
+                  className="rotate-[-54.5deg]"
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+              </div>
+              <div className="flex pt-2 my-4 w-full items-center justify-center">
+                <Image
+                  src={`/images/coins/gold-coin.png`}
+                  alt="Moeda de ouro com um robo cravado - Conquista de 10 tatuagem criada!"
+                  width={200}
+                  height={200}
+                  priority
+                  quality={100}
+                  className="rotate-[-54.5deg]"
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+                <Image
+                  src={`/images/coins/platinum-coin.png`}
+                  alt="Moeda de platina com um robo cravado - Conquista de 25 tatuagens criada!"
+                  width={200}
+                  height={200}
+                  priority
+                  quality={100}
+                  className="rotate-[-54.5deg]"
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+              </div>
+              <Image
+                src={`/images/coins/diamond-coin.png`}
+                alt="Moeda de diamante com um robo cravado - Conquista de 50 tatuagens criada!"
+                width={250}
+                height={250}
+                priority
+                quality={100}
+                className="rotate-[-54.5deg]"
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
+              /> */}
+            </div>
+          </div>
+          <div className="h-fullw-full md:w-4/5 mb-12">
+            <div className="flex gap-6">
+              <h3
+                className={`font-bold text-3xl ${
+                  topHeaderTabs == 'favorites'
+                    ? 'opacity-100'
+                    : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+                }`}
+              >
+                Favoritas
+              </h3>
+              {/* <h3
+                className={`font-bold text-4xl ${
+                  topHeaderTabs == 'bookmarks'
+                    ? 'opacity-100'
+                    : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+                }`}
+              >
+                Salvas
+              </h3> */}
+            </div>
+            <div className="flex justify-between w-full items-center">
+              <div className="h-px w-1/4 bg-detail mb-3" />
+              {/* <p className="max-md:text-sm">Ver todas</p> */}
+            </div>
+            <div className="w-full flex gap-6 overflow-x-auto scrollbar-custom mb-4 pb-2">
+              {renderGeneration(localGenerations.filter((l) => l.is_favorite))}
+            </div>
+            <h3
+              className={`font-bold text-3xl ${
+                topHeaderTabs == 'favorites'
+                  ? 'opacity-100'
+                  : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+              }`}
+            >
+              Todas
+            </h3>
+            <div className="flex justify-between w-full items-center">
+              <div className="h-px w-1/4 bg-detail mb-2" />
+              {/* <p className="max-md:text-sm">Ver todas</p> */}
+            </div>
+            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 pb-6 md:pb-2 w-full h-full grid-rows-none gap-3 sm:gap-5 md:overflow-y-auto scrollbar-hide place-items-center">
+              {renderGeneration()}
+            </div>
           </div>
         </div>
       </section>
