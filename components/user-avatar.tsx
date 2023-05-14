@@ -49,13 +49,14 @@ const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
           }`}
         >
           <ul
-            className="pb-2 pt-1 text-sm text-gray-700 dark:text-gray-200"
+            className="pb-2 pt-1 text-sm text-letter"
             aria-labelledby="userAvatar"
           >
             <li className="relative mb-2">
               <Link
                 href="/criar"
-                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center ${LINK_BEFORE_CSS}`}
+                onClick={() => setIsUserDropdownOpen(false)}
+                className={`px-4 py-2 text-letter hover:bg-gray-600  flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg
@@ -85,7 +86,8 @@ const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
             <li className="relative mb-2">
               <Link
                 href="/colecao"
-                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center ${LINK_BEFORE_CSS}`}
+                onClick={() => setIsUserDropdownOpen(false)}
+                className={`px-4 py-2 text-letter hover:bg-gray-600 flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg
@@ -110,7 +112,8 @@ const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
             <li className="relative mb-2">
               <Link
                 href="/api/auth/logout"
-                className={`px-4 py-2 hover:bg-gray-600 hover:text-letter flex items-center ${LINK_BEFORE_CSS}`}
+                onClick={() => setIsUserDropdownOpen(false)}
+                className={`px-4 py-2 text-letter hover:bg-gray-600 flex items-center ${LINK_BEFORE_CSS}`}
               >
                 <div className="h-6 w-6 mr-2">
                   <svg

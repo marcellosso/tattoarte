@@ -178,7 +178,7 @@ const Home = () => {
                     alt="Tatuagem criada por nossa Inteligência Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
                   />
                   <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-lg absolute top-0 lg:top-1 left-0 lg:left-1">
-                    <span className="text-detail text-xs lg:text-lg">
+                    <span className="text-detail text-xs lg:text-sm">
                       Aquarela
                     </span>
                   </div>
@@ -196,10 +196,10 @@ const Home = () => {
                     priority
                     quality={100}
                     src="/images/tattoo-example-2.webp"
-                    alt="Tatuagem criada por nossa Inteligência Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
+                    alt="Tatuagem criada por nossa Inteligência Artificial - 'Uma caveira com rosas' no estilo Minimalista. Arte representa uma caveira com rosas ao seu redor."
                   />
                   <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-xl absolute top-0 lg:top-1 left-0 lg:left-1">
-                    <span className="text-detail text-xs lg:text-lg">
+                    <span className="text-detail text-xs lg:text-sm">
                       Minimalista
                     </span>
                   </div>
@@ -218,17 +218,17 @@ const Home = () => {
                     className="rounded-md"
                     priority
                     quality={100}
-                    src="/images/tattoo-example-1.webp"
-                    alt="Tatuagem criada por nossa Inteligência Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
+                    src="/images/tattoo-example-3.webp"
+                    alt="Tatuagem criada por nossa Inteligência Artificial - 'Coelho fofo com flores ao redor' no estilo Realista. Arte representa a face de um coelho realista com flores ao seu redor."
                   />
                   <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-lg absolute top-0 lg:top-1 left-0 lg:left-1">
-                    <span className="text-detail text-xs lg:text-lg">
-                      Aquarela
+                    <span className="text-detail text-xs lg:text-sm">
+                      Realista
                     </span>
                   </div>
                   <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 rounded-b-md">
                     <span className="text-2xs sm:text-sm lg:text-md overflow-ellipsis overflow-hidden">
-                      Um pescador de ilusoes
+                      Coelho fofo com flores ao redor
                     </span>
                   </div>
                 </div>
@@ -239,17 +239,17 @@ const Home = () => {
                     className="rounded-md"
                     priority
                     quality={100}
-                    src="/images/tattoo-example-2.webp"
-                    alt="Tatuagem criada por nossa Inteligência Artificial - 'Um pescador de ilusoes' no estilo Aquarela. Arte representa um homem barbudo com um olho azul piscina e outro azul escuro, com elementos de madeira ao redor, o fundo existe a cor azul esfumado"
+                    src="/images/tattoo-example-4.webp"
+                    alt="Tatuagem criada por nossa Inteligência Artificial - 'Rosas ao redor de um dragao' no estilo New School. Arte representa um dragao com rosas ao seu redor."
                   />
                   <div className="bg-primary opacity-100 h-5 w-24 lg:h-10 lg:w-26 p-2 flex items-center justify-center lg:rounded-xl absolute top-0 lg:top-1 left-0 lg:left-1">
-                    <span className="text-detail text-xs lg:text-lg">
-                      Minimalista
+                    <span className="text-detail text-xs lg:text-sm">
+                      New School
                     </span>
                   </div>
                   <div className="bg-secondary opacity-100 h-10 w-full p-2 flex items-center justify-center absolute bottom-0 left-0 rounded-b-md">
                     <span className="text-2xs sm:text-sm lg:text-md overflow-ellipsis overflow-hidden">
-                      Uma caveira com rosas
+                      Rosas ao redor de um dragao
                     </span>
                   </div>
                 </div>
@@ -294,7 +294,7 @@ const Home = () => {
           </h5>
         </section>
 
-        <div className="h-full lg:w-1/2 w-full z-30 mt-24 md:mt-36  rounded-md mb-4 p-4 lg:p0">
+        <div className="h-full lg:w-1/2 w-full z-30 mt-24 md:mt-36 rounded-md mb-6 p-4 lg:p0">
           <video
             autoPlay
             muted

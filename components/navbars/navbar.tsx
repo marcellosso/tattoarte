@@ -12,12 +12,14 @@ interface IMobileNavbarLink {
   label: string;
   linkRoute: string;
   isSelected: boolean;
+  onClick: () => void;
 }
 
 const MobileNavbarLink: FC<IMobileNavbarLink> = ({
   label,
   linkRoute,
   isSelected,
+  onClick,
 }) => (
   <Link
     href={linkRoute}
@@ -26,6 +28,7 @@ const MobileNavbarLink: FC<IMobileNavbarLink> = ({
        before:bg-detail  before:absolute before:w-1 before:transition-all before:duration-300 before:-ml-2
       ${isSelected ? 'before:h-1/2' : 'before:h-0'}
     `}
+    onClick={onClick}
   >
     {label}
   </Link>
@@ -34,11 +37,13 @@ const MobileNavbarLink: FC<IMobileNavbarLink> = ({
 interface IMobileNavbar {
   currentRoute: string;
   toggleMobileNavbar: boolean;
+  setToggleMobileNavbar: (_v: boolean) => void;
 }
 
 const MobileNavbar: FC<IMobileNavbar> = ({
   currentRoute,
   toggleMobileNavbar,
+  setToggleMobileNavbar,
 }) => (
   <div
     id="userDropdown"
@@ -52,6 +57,7 @@ const MobileNavbar: FC<IMobileNavbar> = ({
           label="Descobrir"
           linkRoute="/descobrir"
           isSelected={currentRoute.includes('/descobrir')}
+          onClick={() => setToggleMobileNavbar(false)}
         />
       </li>
 
@@ -60,6 +66,7 @@ const MobileNavbar: FC<IMobileNavbar> = ({
           label="Estilos"
           linkRoute="/estilos"
           isSelected={currentRoute.includes('/estilos')}
+          onClick={() => setToggleMobileNavbar(false)}
         />
       </li>
 
@@ -68,6 +75,7 @@ const MobileNavbar: FC<IMobileNavbar> = ({
           label="Preços"
           linkRoute="/precos"
           isSelected={currentRoute.includes('/precos')}
+          onClick={() => setToggleMobileNavbar(false)}
         />
       </li>
     </ul>
@@ -143,6 +151,7 @@ const Navbar = () => {
 
           <MobileNavbar
             toggleMobileNavbar={toggleMobileNavbar}
+            setToggleMobileNavbar={setToggleMobileNavbar}
             currentRoute={route}
           />
         </div>
