@@ -298,9 +298,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         prompt: true,
         imageUrl: true,
         style: true,
-        _count: {
-          select: { likes: true },
-        },
       },
     })) || {};
 
