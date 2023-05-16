@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';
-import type { Generation, User } from '@prisma/client';
 import { FC, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import useDebounce from '@/utils/hooks/useDebounce';
@@ -11,17 +10,27 @@ import { toast } from 'react-toastify';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
+type DraftGeneration = {
+  id: string;
+  authorName: string;
+  imageUrl: string;
+  prompt: string;
+  style: string;
+  is_favorite: boolean | null;
+  is_private: boolean | null;
+};
+
 interface ICollection {
-  user: User;
-  generations: Generation[];
+  userName: string;
+  generations: DraftGeneration[];
   isOwner: boolean;
 }
 
-const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
+const Collection: FC<ICollection> = ({ userName, generations, isOwner }) => {
   const dynamicRoute = useRouter().asPath;
 
   const [localGenerations, setLocalGenerations] =
-    useState<Generation[]>(generations);
+    useState<DraftGeneration[]>(generations);
 
   const [topHeaderTabs, setTopHeaderTabs] = useState('favorites');
   const [showDefaultDisplay, setShowDefaultDisplay] = useState(isOwner);
@@ -29,14 +38,14 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
   const debouncedLocalGenerations = useDebounce(
     localGenerations,
     1
-  ) as Generation[];
+  ) as DraftGeneration[];
 
-  const userName = useMemo(() => {
-    return generations[0]?.authorName || user.name;
-  }, [user?.name, generations]);
+  const localUserName = useMemo(() => {
+    return generations[0]?.authorName || userName;
+  }, [userName, generations]);
 
   const userInitials = useMemo(() => {
-    const name = userName || '';
+    const name = localUserName || '';
     const initials = name
       .match(/(^\S\S?|\b\S)?/g)
       ?.join('')
@@ -45,7 +54,7 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
       .toUpperCase();
 
     return initials;
-  }, [userName]);
+  }, [localUserName]);
 
   const updateLocalGenerationsState = (
     val: boolean,
@@ -66,11 +75,10 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
     setLocalGenerations(updatedLocalGenerations);
   };
 
-  const updateGenerations = async (updateGenerations: Generation[]) => {
+  const updateGenerations = async (updateGenerations: DraftGeneration[]) => {
     try {
       await axios.put('/api/generation/update', {
         updateGenerations,
-        userId: user.id,
       });
     } catch (err: any) {
       toast.error(err.response?.data || err.message || err, {
@@ -304,7 +312,7 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
               </div>
               <div className="flex flex-col items-center pt-2">
                 <h1 className="font-extrabold text-lg xs:text-xl lg:text-3xl">
-                  {userName}
+                  {localUserName}
                 </h1>
                 <div className="h-px w-10/12 bg-detail my-2 md:my-2" />
                 <div className="flex w-full gap-10 lg:gap-16 items-center justify-center md:mt-2">
@@ -482,11 +490,15 @@ export const getServerSideProps = withPageAuthRequired({
       where: {
         email: sessionUser.email as string,
       },
-    })) as User;
+      select: {
+        id: true,
+        name: true,
+      },
+    })) as { id: string; name: string };
 
     const queryId = query?.userId || user?.id;
 
-    let generationsFromUser = [] as Generation[];
+    let generationsFromUser = [] as DraftGeneration[];
 
     const isSameUser = queryId == user?.id;
 
@@ -501,13 +513,20 @@ export const getServerSideProps = withPageAuthRequired({
             createdAt: 'desc',
           },
         ],
+        select: {
+          id: true,
+          authorName: true,
+          is_favorite: true,
+          is_private: true,
+          imageUrl: true,
+          prompt: true,
+          style: true,
+        },
       })) || [];
-    console.log(generationsFromUser);
-    console.log(user.id + ' - ' + queryId);
-    console.log('==================================');
+
     return {
       props: {
-        user: JSON.parse(JSON.stringify(user)),
+        userName: user?.name ?? '',
         generations: JSON.parse(JSON.stringify(generationsFromUser)),
         isOwner: isSameUser,
       },

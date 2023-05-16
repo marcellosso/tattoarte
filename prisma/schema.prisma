@@ -17,17 +17,31 @@ model Generation {
   style       String
   imageName   String   @map(name: "image_name")
   imageUrl    String   @map(name: "image_url")
-  is_hd       Boolean? @default(false)
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   authorName  String   @map(name: "author_name")
-  author      User?    @relation(fields: [authorId], references: [id])
-  authorId    String?  @map(name: "author_id")
+  authorId    String   @map(name: "author_id")
   is_favorite Boolean? @default(false)
   is_private  Boolean? @default(false)
 
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  likes Like[]
+
   @@index([authorId])
   @@map(name: "generations")
+}
+
+model Like {
+  userId       String
+  generationid String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  generation   Generation @relation(fields: [generationid], references: [id], onDelete: Cascade)
+
+  @@id([userId, generationid])
+  @@index([userId])
+  @@index([generationid])
+  @@map(name: "likes")
 }
 
 model User {
@@ -43,7 +57,8 @@ model User {
   stripeId             String       @unique @map(name: "stripe_id")
   createdAt            DateTime     @default(now()) @map(name: "created_at")
   updatedAt            DateTime     @updatedAt @map(name: "updated_at")
-  Generation           Generation[]
+  generations          Generation[]
+  likes                Like[]
 
   @@map(name: "users")
 }

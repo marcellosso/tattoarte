@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
 import type { Generation } from '@prisma/client';
 import { FC, useMemo, useState } from 'react';
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { getSession } from '@auth0/nextjs-auth0';
 
 interface ITattoo {
   generation: Generation;
@@ -272,28 +273,38 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const generations = await prisma.generation.findMany();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=120, stale-while-revalidate=180'
+  );
 
-  const paths = generations.map((gen) => ({
-    params: { id: gen.id },
-  }));
+  const { query, req, res } = context;
+  const session = await getSession(req, res);
+  console.log(session);
 
-  return {
-    paths,
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const generationId = params?.id;
+  const generationId = query?.id;
 
   const generation =
     (await prisma.generation.findFirst({
       where: {
         id: generationId as string,
       },
+      select: {
+        id: true,
+        authorId: true,
+        authorName: true,
+        createdAt: true,
+        prompt: true,
+        imageUrl: true,
+        style: true,
+        _count: {
+          select: { likes: true },
+        },
+      },
     })) || {};
+
+  console.log(generation);
 
   return {
     props: {

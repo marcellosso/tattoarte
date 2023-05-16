@@ -67,6 +67,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
             data: {
               ...generationObj,
               authorName: user.name as string,
+              authorId: '',
             },
           });
         }

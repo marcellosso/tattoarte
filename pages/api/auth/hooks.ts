@@ -6,7 +6,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 });
 
 module.exports = async (req: any, res: any) => {
-  const { name, email, secret } = req.body;
+  const { id, name, email, secret } = req.body;
+
   if (secret === process.env.AUTH0_HOOK_SECRET) {
     try {
       const customer = await stripe.customers.create({
@@ -14,7 +15,7 @@ module.exports = async (req: any, res: any) => {
       });
 
       const user = await prisma.user.create({
-        data: { email, name, stripeId: customer.id, credits: 1 },
+        data: { id, email, name, stripeId: customer.id, credits: 1 },
       });
 
       res.status(200).json(user.id);
