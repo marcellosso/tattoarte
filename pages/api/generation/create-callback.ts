@@ -20,6 +20,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       params: ParamsType;
       images: string[];
     };
+    console.log(user);
 
     await Promise.all(
       images.map(async (image) => {
@@ -107,6 +108,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (err) {
+    console.log(err);
     res.status(500).send('Error updating user information');
   }
 });

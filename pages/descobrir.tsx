@@ -276,6 +276,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { query } = context;
   const style = query.estilo || undefined;
+  console.log(style);
 
   const generations =
     (await prisma.generation.findMany({
@@ -290,6 +291,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       ],
     })) || [];
+
+  console.log(generations);
 
   const generationCount =
     (await prisma.generation.count({
