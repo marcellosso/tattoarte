@@ -280,8 +280,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   const { query, req, res } = context;
-  const session = await getSession(req, res);
-  console.log(session);
 
   const generationId = query?.id;
 
@@ -300,8 +298,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         style: true,
       },
     })) || {};
-
-  console.log(generation);
 
   return {
     props: {
