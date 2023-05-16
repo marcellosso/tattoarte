@@ -132,7 +132,7 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
                       {style}
                     </span>
                     <span className="text-letter font-black text-xs xs:text-sm">
-                      {generationCount[style]}
+                      {generationCount[style] || 0}
                     </span>
                   </div>
                   <div className="bg-detail h-px w-1/2 mt-1" />
@@ -149,19 +149,20 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
 export const getStaticProps = async () => {
   const generationCount = {} as Record<string, number>;
 
-  await Promise.all(
-    tattooStyles.map(async (style) => {
-      generationCount[style] = await prisma.generation.count({
-        where: {
-          style: style as string,
-        },
-      });
-    })
-  );
+  const countedGeneration = await prisma.generation.groupBy({
+    by: ['style'],
+    _count: {
+      _all: true,
+    },
+  });
+
+  countedGeneration.forEach((el) => {
+    generationCount[el.style] = el._count._all;
+  });
 
   return {
     props: {
-      generationCount: generationCount,
+      generationCount,
     },
     revalidate: 60,
   };

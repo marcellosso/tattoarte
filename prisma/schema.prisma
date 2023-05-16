@@ -24,7 +24,7 @@ model Generation {
   is_favorite Boolean? @default(false)
   is_private  Boolean? @default(false)
 
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   likes Like[]
 
@@ -57,7 +57,7 @@ model User {
   stripeId             String       @unique @map(name: "stripe_id")
   createdAt            DateTime     @default(now()) @map(name: "created_at")
   updatedAt            DateTime     @updatedAt @map(name: "updated_at")
-  generations          Generation[]
+  generations          Generation[] 
   likes                Like[]
 
   @@map(name: "users")

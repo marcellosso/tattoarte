@@ -20,7 +20,6 @@ module.exports = withApiAuthRequired(async (req, res) => {
       params: ParamsType;
       images: string[];
     };
-    console.log(user);
 
     await Promise.all(
       images.map(async (image) => {

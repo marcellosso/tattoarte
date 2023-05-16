@@ -1,20 +1,40 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
-import type { Generation } from '@prisma/client';
 import { FC, useMemo, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { getSession } from '@auth0/nextjs-auth0';
+import { getSession, Session } from '@auth0/nextjs-auth0';
+import toggleLike from '@/utils/toggle-like';
+import { toast } from 'react-toastify';
+import Logo from '@/components/logo';
+import { useUser } from '@auth0/nextjs-auth0/client';
+
+type CustomGeneration = {
+  id: string;
+  authorId: string;
+  authorName: string;
+  createdAt: string;
+  prompt: string;
+  imageUrl: string;
+  style: string;
+  isLiked: boolean;
+  likeCount: number;
+};
 
 interface ITattoo {
-  generation: Generation;
+  generation: CustomGeneration;
 }
 
 const Tattoo: FC<ITattoo> = ({ generation }) => {
+  const { user } = useUser();
+
   const [openFullscreenImageModal, setOpenFullscreenImageModal] =
     useState(false);
+  const [openNotLoggedModal, setOpenNotLoggedModal] = useState(false);
+  const [isLiked, setIsLiked] = useState(generation?.isLiked);
+  const [likeCount, setLikeCount] = useState(generation?.likeCount);
 
   const router = useRouter();
 
@@ -29,6 +49,31 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
 
     return initials;
   }, [generation?.authorName]);
+
+  const handleToggleLike = async () => {
+    if (!user) {
+      setOpenNotLoggedModal(true);
+      return;
+    }
+
+    setIsLiked(!isLiked);
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+
+    try {
+      await toggleLike(generation?.id);
+    } catch (err) {
+      toast.error(err as string, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  };
 
   if (router.isFallback) {
     return (
@@ -176,6 +221,53 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               </div>
             </div>
           )}
+          {openNotLoggedModal && (
+            <>
+              <div
+                className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-20 z-50 flex items-center justify-center"
+                onClick={() => setOpenNotLoggedModal(false)}
+              />
+              <div
+                className="bg-secondary h-1/2 w-full sm:w-1/2 lg:w-1/3 my-2 md:my-0 rounded-md 
+                            flex flex-col items-center justify-center gap-8
+                            absolute left-1/2 -translate-x-1/2 translate-y-1/2 z-100"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  onClick={() => setOpenNotLoggedModal(false)}
+                  height={32}
+                  width={32}
+                  className="text-letter absolute right-0 top-0 hover:text-detail hover:cursor-pointer"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                <Logo />
+                <div>
+                  <h1 className="text-detail text-2xl font-extrabold text-center">
+                    Você precisa estar logado para fazer isso!
+                  </h1>
+                  <p className="text-letter text-lg text-center">
+                    Aproveite também para criar suas próprias artes!
+                  </p>
+                </div>
+                <Link
+                  href="/api/auth/login"
+                  className="bg-detail text-center hover:scale-105 text-xs xs:text-sm md:text-xl w-1/2 font-bold text-primary p-3 rounded-md"
+                >
+                  Entrar
+                </Link>
+              </div>
+            </>
+          )}
           <div className="flex flex-col items-center w-full h-full">
             <h1 className="text-detail font-black text-xl sm:text-2xl md:text-5xl text-center">
               {generation.prompt}
@@ -219,8 +311,8 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               <span className="text-letter text-xs sm:text-sm font-light">
                 {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
               </span>
-              {/* <div className="flex gap-4">
-                <div className="flex items-center gap-1">
+              <div className="flex gap-4">
+                {/* <div className="flex items-center gap-1">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -237,13 +329,18 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                     />
                   </svg>
                   <p className="font-bold text-md sm:text-xl">102</p>
-                </div>
+                </div> */}
 
                 <div className="flex items-center gap-1">
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    className="h-8 w-8 text-letter hover:fill-red-600 hover:text-red-600 hover:cursor-pointer "
+                    onClick={handleToggleLike}
+                    className={`h-8 w-8 text-letter ${
+                      isLiked
+                        ? 'fill-red-600 text-red-600 hover:fill-red-800 hover:text-red-800'
+                        : 'hover:fill-red-600 hover:text-red-600'
+                    } hover:cursor-pointer`}
                     strokeWidth={1.5}
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
@@ -256,13 +353,13 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                     />
                   </svg>
 
-                  <p className="font-bold text-md sm:text-xl">342</p>
+                  <p className="font-bold text-md sm:text-xl">{likeCount}</p>
                 </div>
-              </div> */}
+              </div>
             </div>
             <Link
               href="/criar"
-              className="mb-3 md:mb-6 flex items-center justify-center bg-detail hover:scale-105 text-xs xs:text-sm md:text-xl sm:w-1/3 md:w-1/2 lg:w-1/3 xl:w-1/4 font-bold text-primary p-3 rounded-md"
+              className="mb-3 md:mb-6 text-center bg-detail hover:scale-105 text-xs xs:text-sm md:text-xl sm:w-1/3 md:w-1/2 lg:w-1/3 xl:w-1/4 font-bold text-primary p-3 rounded-md"
             >
               Crie sua própria tatuagem
             </Link>
@@ -280,28 +377,58 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
 
   const { query, req, res } = context;
+  const session = (await getSession(req, res)) as Session;
+  const sessionUser = session?.user ?? {};
+  const currentUserId = sessionUser?.sub?.split('|')?.[1] ?? null;
 
   const generationId = query?.id;
 
-  const generation =
-    (await prisma.generation.findFirst({
-      where: {
-        id: generationId as string,
+  const generation = await prisma.generation.findFirst({
+    where: {
+      id: generationId as string,
+    },
+    select: {
+      id: true,
+      authorId: true,
+      authorName: true,
+      createdAt: true,
+      prompt: true,
+      imageUrl: true,
+      style: true,
+      likes:
+        currentUserId == null ? false : { where: { userId: currentUserId } },
+      _count: {
+        select: {
+          likes: true,
+        },
       },
-      select: {
-        id: true,
-        authorId: true,
-        authorName: true,
-        createdAt: true,
-        prompt: true,
-        imageUrl: true,
-        style: true,
+    },
+  });
+
+  if (!generation) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/404',
       },
-    })) || {};
+    };
+  }
 
   return {
     props: {
-      generation: JSON.parse(JSON.stringify(generation || {})),
+      generation: JSON.parse(
+        JSON.stringify({
+          id: generation.id,
+          authorId: generation.authorId,
+          authorName: generation.authorName,
+          createdAt: generation.createdAt,
+          prompt: generation.prompt,
+          imageUrl: generation.imageUrl,
+          style: generation.style,
+          isLiked: generation.likes?.length > 0,
+          likeCount: generation._count.likes ?? 0,
+        })
+      ),
     },
   };
 };

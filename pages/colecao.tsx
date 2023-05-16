@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Image from 'next/image';
 import Link from 'next/link';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';
 import { FC, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import useDebounce from '@/utils/hooks/useDebounce';
 import { toast } from 'react-toastify';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import type { GetServerSideProps } from 'next';
 
 type DraftGeneration = {
   id: string;
@@ -23,10 +24,16 @@ type DraftGeneration = {
 interface ICollection {
   userName: string;
   generations: DraftGeneration[];
+  likeCount: number;
   isOwner: boolean;
 }
 
-const Collection: FC<ICollection> = ({ userName, generations, isOwner }) => {
+const Collection: FC<ICollection> = ({
+  userName,
+  generations,
+  likeCount,
+  isOwner,
+}) => {
   const dynamicRoute = useRouter().asPath;
 
   const [localGenerations, setLocalGenerations] =
@@ -322,12 +329,12 @@ const Collection: FC<ICollection> = ({ userName, generations, isOwner }) => {
                       {generations.length}
                     </h2>
                   </div>
-                  {/* <div className="text-center">
+                  <div className="text-center">
                     <h2 className="text-xs lg:text-sm">Curtidas</h2>
                     <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
-                      102
+                      {likeCount}
                     </h2>
-                  </div> */}
+                  </div>
                 </div>
               </div>
               {/* <h2 className="font-bold text-lg xs:text-xl md:text-3xl">
@@ -480,58 +487,70 @@ const Collection: FC<ICollection> = ({ userName, generations, isOwner }) => {
   );
 };
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res, query } = context;
-    const session = await getSession(req, res);
-    const sessionUser = session!.user || {};
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, res, query } = context;
+  const session = await getSession(req, res);
+  const sessionUser = session?.user || {};
 
-    const user = (await prisma.user.findUnique({
-      where: {
-        email: sessionUser.email as string,
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    })) as { id: string; name: string };
+  const userId = sessionUser?.sub?.split('|')[1];
+  const userName = sessionUser.name ?? '';
 
-    const queryId = query?.userId || user?.id;
+  const queryId = query?.userId || userId;
 
-    let generationsFromUser = [] as DraftGeneration[];
-
-    const isSameUser = queryId == user?.id;
-
-    generationsFromUser =
-      (await prisma.generation.findMany({
-        where: {
-          authorId: queryId as string,
-          is_private: !isSameUser ? false : undefined,
-        },
-        orderBy: [
-          {
-            createdAt: 'desc',
-          },
-        ],
-        select: {
-          id: true,
-          authorName: true,
-          is_favorite: true,
-          is_private: true,
-          imageUrl: true,
-          prompt: true,
-          style: true,
-        },
-      })) || [];
-
+  if (!queryId) {
     return {
-      props: {
-        userName: user?.name ?? '',
-        generations: JSON.parse(JSON.stringify(generationsFromUser)),
-        isOwner: isSameUser,
+      redirect: {
+        permanent: false,
+        destination: '/api/auth/login',
       },
     };
-  },
-});
+  }
+
+  let generationsFromUser = [] as (DraftGeneration & {
+    _count: { likes: number };
+  })[];
+
+  const isSameUser = queryId == userId;
+
+  generationsFromUser =
+    (await prisma.generation.findMany({
+      where: {
+        authorId: queryId as string,
+        is_private: !isSameUser ? false : undefined,
+      },
+      orderBy: [
+        {
+          createdAt: 'desc',
+        },
+      ],
+      select: {
+        id: true,
+        authorName: true,
+        is_favorite: true,
+        is_private: true,
+        imageUrl: true,
+        prompt: true,
+        style: true,
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
+    })) || [];
+
+  const likesCountForUser = generationsFromUser.reduce((acc, generation) => {
+    return acc + generation._count.likes;
+  }, 0);
+
+  return {
+    props: {
+      userName,
+      generations: JSON.parse(JSON.stringify(generationsFromUser)),
+      likeCount: likesCountForUser,
+      isOwner: isSameUser,
+    },
+  };
+};
 
 export default Collection;

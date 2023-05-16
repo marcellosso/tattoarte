@@ -232,14 +232,16 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
             </div>
           )}
 
-          {!loadingPagination && !loadingStyleChange && (
-            <button
-              className="border-detail p-2 border-2 text-letter hover:border-yellow-600 hover:text-gray-300 transition-all w-48 md:w-56 lg:w-64"
-              onClick={handlePaginate}
-            >
-              Carregar mais...
-            </button>
-          )}
+          {!loadingPagination &&
+            !loadingStyleChange &&
+            localGenerations.length > 0 && (
+              <button
+                className="border-detail p-2 border-2 text-letter hover:border-yellow-600 hover:text-gray-300 transition-all w-48 md:w-56 lg:w-64"
+                onClick={handlePaginate}
+              >
+                Carregar mais...
+              </button>
+            )}
 
           {(loadingPagination || loadingStyleChange) && (
             <div role="status">
@@ -276,13 +278,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { query } = context;
   const style = query.estilo || undefined;
-  console.log(style);
 
   const generations =
     (await prisma.generation.findMany({
       where: {
         is_private: false,
         style: style as string,
+      },
+      select: {
+        id: true,
+        style: true,
+        prompt: true,
+        imageUrl: true,
       },
       take: 24,
       orderBy: [
@@ -292,12 +299,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ],
     })) || [];
 
-  console.log(generations);
-
   const generationCount =
     (await prisma.generation.count({
       where: {
-        is_private: false,
         style: style as string,
       },
     })) || 0;
