@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Image from 'next/image';
 import Link from 'next/link';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -8,6 +9,7 @@ import axios from 'axios';
 import useDebounce from '@/utils/hooks/useDebounce';
 import { toast } from 'react-toastify';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 interface ICollection {
   user: User;
@@ -16,10 +18,13 @@ interface ICollection {
 }
 
 const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
+  const dynamicRoute = useRouter().asPath;
+
   const [localGenerations, setLocalGenerations] =
     useState<Generation[]>(generations);
 
   const [topHeaderTabs, setTopHeaderTabs] = useState('favorites');
+  const [showDefaultDisplay, setShowDefaultDisplay] = useState(isOwner);
 
   const debouncedLocalGenerations = useDebounce(
     localGenerations,
@@ -43,7 +48,7 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
   }, [userName]);
 
   const updateLocalGenerationsState = (
-    val: any,
+    val: boolean,
     genId: string,
     field: string
   ) => {
@@ -82,6 +87,14 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
   };
 
   useEffect(() => {
+    const changedGenerations = localGenerations.filter((gen) =>
+      generations.every((el) => el.id !== gen.id)
+    );
+
+    if (changedGenerations.length > 0) setLocalGenerations(generations);
+  }, [dynamicRoute]);
+
+  useEffect(() => {
     if (isOwner) {
       // If we add new possible changes, change this method to fit that.
       // For now, we only have is_favorite as a possible change.
@@ -97,6 +110,11 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
       }
     }
   }, [debouncedLocalGenerations, isOwner]);
+
+  const favoriteLocalGenerations = useMemo(
+    () => localGenerations.filter((l) => l.is_favorite),
+    [localGenerations]
+  );
 
   const renderGeneration = (mGenerations = localGenerations) => {
     return mGenerations.map((generation) => (
@@ -378,18 +396,20 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
               /> */}
             </div>
           </div>
-          <div className="h-fullw-full md:w-4/5 mb-12">
-            <div className="flex gap-6">
-              <h3
-                className={`font-bold text-3xl ${
-                  topHeaderTabs == 'favorites'
-                    ? 'opacity-100'
-                    : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
-                }`}
-              >
-                Favoritas
-              </h3>
-              {/* <h3
+          <div className="h-full w-full md:w-4/5 mb-12">
+            {showDefaultDisplay && favoriteLocalGenerations.length > 0 && (
+              <>
+                <div className="flex gap-6">
+                  <h3
+                    className={`font-bold text-3xl ${
+                      topHeaderTabs == 'favorites'
+                        ? 'opacity-100'
+                        : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+                    }`}
+                  >
+                    Favoritas
+                  </h3>
+                  {/* <h3
                 className={`font-bold text-4xl ${
                   topHeaderTabs == 'bookmarks'
                     ? 'opacity-100'
@@ -398,14 +418,16 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
               >
                 Salvas
               </h3> */}
-            </div>
-            <div className="flex justify-between w-full items-center">
-              <div className="h-px w-1/4 bg-detail mb-3" />
-              {/* <p className="max-md:text-sm">Ver todas</p> */}
-            </div>
-            <div className="w-full flex gap-6 overflow-x-auto scrollbar-custom mb-4 pb-2">
-              {renderGeneration(localGenerations.filter((l) => l.is_favorite))}
-            </div>
+                </div>
+                <div className="flex justify-between w-full items-center">
+                  <div className="h-px w-1/4 bg-detail mb-3" />
+                  {/* <p className="max-md:text-sm">Ver todas</p> */}
+                </div>
+                <div className="w-full flex gap-6 overflow-x-auto scrollbar-custom mb-4 pb-2">
+                  {renderGeneration(favoriteLocalGenerations)}
+                </div>
+              </>
+            )}
             <h3
               className={`font-bold text-3xl ${
                 topHeaderTabs == 'favorites'
@@ -417,11 +439,32 @@ const Collection: FC<ICollection> = ({ user, generations, isOwner }) => {
             </h3>
             <div className="flex justify-between w-full items-center">
               <div className="h-px w-1/4 bg-detail mb-2" />
-              {/* <p className="max-md:text-sm">Ver todas</p> */}
+              {isOwner && generations.length > 0 && (
+                <button
+                  className="max-md:text-sm hover:text-detail transition-all duration-200"
+                  onClick={() => setShowDefaultDisplay(!showDefaultDisplay)}
+                >
+                  {showDefaultDisplay ? 'Ver todas' : 'Esconder'}
+                </button>
+              )}
             </div>
-            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 pb-6 md:pb-2 w-full h-full grid-rows-none gap-3 sm:gap-5 md:overflow-y-auto scrollbar-hide place-items-center">
-              {renderGeneration()}
-            </div>
+            {localGenerations.length > 0 ? (
+              <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 pb-6 md:pb-2 w-full h-full grid-rows-none gap-3 sm:gap-5 md:overflow-y-auto scrollbar-hide place-items-center">
+                {renderGeneration()}
+              </div>
+            ) : (
+              <div className="h-full w-full flex flex-col items-center justify-center">
+                <p className="text-xl text-letter font-extrabold mb-2">
+                  Não há tatuagens criadas!
+                </p>
+                <Link
+                  href="/criar"
+                  className="font-bold text-primary text-center text-xs sm:text-sm md:text-lg p-3 px-6 rounded-md bg-detail hover:bg-yellow-500"
+                >
+                  Crie sua arte agora
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -459,7 +502,9 @@ export const getServerSideProps = withPageAuthRequired({
           },
         ],
       })) || [];
-
+    console.log(generationsFromUser);
+    console.log(user.id + ' - ' + queryId);
+    console.log('==================================');
     return {
       props: {
         user: JSON.parse(JSON.stringify(user)),
