@@ -58,16 +58,16 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
 
-    // const { id } = await replicate.predictions.create({
-    //   version:
-    //     '9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
-    //   input: {
-    //     prompt,
-    //     num_outputs: 4,
-    //   },
-    // });
+    const { id } = await replicate.predictions.create({
+      version:
+        '9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
+      input: {
+        prompt,
+        num_outputs: 4,
+      },
+    });
 
-    const id = 'f5gsyvvbsnfljml3nxal5kquoy';
+    // const id = 'f5gsyvvbsnfljml3nxal5kquoy';
 
     const newUserGenerationCount = (user.generationCount || 0) + 1;
 
