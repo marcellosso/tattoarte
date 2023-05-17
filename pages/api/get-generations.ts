@@ -26,7 +26,32 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
       prismaCallObj.skip = 1;
     }
 
-    const generations = (await prisma.generation.findMany(prismaCallObj)) || [];
+    const generationsResp =
+      (await prisma.generation.findMany({
+        ...prismaCallObj,
+        select: {
+          id: true,
+          style: true,
+          prompt: true,
+          imageUrl: true,
+          createdAt: true,
+          _count: {
+            select: { likes: true, bookmarks: true },
+          },
+        },
+      })) || [];
+
+    const generations = generationsResp.map((generation) => {
+      return {
+        id: generation.id,
+        style: generation.style,
+        prompt: generation.prompt,
+        imageUrl: generation.imageUrl,
+        createdAt: generation.createdAt,
+        likes: generation._count.likes,
+        bookmarks: generation._count.bookmarks,
+      };
+    });
 
     res.json({ generations });
   } catch (err) {

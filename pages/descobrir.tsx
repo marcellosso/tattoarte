@@ -9,6 +9,77 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import tattooStyles from '@/assets/tattoo-styles';
 
+interface IOrderBy {
+  handleOrderByChange: (_v: keyof Generation) => void;
+}
+
+const OrderBy: FC<IOrderBy> = ({ handleOrderByChange }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleChangeOrder = (newOrderBy: string) => {
+    setOpen(false);
+    handleOrderByChange(newOrderBy as keyof Generation);
+  };
+
+  return (
+    <div className="relative flex">
+      <button onClick={() => setOpen(!open)}>
+        <svg
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          viewBox="0 0 24 24"
+          className="h-6 w-6 xs:h-8 xs:w-8 sm:h-10 sm:w-10 text-letter cursor-pointer"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
+          />
+        </svg>
+      </button>
+      <div
+        id="userDropdown"
+        className={`z-100 top-10 absolute rounded-md shadow bg-primary ${
+          open ? 'block' : 'hidden'
+        }`}
+      >
+        <ul
+          className="pb-2 pt-1 text-sm text-letter"
+          aria-labelledby="userAvatar"
+        >
+          <li className="mb-2 ">
+            <button
+              onClick={() => handleChangeOrder('createdAt')}
+              className={`text-sm whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left`}
+            >
+              Mais Recentes
+            </button>
+          </li>
+          <li className="mb-2">
+            <button
+              onClick={() => handleChangeOrder('likes')}
+              className={`text-sm w-full whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left`}
+            >
+              Mais Curtidas
+            </button>
+          </li>
+          <li className="mb-2">
+            <button
+              onClick={() => handleChangeOrder('bookmarks')}
+              className={`text-sm w-full whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left`}
+            >
+              Mais Salvas
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 interface IDiscover {
   generations: Generation[];
   generationCount: number;
@@ -24,10 +95,34 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
   const [loadingPagination, setLoadingPagination] = useState(false);
   const [loadingStyleChange, setLoadingStyleChange] = useState(false);
 
-  const generationCurrentCursor = useMemo(
-    () => localGenerations.at(-1)?.id,
-    [localGenerations]
+  const [generationCurrentCursor, setGenerationCurrentCursor] = useState(
+    localGenerations.at(-1)?.id
   );
+
+  const orderGenerations = (
+    orderBy: keyof Generation,
+    mGenerations: Generation[]
+  ) => {
+    let newGenerations = [...mGenerations];
+    if (orderBy == 'createdAt') {
+      newGenerations = newGenerations.sort((a, b) =>
+        (b[orderBy] as string)?.localeCompare(a[orderBy])
+      );
+    } else {
+      newGenerations = newGenerations.sort(
+        (a, b) =>
+          (b[orderBy] as unknown as number) - (a[orderBy] as unknown as number)
+      );
+    }
+
+    return newGenerations;
+  };
+
+  const handleOrderByChange = (orderBy: keyof Generation) => {
+    const newGenerations = orderGenerations(orderBy, localGenerations);
+
+    setLocalGenerations(newGenerations);
+  };
 
   const handlePullNewGenerations = async (
     localGenerationCurrentCursor = generationCurrentCursor,
@@ -63,6 +158,9 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
     );
 
     setLocalGenerations([...localGenerations, ...newGenerations]);
+    setGenerationCurrentCursor(
+      [...localGenerations, ...newGenerations].at(-1)?.id
+    );
     setLoadingPagination(false);
   };
 
@@ -71,6 +169,7 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
     const newGenerations = await handlePullNewGenerations('', newStyle);
 
     setLocalGenerations(newGenerations);
+    setGenerationCurrentCursor(newGenerations.at(-1)?.id);
     setLoadingStyleChange(false);
   };
 
@@ -159,40 +258,43 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
         </Link>
 
         <div className="h-full w-full mt-4 rounded-md p-6 flex flex-col items-center gap-5 ">
-          <div className="flex w-full items-center justify-between mb-2">
-            <div className="">
-              <label
-                htmlFor="estilos"
-                className="block mb-2 text-xs md:text-sm font-normal text-letter"
-              >
-                Estilos
-              </label>
-              <select
-                id="estilos"
-                disabled={!!style}
-                value={localStyle}
-                onChange={(e) => {
-                  const newStyle = e.target.value;
-                  setLocalStyle(newStyle);
-                  handleOnStyleChange(newStyle);
-                }}
-                className="border bg-primary text-xs md:text-sm rounded-md block w-full p-2 md:p-2.5  border-letter placeholder-gray-400 text-letter focus:border-detail"
-              >
-                <option value="" className="py-4">
-                  Todos
-                </option>
-                {tattooStyles.map((tattoo, idx) => (
-                  <option key={idx} value={tattoo} className="py-4">
-                    {tattoo}
+          <div className="flex w-full items-center justify-between mb-2 gap-5">
+            <div className="flex items-end justify-center gap-2 md:gap-5">
+              <div>
+                <label
+                  htmlFor="estilos"
+                  className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                >
+                  Estilos
+                </label>
+                <select
+                  id="estilos"
+                  disabled={!!style}
+                  value={localStyle}
+                  onChange={(e) => {
+                    const newStyle = e.target.value;
+                    setLocalStyle(newStyle);
+                    handleOnStyleChange(newStyle);
+                  }}
+                  className="border bg-primary text-2xs xs:text-xs md:text-sm rounded-md block w-full p-1 xs:p-2 md:p-2.5  border-letter placeholder-gray-400 text-letter focus:border-detail"
+                >
+                  <option value="" className="py-4">
+                    Todos
                   </option>
-                ))}
-              </select>
+                  {tattooStyles.map((tattoo, idx) => (
+                    <option key={idx} value={tattoo} className="py-4">
+                      {tattoo}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <OrderBy handleOrderByChange={handleOrderByChange} />
             </div>
             <div className="flex flex-col w-1/2">
               <h3 className="font-extrabold test-sm xs:text-lg md:text-4xl text-end">
                 {generationCount}
               </h3>
-              <h4 className="font-bold text-xs xs:text-sm md:text-xl text-end">
+              <h4 className="font-bold text-xs xs:text-sm md:text-xl text-end whitespace-nowrap">
                 Tatuagens criadas
               </h4>
               <div className="bg-detail h-0.5" />
@@ -279,7 +381,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const style = query.estilo || undefined;
 
-  const generations =
+  const generationsResp =
     (await prisma.generation.findMany({
       where: {
         is_private: false,
@@ -290,6 +392,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         style: true,
         prompt: true,
         imageUrl: true,
+        createdAt: true,
+        _count: {
+          select: { likes: true, bookmarks: true },
+        },
       },
       take: 24,
       orderBy: [
@@ -298,6 +404,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       ],
     })) || [];
+
+  const generations = generationsResp.map((generation) => {
+    return {
+      id: generation.id,
+      style: generation.style,
+      prompt: generation.prompt,
+      imageUrl: generation.imageUrl,
+      createdAt: generation.createdAt,
+      likes: generation._count.likes,
+      bookmarks: generation._count.bookmarks,
+    };
+  });
 
   const generationCount =
     (await prisma.generation.count({
