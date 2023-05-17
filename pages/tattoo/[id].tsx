@@ -163,11 +163,11 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
         url: document.URL,
         title: `${generation.prompt} - Tatuagem gerada por IA - Crie a sua tattoo |
         TattooArtIA`,
-        text: 'Dê uma olhada na tatuagem que criei usando uma inteligência artificial!',
+        text: 'Dê uma olhada nessa tatuagem criada usando uma inteligência artificial!',
       });
     } else {
       navigator.clipboard.writeText(
-        `Dê uma olhada na tatuagem que criei usando uma inteligência artificial!\n${document.URL}`
+        `Dê uma olhada nessa tatuagem criada usando uma inteligência artificial!\n${document.URL}`
       );
       toast.info('Copiado para a área de transferência', {
         position: 'top-center',
