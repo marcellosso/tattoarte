@@ -2,12 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/utils/use-prisma';
 import type { Generation } from '@prisma/client';
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import tattooStyles from '@/assets/tattoo-styles';
+
+const LINK_BEFORE_CSS =
+  'before:absolute before:bottom-0 before:left-0 before:bg-letter before:h-px before:w-1/3 before:translate-x-full';
 
 interface IOrderBy {
   handleOrderByChange: (_v: keyof Generation) => void;
@@ -40,8 +43,14 @@ const OrderBy: FC<IOrderBy> = ({ handleOrderByChange }) => {
           />
         </svg>
       </button>
+      {open && (
+        <div
+          className="fixed top-0 left-0 bottom-0 right-0"
+          onClick={() => setOpen(false)}
+        />
+      )}
       <div
-        id="userDropdown"
+        id="orderDropdown"
         className={`z-100 top-10 absolute rounded-md shadow bg-primary ${
           open ? 'block' : 'hidden'
         }`}
@@ -50,26 +59,26 @@ const OrderBy: FC<IOrderBy> = ({ handleOrderByChange }) => {
           className="pb-2 pt-1 text-sm text-letter"
           aria-labelledby="userAvatar"
         >
-          <li className="mb-2 ">
+          <li className="mb-2 relative">
             <button
               onClick={() => handleChangeOrder('createdAt')}
-              className={`text-sm whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left`}
+              className={`text-sm whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left ${LINK_BEFORE_CSS}`}
             >
               Mais Recentes
             </button>
           </li>
-          <li className="mb-2">
+          <li className="mb-2 relative">
             <button
               onClick={() => handleChangeOrder('likes')}
-              className={`text-sm w-full whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left`}
+              className={`text-sm w-full whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left ${LINK_BEFORE_CSS}`}
             >
               Mais Curtidas
             </button>
           </li>
-          <li className="mb-2">
+          <li className="mb-2 relative">
             <button
               onClick={() => handleChangeOrder('bookmarks')}
-              className={`text-sm w-full whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left`}
+              className={`text-sm w-full whitespace-nowrap px-4 py-2 text-letter hover:bg-gray-600 text-left ${LINK_BEFORE_CSS}`}
             >
               Mais Salvas
             </button>
@@ -106,7 +115,9 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
     let newGenerations = [...mGenerations];
     if (orderBy == 'createdAt') {
       newGenerations = newGenerations.sort((a, b) =>
-        (b[orderBy] as string)?.localeCompare(a[orderBy])
+        (b[orderBy] as unknown as string)?.localeCompare(
+          a[orderBy] as unknown as string
+        )
       );
     } else {
       newGenerations = newGenerations.sort(
