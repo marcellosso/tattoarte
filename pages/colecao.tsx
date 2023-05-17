@@ -12,6 +12,112 @@ import { useRouter } from 'next/router';
 import type { GetServerSideProps } from 'next';
 import type { Generation } from '@prisma/client';
 
+interface IAchievmentModal {
+  selectedCoin: string;
+  setSelectedCoin: (_c: null) => void;
+  showProgressBar: boolean;
+  createdTattoosCount: number;
+}
+
+const AchievmentModal: FC<IAchievmentModal> = ({
+  selectedCoin,
+  setSelectedCoin,
+  showProgressBar,
+  createdTattoosCount,
+}) => {
+  const coinName = useMemo(() => {
+    if (selectedCoin == 'bronze-coin') return 'Moeda de Bronze';
+    if (selectedCoin == 'silver-coin') return 'Moeda de Prata';
+    if (selectedCoin == 'gold-coin') return 'Moeda de Ouro';
+    if (selectedCoin == 'platinum-coin') return 'Moeda de Platina';
+    return 'Moeda de Diamante';
+  }, [selectedCoin]);
+
+  const coinObjective = useMemo(() => {
+    if (selectedCoin == 'bronze-coin') return 4;
+    if (selectedCoin == 'silver-coin') return 20;
+    if (selectedCoin == 'gold-coin') return 40;
+    if (selectedCoin == 'platinum-coin') return 200;
+    return 400;
+  }, [selectedCoin]);
+
+  const coinCompletedPercent = useMemo(() => {
+    return Math.min((createdTattoosCount / coinObjective) * 100, 100);
+  }, [createdTattoosCount, coinObjective]);
+
+  return (
+    <div
+      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center"
+      onClick={() => setSelectedCoin(null)}
+    >
+      <div
+        className="animatedModal bg-secondary p-6 w-full sm:w-1/2 lg:w-1/3 my-2 md:my-0 rounded-lg
+        flex flex-col items-center justify-center gap-8"
+      >
+        <svg
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          viewBox="0 0 24 24"
+          onClick={() => setSelectedCoin(null)}
+          height={32}
+          width={32}
+          className="text-letter absolute right-0 top-0 hover:text-detail hover:cursor-pointer"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+        <div className="md:mt-4">
+          <Image
+            src={`/images/coins/${selectedCoin}.png`}
+            alt={`${coinName} com um robo cravado - Conquista de ${coinObjective} tatuagens criadas!`}
+            width={350}
+            height={350}
+            priority
+            quality={100}
+            className="rotate-[-54.5deg] opacity-100"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
+        </div>
+        <div>
+          <h1 className="text-detail text-2xl font-extrabold text-center">
+            {coinName}
+          </h1>
+          <p className="text-letter text-lg text-center">
+            Objetivo: Crie {coinObjective} tatuagens para conquistar essa moeda!
+          </p>
+        </div>
+        {showProgressBar && (
+          <div className="w-full">
+            <div className="flex justify-between mb-1 w-full">
+              <span className="text-base font-medium text-letter ">
+                Progresso
+              </span>
+              <span className="text-sm font-medium text-letter ">
+                {coinCompletedPercent}%
+              </span>
+            </div>
+            <div className="w-full  rounded-full h-2.5 bg-primary">
+              <div
+                className="bg-detail h-2.5 rounded-full"
+                style={{ width: `${coinCompletedPercent}%` }}
+              ></div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 type UserCoins = {
   hasBronzeCoin: boolean;
   hasSilverCoin: boolean;
@@ -32,7 +138,7 @@ type DraftGeneration = {
 
 interface ICollection {
   userName: string;
-  // userCoins: UserCoins;
+  userCoins: UserCoins;
   generations: DraftGeneration[];
   bookmarkedGenerations: Generation[];
   likeCount: number;
@@ -41,7 +147,7 @@ interface ICollection {
 
 const Collection: FC<ICollection> = ({
   userName,
-  // userCoins,
+  userCoins,
   generations,
   bookmarkedGenerations,
   likeCount,
@@ -49,6 +155,7 @@ const Collection: FC<ICollection> = ({
 }) => {
   const dynamicRoute = useRouter().asPath;
 
+  const [selectedCoin, setSelectedCoin] = useState<string | null>(null);
   const [localGenerations, setLocalGenerations] =
     useState<DraftGeneration[]>(generations);
 
@@ -326,6 +433,14 @@ const Collection: FC<ICollection> = ({
       </Head>
       <section className="flex h-screen items-center p-2 pt-16 text-letter max-md:overflow-y-scroll md:overflow-hidden">
         <div className="flex flex-col md:flex-row h-full w-full gap-5">
+          {selectedCoin && (
+            <AchievmentModal
+              selectedCoin={selectedCoin}
+              setSelectedCoin={setSelectedCoin}
+              showProgressBar={isOwner}
+              createdTattoosCount={generations.length}
+            />
+          )}
           <div className="md:h-full w-full md:w-1/5 pr-2 md:border-r-2 border-detail">
             <div>
               <div className="w-full h-full flex md:flex-col items-center max-md:justify-center max-md:gap-6">
@@ -358,10 +473,10 @@ const Collection: FC<ICollection> = ({
                   </div>
                 </div>
               </div>
-              {/* <h2 className="font-bold text-xs xs:text-sm md:text-3xl mt-6 text-center">
+              <h2 className="font-bold text-xs xs:text-sm md:text-3xl mt-6 text-center">
                 Conquistas
               </h2>
-              <div className="flex flex-row md:flex-col md:gap-6 md:mt-2">
+              <div className="flex flex-row md:flex-col md:gap-6 md:mt-2 items-center justify-center">
                 <div className="flex md:gap-2 w-full items-center justify-center">
                   <div>
                     <Image
@@ -371,6 +486,7 @@ const Collection: FC<ICollection> = ({
                       height={300}
                       priority
                       quality={100}
+                      onClick={() => setSelectedCoin('bronze-coin')}
                       className={`rotate-[-54.5deg] cursor-pointer ${
                         userCoins.hasBronzeCoin ? 'opacity-100' : 'opacity-30'
                       }`}
@@ -388,6 +504,7 @@ const Collection: FC<ICollection> = ({
                       height={300}
                       priority
                       quality={100}
+                      onClick={() => setSelectedCoin('silver-coin')}
                       className={`rotate-[-54.5deg] cursor-pointer ${
                         userCoins.hasSilverCoin ? 'opacity-100' : 'opacity-30'
                       }`}
@@ -407,6 +524,7 @@ const Collection: FC<ICollection> = ({
                       height={300}
                       priority
                       quality={100}
+                      onClick={() => setSelectedCoin('gold-coin')}
                       className={`rotate-[-54.5deg] cursor-pointer ${
                         userCoins.hasGoldCoin ? 'opacity-100' : 'opacity-30'
                       }`}
@@ -424,6 +542,7 @@ const Collection: FC<ICollection> = ({
                       height={300}
                       priority
                       quality={100}
+                      onClick={() => setSelectedCoin('platinum-coin')}
                       className={`rotate-[-54.5deg] cursor-pointer ${
                         userCoins.hasPlatinumCoin ? 'opacity-100' : 'opacity-30'
                       }`}
@@ -438,10 +557,11 @@ const Collection: FC<ICollection> = ({
                   <Image
                     src={`/images/coins/diamond-coin.png`}
                     alt="Moeda de diamante com um robo cravado - Conquista de 50 tatuagens criada!"
-                    width={250}
-                    height={250}
+                    width={350}
+                    height={350}
                     priority
                     quality={100}
+                    onClick={() => setSelectedCoin('diamond-coin')}
                     className={`rotate-[-54.5deg] cursor-pointer ${
                       userCoins.hasDiamondCoin ? 'opacity-100' : 'opacity-30'
                     }`}
@@ -451,7 +571,7 @@ const Collection: FC<ICollection> = ({
                     }}
                   />
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
           <div className="h-full w-full md:w-4/5 mb-12">
@@ -551,7 +671,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let generationsFromUser = [] as (DraftGeneration & {
     _count: { likes: number };
-    // author: UserCoins | null;
+    author: UserCoins | null;
   })[];
 
   const isSameUser = queryId == userId;
@@ -575,15 +695,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         imageUrl: true,
         prompt: true,
         style: true,
-        // author: {
-        //   select: {
-        //     hasBronzeCoin: true,
-        //     hasSilverCoin: true,
-        //     hasGoldCoin: true,
-        //     hasPlatinumCoin: true,
-        //     hasDiamondCoin: true,
-        //   },
-        // },
+        author: {
+          select: {
+            hasBronzeCoin: true,
+            hasSilverCoin: true,
+            hasGoldCoin: true,
+            hasPlatinumCoin: true,
+            hasDiamondCoin: true,
+          },
+        },
         _count: {
           select: {
             likes: true,
@@ -614,19 +734,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }, 0);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-  // const userCoins = generationsFromUser[0]?.author!;
-  // const userCoins = {
-  //   hasBronzeCoin: true,
-  //   hasSilverCoin: true,
-  //   hasGoldCoin: true,
-  //   hasPlatinumCoin: false,
-  //   hasDiamondCoin: false,
-  // };
+  const userCoins = generationsFromUser[0]?.author!;
 
   return {
     props: {
       userName,
-      // userCoins: JSON.parse(JSON.stringify(userCoins)),
+      userCoins: JSON.parse(JSON.stringify(userCoins)),
       generations: JSON.parse(JSON.stringify(generationsFromUser)),
       bookmarkedGenerations: JSON.parse(JSON.stringify(bookmarkedGenerations)),
       likeCount: likesCountForUser,

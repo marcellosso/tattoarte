@@ -72,11 +72,11 @@ model User {
   createdAt            DateTime  @default(now()) @map(name: "created_at")
   updatedAt            DateTime  @updatedAt @map(name: "updated_at")
 
-  // hasBronzeCoin   Boolean @default(false) @map(name: "has_bronze_coin")
-  // hasSilverCoin   Boolean @default(false) @map(name: "has_silver_coin")
-  // hasGoldCoin     Boolean @default(false) @map(name: "has_gold_coin")
-  // hasPlatinumCoin Boolean @default(false) @map(name: "has_platinum_coin")
-  // hasDiamondCoin  Boolean @default(false) @map(name: "has_diamond_coin")
+  hasBronzeCoin   Boolean @default(false) @map(name: "has_bronze_coin")
+  hasSilverCoin   Boolean @default(false) @map(name: "has_silver_coin")
+  hasGoldCoin     Boolean @default(false) @map(name: "has_gold_coin")
+  hasPlatinumCoin Boolean @default(false) @map(name: "has_platinum_coin")
+  hasDiamondCoin  Boolean @default(false) @map(name: "has_diamond_coin")
 
   generations Generation[]
   likes       Like[]

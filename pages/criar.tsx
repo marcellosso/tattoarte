@@ -19,13 +19,99 @@ import { useForm } from 'react-hook-form';
 import Head from 'next/head';
 
 const oswald = Oswald({ subsets: ['latin'] });
-interface IAPP {
+
+interface IAchievmentModal {
+  selectedCoin: string;
+  setSelectedCoin: (_c: null) => void;
+}
+
+const AchievmentModal: FC<IAchievmentModal> = ({
+  selectedCoin,
+  setSelectedCoin,
+}) => {
+  const coinName = useMemo(() => {
+    if (selectedCoin == 'bronze-coin') return 'Moeda de Bronze';
+    if (selectedCoin == 'silver-coin') return 'Moeda de Prata';
+    if (selectedCoin == 'gold-coin') return 'Moeda de Ouro';
+    if (selectedCoin == 'platinum-coin') return 'Moeda de Platina';
+    return 'Moeda de Diamante';
+  }, [selectedCoin]);
+
+  const coinObjective = useMemo(() => {
+    if (selectedCoin == 'bronze-coin') return 4;
+    if (selectedCoin == 'silver-coin') return 20;
+    if (selectedCoin == 'gold-coin') return 40;
+    if (selectedCoin == 'platinum-coin') return 200;
+    return 400;
+  }, [selectedCoin]);
+
+  return (
+    <div
+      className="inset-0 fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center"
+      onClick={() => setSelectedCoin(null)}
+    >
+      <div
+        className="animatedModal bg-secondary p-6 w-full sm:w-1/2 lg:w-1/3 my-2 md:my-0 rounded-lg
+        flex flex-col items-center justify-center gap-8 
+        absolute  z-100"
+      >
+        <svg
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          viewBox="0 0 24 24"
+          onClick={() => setSelectedCoin(null)}
+          height={32}
+          width={32}
+          className="text-letter absolute right-0 top-0 hover:text-detail hover:cursor-pointer"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+        <div className="md:mt-4">
+          <Image
+            src={`/images/coins/${selectedCoin}.png`}
+            alt={`${coinName} com um robo cravado - Conquista de ${coinObjective} tatuagens criadas!`}
+            width={350}
+            height={350}
+            priority
+            quality={100}
+            className="rotate-[-54.5deg] opacity-100"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
+        </div>
+        <div>
+          <h1 className="text-detail text-2xl font-extrabold text-center">
+            Nova moeda desbloqueada!
+          </h1>
+          <h2 className="text-letter text-xl font-extrabold text-center">
+            {coinName}
+          </h2>
+          <p className="text-letter text-lg text-center">
+            Você criou {coinObjective} tatuagens!
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface ICriar {
   user: UserProfile & User;
 }
 
-const App: FC<IAPP> = ({ user }) => {
+const Criar: FC<ICriar> = ({ user }) => {
   const { register, handleSubmit, watch } = useForm<ParamsType>();
   const [userData, setUserData] = useState(user);
+  const [achievedCoin, setAchievedCoin] = useState<string | null>(null);
 
   const [openMarketingModal, setOpenMarketingModal] = useState(
     !user?.subscribed && (user?.credits || 0) <= 0
@@ -36,14 +122,30 @@ const App: FC<IAPP> = ({ user }) => {
 
   const [toggleForm, setToggleForm] = useState(true);
 
+  const triggerAchievement = (genCount: number) => {
+    if (genCount == 1) {
+      setAchievedCoin('bronze-coin');
+    } else if (genCount == 5) {
+      setAchievedCoin('silver-coin');
+    } else if (genCount == 10) {
+      setAchievedCoin('gold-coin');
+    } else if (genCount == 50) {
+      setAchievedCoin('platinum-coin');
+    } else if (genCount == 100) {
+      setAchievedCoin('diamond-coin');
+    }
+  };
+
   const handleCreate = async (params: ParamsType) => {
     setLoadingImages(true);
     setToggleForm(false);
 
     try {
       const response = await generateImage(params, userData);
+      const newUserData = response.newUserData;
       setImages(response.images);
-      setUserData(response.newUserData);
+      setUserData(newUserData);
+      triggerAchievement(newUserData.generationCount);
     } catch (err) {
       toast.error(err as string, {
         position: 'top-right',
@@ -135,6 +237,12 @@ const App: FC<IAPP> = ({ user }) => {
 
       <section className="flex min-h-screen h-screen flex-col items-center justify-between pt-12 text-letter">
         <div className="flex flex-col lg:flex-row w-screen h-full">
+          {achievedCoin && (
+            <AchievmentModal
+              selectedCoin={achievedCoin}
+              setSelectedCoin={setAchievedCoin}
+            />
+          )}
           <div
             className={`bg-primary w-full ${
               toggleForm ? 'max-lg:h-fit' : 'h-20 md:h-40'
@@ -523,4 +631,4 @@ export const getServerSideProps = withPageAuthRequired({
   },
 });
 
-export default App;
+export default Criar;

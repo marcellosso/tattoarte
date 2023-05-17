@@ -95,6 +95,20 @@ module.exports = withApiAuthRequired(async (req, res) => {
       );
     }
 
+    const updateAchievements = {} as Record<string, boolean>;
+
+    if (user.generationCount == 1) {
+      updateAchievements['hasBronzeCoin'] = true;
+    } else if (user.generationCount == 5) {
+      updateAchievements['hasSilverCoin'] = true;
+    } else if (user.generationCount == 10) {
+      updateAchievements['hasGoldCoin'] = true;
+    } else if (user.generationCount == 50) {
+      updateAchievements['hasPlatinumCoin'] = true;
+    } else if (user.generationCount == 100) {
+      updateAchievements['hasDiamondCoin'] = true;
+    }
+
     await prisma.user.update({
       where: {
         email: user.email ?? '',
@@ -102,6 +116,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
       data: {
         credits: user.credits,
         generationCount: user.generationCount,
+        ...updateAchievements,
       },
     });
 
