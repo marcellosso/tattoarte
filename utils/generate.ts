@@ -48,7 +48,7 @@ const generateImage = async (params: ParamsType, userInfo: User) => {
       getPredictionData,
       validatePrediction,
       1_000,
-      20
+      30
     )) as Prediction;
 
     poll(callCreateCallback, (res) => res?.success, 1_000, 5);

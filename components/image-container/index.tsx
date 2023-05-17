@@ -28,7 +28,7 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
           className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hover:cursor-pointer"
           onClick={() => setOpenFullscreenImageModal('')}
         >
-          <div className="w-[1024px] h-5/6 my-2 md:my-0 rounded-md flex items-center justify-center relative">
+          <div className="animatedModal w-[1024px] h-5/6 my-2 md:my-0 rounded-md flex items-center justify-center relative">
             <Image
               src={openFullscreenImageModal}
               alt="Arte de tatuagem criada pela inteligência artificial - TattooArtIA!"

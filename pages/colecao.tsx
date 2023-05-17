@@ -627,7 +627,7 @@ const Collection: FC<ICollection> = ({
               )}
             </div>
             {localGenerations.length > 0 ? (
-              <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 pb-6 md:pb-2 w-full h-full grid-rows-none gap-3 sm:gap-5 md:overflow-y-auto scrollbar-hide place-items-center">
+              <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 pb-6 md:pb-2 w-full h-full grid-rows-none gap-3 sm:gap-5 md:overflow-y-auto scrollbar-hide">
                 {renderGeneration()}
               </div>
             ) : (

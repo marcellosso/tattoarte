@@ -13,7 +13,11 @@ const poll = <T>(
     if (validate(result)) {
       return resolve(result);
     } else if (maxAttempts && attempts >= maxAttempts) {
-      return reject(new Error('Max attempts reached'));
+      return reject(
+        new Error(
+          'Você atingiu o limite máximo de tentativas, por favor tente novamente.'
+        )
+      );
     } else {
       setTimeout(executePoll, interval, resolve, reject);
     }
