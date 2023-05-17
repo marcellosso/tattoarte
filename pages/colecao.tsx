@@ -52,7 +52,7 @@ const AchievmentModal: FC<IAchievmentModal> = ({
     >
       <div
         className="animatedModal bg-secondary p-6 w-full sm:w-1/2 lg:w-1/3 my-2 md:my-0 rounded-lg
-        flex flex-col items-center justify-center gap-8"
+        flex flex-col items-center justify-center gap-8 relative"
       >
         <svg
           fill="none"
