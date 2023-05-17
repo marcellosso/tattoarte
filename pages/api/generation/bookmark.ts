@@ -1,6 +1,6 @@
 import { prisma } from '@/utils/use-prisma';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
-import type { Like } from '@prisma/client';
+import type { Bookmark } from '@prisma/client';
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
@@ -10,16 +10,16 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     const { id } = req.body as { id: string };
 
-    const data = { generationid: id, userId: userId } as Like;
+    const data = { generationId: id, userId: userId } as Bookmark;
 
-    const like = await prisma.like.findUnique({
-      where: { userId_generationid: data },
+    const bookmark = await prisma.bookmark.findUnique({
+      where: { userId_generationId: data },
     });
 
-    if (like == null) await prisma.like.create({ data });
-    else await prisma.like.delete({ where: { userId_generationid: data } });
+    if (bookmark == null) await prisma.bookmark.create({ data });
+    else await prisma.bookmark.delete({ where: { userId_generationId: data } });
 
-    res.status(200).json({ liked: true });
+    res.status(200).json({ bookmarked: true });
   } catch (err) {
     res.status(500).send(err);
   }

@@ -6,7 +6,7 @@ import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { getSession, Session } from '@auth0/nextjs-auth0';
-import toggleLike from '@/utils/toggle-like';
+import { toggleLike, toggleBookmark } from '@/utils/toggle-options';
 import { toast } from 'react-toastify';
 import Logo from '@/components/logo';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -20,7 +20,9 @@ type CustomGeneration = {
   imageUrl: string;
   style: string;
   isLiked: boolean;
+  isBookmarked: boolean;
   likeCount: number;
+  bookmarkCount: number;
 };
 
 interface ITattoo {
@@ -33,8 +35,11 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   const [openFullscreenImageModal, setOpenFullscreenImageModal] =
     useState(false);
   const [openNotLoggedModal, setOpenNotLoggedModal] = useState(false);
+
   const [isLiked, setIsLiked] = useState(generation?.isLiked);
   const [likeCount, setLikeCount] = useState(generation?.likeCount);
+  const [isBookmarked, setIsBookmarked] = useState(generation?.isBookmarked);
+  const [bookmarkCount, setBookmarkCount] = useState(generation?.bookmarkCount);
 
   const router = useRouter();
 
@@ -50,6 +55,19 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
     return initials;
   }, [generation?.authorName]);
 
+  const invokeToastError = (error: string) => {
+    toast.error(error, {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  };
+
   const handleToggleLike = async () => {
     if (!user) {
       setOpenNotLoggedModal(true);
@@ -62,16 +80,23 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
     try {
       await toggleLike(generation?.id);
     } catch (err) {
-      toast.error(err as string, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
+      invokeToastError(err as string);
+    }
+  };
+
+  const handleToggleBookmark = async () => {
+    if (!user) {
+      setOpenNotLoggedModal(true);
+      return;
+    }
+
+    setIsBookmarked(!isBookmarked);
+    setBookmarkCount(isBookmarked ? bookmarkCount - 1 : bookmarkCount + 1);
+
+    try {
+      await toggleBookmark(generation?.id);
+    } catch (err) {
+      invokeToastError(err as string);
     }
   };
 
@@ -312,13 +337,18 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                 {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
               </span>
               <div className="flex gap-4">
-                {/* <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1">
                   <svg
                     fill="none"
                     stroke="currentColor"
+                    onClick={handleToggleBookmark}
                     strokeWidth={1.5}
                     viewBox="0 0 24 24"
-                    className="h-8 w-8 text-letter hover:fill-detail hover:text-detail hover:cursor-pointer"
+                    className={`h-8 w-8 text-letter ${
+                      isBookmarked
+                        ? 'fill-detail text-yellow-400 hover:fill-yellow-600 hover:text-yellow-600'
+                        : 'hover:fill-detail hover:text-detail'
+                    } hover:cursor-pointer`}
                     xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true"
                   >
@@ -328,8 +358,10 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                       d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
                     />
                   </svg>
-                  <p className="font-bold text-md sm:text-xl">102</p>
-                </div> */}
+                  <p className="font-bold text-md sm:text-xl">
+                    {bookmarkCount}
+                  </p>
+                </div>
 
                 <div className="flex items-center gap-1">
                   <svg
@@ -395,11 +427,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       prompt: true,
       imageUrl: true,
       style: true,
+      bookmarks:
+        currentUserId == null ? false : { where: { userId: currentUserId } },
       likes:
         currentUserId == null ? false : { where: { userId: currentUserId } },
       _count: {
         select: {
           likes: true,
+          bookmarks: true,
         },
       },
     },
@@ -426,7 +461,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           imageUrl: generation.imageUrl,
           style: generation.style,
           isLiked: generation.likes?.length > 0,
+          isBookmarked: generation.bookmarks?.length > 0,
           likeCount: generation._count.likes ?? 0,
+          bookmarkCount: generation._count.bookmarks ?? 0,
         })
       ),
     },

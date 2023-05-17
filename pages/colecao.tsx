@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { GetServerSideProps } from 'next';
+import type { Generation } from '@prisma/client';
 
 type DraftGeneration = {
   id: string;
@@ -24,6 +25,7 @@ type DraftGeneration = {
 interface ICollection {
   userName: string;
   generations: DraftGeneration[];
+  bookmarkedGenerations: Generation[];
   likeCount: number;
   isOwner: boolean;
 }
@@ -31,6 +33,7 @@ interface ICollection {
 const Collection: FC<ICollection> = ({
   userName,
   generations,
+  bookmarkedGenerations,
   likeCount,
   isOwner,
 }) => {
@@ -87,6 +90,7 @@ const Collection: FC<ICollection> = ({
       await axios.put('/api/generation/update', {
         updateGenerations,
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.response?.data || err.message || err, {
         position: 'top-right',
@@ -131,7 +135,10 @@ const Collection: FC<ICollection> = ({
     [localGenerations]
   );
 
-  const renderGeneration = (mGenerations = localGenerations) => {
+  const renderGeneration = (
+    mGenerations = localGenerations,
+    hideImageDetails = false
+  ) => {
     return mGenerations.map((generation) => (
       <Link
         key={generation.id}
@@ -150,7 +157,7 @@ const Collection: FC<ICollection> = ({
             objectFit: 'cover',
           }}
         />
-        {generation.is_private && (
+        {generation.is_private && !hideImageDetails && (
           <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-5 sm:right-6 lg:left-0 top-0 z-10 opacity-100 lg:group-hover:opacity-0 lg:group-hover:top-2 transition-all">
             <svg
               fill="none"
@@ -180,7 +187,7 @@ const Collection: FC<ICollection> = ({
             {generation.prompt}
           </span>
         </div>
-        {isOwner && (
+        {isOwner && !hideImageDetails && (
           <>
             {generation.is_favorite ? (
               <div className="h-5 w-5 sm:h-6 sm:w-6 absolute right-0 top-0 z-10 transition-all lg:group-hover:top-2">
@@ -415,43 +422,41 @@ const Collection: FC<ICollection> = ({
             {showDefaultDisplay && favoriteLocalGenerations.length > 0 && (
               <>
                 <div className="flex gap-6">
-                  <h3
-                    className={`font-bold text-3xl ${
+                  <button
+                    onClick={() => setTopHeaderTabs('favorites')}
+                    className={`font-bold text-2xl md:text-3xl ${
                       topHeaderTabs == 'favorites'
                         ? 'opacity-100'
                         : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
                     }`}
                   >
                     Favoritas
-                  </h3>
-                  {/* <h3
-                className={`font-bold text-4xl ${
-                  topHeaderTabs == 'bookmarks'
-                    ? 'opacity-100'
-                    : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
-                }`}
-              >
-                Salvas
-              </h3> */}
+                  </button>
+                  <button
+                    onClick={() => setTopHeaderTabs('bookmarks')}
+                    className={`font-bold text-2xl md:text-3xl ${
+                      topHeaderTabs == 'bookmarks'
+                        ? 'opacity-100'
+                        : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+                    }`}
+                  >
+                    Salvas
+                  </button>
                 </div>
                 <div className="flex justify-between w-full items-center">
                   <div className="h-px w-1/4 bg-detail mb-3" />
-                  {/* <p className="max-md:text-sm">Ver todas</p> */}
                 </div>
                 <div className="w-full flex gap-6 overflow-x-auto scrollbar-custom mb-4 pb-2">
-                  {renderGeneration(favoriteLocalGenerations)}
+                  {renderGeneration(
+                    topHeaderTabs == 'favorites'
+                      ? favoriteLocalGenerations
+                      : bookmarkedGenerations,
+                    topHeaderTabs != 'favorites'
+                  )}
                 </div>
               </>
             )}
-            <h3
-              className={`font-bold text-3xl ${
-                topHeaderTabs == 'favorites'
-                  ? 'opacity-100'
-                  : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
-              }`}
-            >
-              Todas
-            </h3>
+            <h3 className="font-bold text-2xl md:text-3xl">Todas</h3>
             <div className="flex justify-between w-full items-center">
               <div className="h-px w-1/4 bg-detail mb-2" />
               {isOwner && generations.length > 0 && (
@@ -539,6 +544,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     })) || [];
 
+  let bookmarkedGenerations = [] as Generation[];
+
+  if (isSameUser) {
+    const bookmarkedRes = await prisma.bookmark.findMany({
+      where: {
+        userId: userId,
+      },
+      select: {
+        generation: true,
+      },
+    });
+
+    bookmarkedGenerations = bookmarkedRes.map(
+      (bookmark) => bookmark.generation
+    );
+  }
+
   const likesCountForUser = generationsFromUser.reduce((acc, generation) => {
     return acc + generation._count.likes;
   }, 0);
@@ -547,6 +569,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       userName,
       generations: JSON.parse(JSON.stringify(generationsFromUser)),
+      bookmarkedGenerations: JSON.parse(JSON.stringify(bookmarkedGenerations)),
       likeCount: likesCountForUser,
       isOwner: isSameUser,
     },
