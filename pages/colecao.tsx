@@ -32,7 +32,7 @@ type DraftGeneration = {
 
 interface ICollection {
   userName: string;
-  userCoins: UserCoins;
+  // userCoins: UserCoins;
   generations: DraftGeneration[];
   bookmarkedGenerations: Generation[];
   likeCount: number;
@@ -41,7 +41,7 @@ interface ICollection {
 
 const Collection: FC<ICollection> = ({
   userName,
-  userCoins,
+  // userCoins,
   generations,
   bookmarkedGenerations,
   likeCount,
@@ -358,7 +358,7 @@ const Collection: FC<ICollection> = ({
                   </div>
                 </div>
               </div>
-              <h2 className="font-bold text-xs xs:text-sm md:text-3xl mt-6 text-center">
+              {/* <h2 className="font-bold text-xs xs:text-sm md:text-3xl mt-6 text-center">
                 Conquistas
               </h2>
               <div className="flex flex-row md:flex-col md:gap-6 md:mt-2">
@@ -451,7 +451,7 @@ const Collection: FC<ICollection> = ({
                     }}
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="h-full w-full md:w-4/5 mb-12">
@@ -615,18 +615,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
   // const userCoins = generationsFromUser[0]?.author!;
-  const userCoins = {
-    hasBronzeCoin: true,
-    hasSilverCoin: true,
-    hasGoldCoin: true,
-    hasPlatinumCoin: false,
-    hasDiamondCoin: false,
-  };
+  // const userCoins = {
+  //   hasBronzeCoin: true,
+  //   hasSilverCoin: true,
+  //   hasGoldCoin: true,
+  //   hasPlatinumCoin: false,
+  //   hasDiamondCoin: false,
+  // };
 
   return {
     props: {
       userName,
-      userCoins: JSON.parse(JSON.stringify(userCoins)),
+      // userCoins: JSON.parse(JSON.stringify(userCoins)),
       generations: JSON.parse(JSON.stringify(generationsFromUser)),
       bookmarkedGenerations: JSON.parse(JSON.stringify(bookmarkedGenerations)),
       likeCount: likesCountForUser,
