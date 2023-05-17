@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import Logo from '@/components/logo';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
+import { isMobile } from 'react-device-detect';
+
 type CustomGeneration = {
   id: string;
   authorId: string;
@@ -154,6 +156,33 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
       </h4>
     </div>
   );
+
+  const handleShare = () => {
+    if (isMobile) {
+      navigator.share({
+        url: document.URL,
+        title: `${generation.prompt} - Tatuagem gerada por IA - Crie a sua tattoo |
+        TattooArtIA`,
+        text: 'Dê uma olhada na tatuagem que criei usando uma inteligência artificial!',
+      });
+    } else {
+      navigator.clipboard.writeText(
+        `Dê uma olhada na tatuagem que criei usando uma inteligência artificial!\n${document.URL}`
+      );
+      toast.info('Copiado para a área de transferência', {
+        position: 'top-center',
+        autoClose: 1000,
+        icon: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        style: { color: '#EEEEEE', fontWeight: 500 },
+        theme: 'dark',
+      });
+    }
+  };
 
   return (
     <main>
@@ -316,6 +345,9 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </div>
 
             <div className="h-1/2 w-full sm:h-[512px] sm:w-[512px] hover:opacity-70 hover:cursor-pointer relative">
+              <span className="text-letter text-xs sm:text-sm font-light absolute -top-6 right-0">
+                {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
+              </span>
               <Image
                 src={generation.imageUrl}
                 alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
@@ -333,9 +365,22 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </div>
 
             <div className="w-full sm:w-[512px] flex items-center justify-between mb-6">
-              <span className="text-letter text-xs sm:text-sm font-light">
-                {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
-              </span>
+              <svg
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                onClick={handleShare}
+                viewBox="0 0 24 24"
+                className={`h-8 w-8 text-letter cursor-pointer`}
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
+                />
+              </svg>
               <div className="flex gap-4">
                 <div className="flex items-center gap-1">
                   <svg

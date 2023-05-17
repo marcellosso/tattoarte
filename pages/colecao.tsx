@@ -12,6 +12,14 @@ import { useRouter } from 'next/router';
 import type { GetServerSideProps } from 'next';
 import type { Generation } from '@prisma/client';
 
+type UserCoins = {
+  hasBronzeCoin: boolean;
+  hasSilverCoin: boolean;
+  hasGoldCoin: boolean;
+  hasPlatinumCoin: boolean;
+  hasDiamondCoin: boolean;
+};
+
 type DraftGeneration = {
   id: string;
   authorName: string;
@@ -24,6 +32,7 @@ type DraftGeneration = {
 
 interface ICollection {
   userName: string;
+  userCoins: UserCoins;
   generations: DraftGeneration[];
   bookmarkedGenerations: Generation[];
   likeCount: number;
@@ -32,6 +41,7 @@ interface ICollection {
 
 const Collection: FC<ICollection> = ({
   userName,
+  userCoins,
   generations,
   bookmarkedGenerations,
   likeCount,
@@ -317,107 +327,131 @@ const Collection: FC<ICollection> = ({
       <section className="flex h-screen items-center p-2 pt-16 text-letter max-md:overflow-y-scroll md:overflow-hidden">
         <div className="flex flex-col md:flex-row h-full w-full gap-5">
           <div className="md:h-full w-full md:w-1/5 pr-2 md:border-r-2 border-detail">
-            <div className="w-full h-full flex md:flex-col items-center max-md:justify-center max-md:gap-6">
-              <div
-                id="userAvatar"
-                className="relative inline-flex items-center justify-center w-16 h-16 xs:w-20 xs:h-20 md:h-16 md:w-16 overflow-hidden rounded-full bg-detail "
-              >
-                <span className="text-primary font-bold max-xs:text-xs max-md:text-xl md:text-lg">
-                  {userInitials}
-                </span>
-              </div>
-              <div className="flex flex-col items-center pt-2">
-                <h1 className="font-extrabold text-lg xs:text-xl lg:text-3xl">
-                  {localUserName}
-                </h1>
-                <div className="h-px w-10/12 bg-detail my-2 md:my-2" />
-                <div className="flex w-full gap-10 lg:gap-16 items-center justify-center md:mt-2">
-                  <div className="text-center">
-                    <h2 className="text-xs lg:text-sm">Tatuagens</h2>
-                    <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
-                      {generations.length}
-                    </h2>
-                  </div>
-                  <div className="text-center">
-                    <h2 className="text-xs lg:text-sm">Curtidas</h2>
-                    <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
-                      {likeCount}
-                    </h2>
+            <div>
+              <div className="w-full h-full flex md:flex-col items-center max-md:justify-center max-md:gap-6">
+                <div
+                  id="userAvatar"
+                  className="relative inline-flex items-center justify-center w-16 h-16 xs:w-20 xs:h-20 md:h-16 md:w-16 overflow-hidden rounded-full bg-detail "
+                >
+                  <span className="text-primary font-bold max-xs:text-xs max-md:text-xl md:text-lg">
+                    {userInitials}
+                  </span>
+                </div>
+                <div className="flex flex-col items-center pt-2">
+                  <h1 className="font-extrabold text-lg xs:text-xl lg:text-3xl">
+                    {localUserName}
+                  </h1>
+                  <div className="h-px w-10/12 bg-detail my-2 md:my-2" />
+                  <div className="flex w-full gap-10 lg:gap-16 items-center justify-center md:mt-2">
+                    <div className="text-center">
+                      <h2 className="text-xs lg:text-sm">Tatuagens</h2>
+                      <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
+                        {generations.length}
+                      </h2>
+                    </div>
+                    <div className="text-center">
+                      <h2 className="text-xs lg:text-sm">Curtidas</h2>
+                      <h2 className="text-xl lg:text-2xl font-extrabold text-detail">
+                        {likeCount}
+                      </h2>
+                    </div>
                   </div>
                 </div>
               </div>
-              {/* <h2 className="font-bold text-lg xs:text-xl md:text-3xl">
+              <h2 className="font-bold text-xs xs:text-sm md:text-3xl mt-6 text-center">
                 Conquistas
               </h2>
-              <div className="flex pt-6 w-full items-center justify-center">
-                <Image
-                  src={`/images/coins/bronze-coin.png`}
-                  alt="Moeda de bronze com um robo cravado - Conquista de 1 tatuagem criada!"
-                  width={200}
-                  height={200}
-                  priority
-                  quality={100}
-                  className="rotate-[-54.5deg]"
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-                <Image
-                  src={`/images/coins/silver-coin.png`}
-                  alt="Moeda de prata com um robo cravado - Conquista de 5 tatuagens criada!"
-                  width={200}
-                  height={200}
-                  priority
-                  quality={100}
-                  className="rotate-[-54.5deg]"
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
+              <div className="flex flex-row md:flex-col md:gap-6 md:mt-2">
+                <div className="flex md:gap-2 w-full items-center justify-center">
+                  <div>
+                    <Image
+                      src={`/images/coins/bronze-coin.png`}
+                      alt="Moeda de bronze com um robo cravado - Conquista de 1 tatuagem criada!"
+                      width={300}
+                      height={300}
+                      priority
+                      quality={100}
+                      className={`rotate-[-54.5deg] cursor-pointer ${
+                        userCoins.hasBronzeCoin ? 'opacity-100' : 'opacity-30'
+                      }`}
+                      style={{
+                        maxWidth: '100%',
+                        height: 'auto',
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Image
+                      src={`/images/coins/silver-coin.png`}
+                      alt="Moeda de prata com um robo cravado - Conquista de 5 tatuagens criada!"
+                      width={300}
+                      height={300}
+                      priority
+                      quality={100}
+                      className={`rotate-[-54.5deg] cursor-pointer ${
+                        userCoins.hasSilverCoin ? 'opacity-100' : 'opacity-30'
+                      }`}
+                      style={{
+                        maxWidth: '100%',
+                        height: 'auto',
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="flex md:gap-2 w-full items-center justify-center">
+                  <div>
+                    <Image
+                      src={`/images/coins/gold-coin.png`}
+                      alt="Moeda de ouro com um robo cravado - Conquista de 10 tatuagem criada!"
+                      width={300}
+                      height={300}
+                      priority
+                      quality={100}
+                      className={`rotate-[-54.5deg] cursor-pointer ${
+                        userCoins.hasGoldCoin ? 'opacity-100' : 'opacity-30'
+                      }`}
+                      style={{
+                        maxWidth: '100%',
+                        height: 'auto',
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Image
+                      src={`/images/coins/platinum-coin.png`}
+                      alt="Moeda de platina com um robo cravado - Conquista de 25 tatuagens criada!"
+                      width={300}
+                      height={300}
+                      priority
+                      quality={100}
+                      className={`rotate-[-54.5deg] cursor-pointer ${
+                        userCoins.hasPlatinumCoin ? 'opacity-100' : 'opacity-30'
+                      }`}
+                      style={{
+                        maxWidth: '100%',
+                        height: 'auto',
+                      }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Image
+                    src={`/images/coins/diamond-coin.png`}
+                    alt="Moeda de diamante com um robo cravado - Conquista de 50 tatuagens criada!"
+                    width={250}
+                    height={250}
+                    priority
+                    quality={100}
+                    className={`rotate-[-54.5deg] cursor-pointer ${
+                      userCoins.hasDiamondCoin ? 'opacity-100' : 'opacity-30'
+                    }`}
+                    style={{
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
+                  />
+                </div>
               </div>
-              <div className="flex pt-2 my-4 w-full items-center justify-center">
-                <Image
-                  src={`/images/coins/gold-coin.png`}
-                  alt="Moeda de ouro com um robo cravado - Conquista de 10 tatuagem criada!"
-                  width={200}
-                  height={200}
-                  priority
-                  quality={100}
-                  className="rotate-[-54.5deg]"
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-                <Image
-                  src={`/images/coins/platinum-coin.png`}
-                  alt="Moeda de platina com um robo cravado - Conquista de 25 tatuagens criada!"
-                  width={200}
-                  height={200}
-                  priority
-                  quality={100}
-                  className="rotate-[-54.5deg]"
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-              </div>
-              <Image
-                src={`/images/coins/diamond-coin.png`}
-                alt="Moeda de diamante com um robo cravado - Conquista de 50 tatuagens criada!"
-                width={250}
-                height={250}
-                priority
-                quality={100}
-                className="rotate-[-54.5deg]"
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              /> */}
             </div>
           </div>
           <div className="h-full w-full md:w-4/5 mb-12">
@@ -517,6 +551,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let generationsFromUser = [] as (DraftGeneration & {
     _count: { likes: number };
+    author: UserCoins | null;
   })[];
 
   const isSameUser = queryId == userId;
@@ -540,6 +575,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         imageUrl: true,
         prompt: true,
         style: true,
+        author: {
+          select: {
+            hasBronzeCoin: true,
+            hasSilverCoin: true,
+            hasGoldCoin: true,
+            hasPlatinumCoin: true,
+            hasDiamondCoin: true,
+          },
+        },
         _count: {
           select: {
             likes: true,
@@ -569,9 +613,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return acc + generation._count.likes;
   }, 0);
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+  // const userCoins = generationsFromUser[0]?.author!;
+  const userCoins = {
+    hasBronzeCoin: true,
+    hasSilverCoin: true,
+    hasGoldCoin: true,
+    hasPlatinumCoin: false,
+    hasDiamondCoin: false,
+  };
+
   return {
     props: {
       userName,
+      userCoins: JSON.parse(JSON.stringify(userCoins)),
       generations: JSON.parse(JSON.stringify(generationsFromUser)),
       bookmarkedGenerations: JSON.parse(JSON.stringify(bookmarkedGenerations)),
       likeCount: likesCountForUser,

@@ -59,21 +59,28 @@ model Bookmark {
 }
 
 model User {
-  id                   String       @id @default(cuid())
+  id                   String    @id @default(cuid())
   name                 String?
-  email                String?      @unique
-  subscribed           Boolean?     @default(false)
-  subscriptionAt       DateTime?    @map(name: "subscribed_at")
-  subscriptionDuration Int?         @default(0) @map(name: "subscription_duration")
-  credits              Int?         @default(1)
-  generationCount      Int?         @default(0) @map(name: "generation_count")
-  freeTrial            Boolean?     @default(true) @map(name: "free_trial")
-  stripeId             String       @unique @map(name: "stripe_id")
-  createdAt            DateTime     @default(now()) @map(name: "created_at")
-  updatedAt            DateTime     @updatedAt @map(name: "updated_at")
-  generations          Generation[]
-  likes                Like[]
-  bookmarks            Bookmark[]
+  email                String?   @unique
+  subscribed           Boolean?  @default(false)
+  subscriptionAt       DateTime? @map(name: "subscribed_at")
+  subscriptionDuration Int?      @default(0) @map(name: "subscription_duration")
+  credits              Int?      @default(1)
+  generationCount      Int?      @default(0) @map(name: "generation_count")
+  freeTrial            Boolean?  @default(true) @map(name: "free_trial")
+  stripeId             String    @unique @map(name: "stripe_id")
+  createdAt            DateTime  @default(now()) @map(name: "created_at")
+  updatedAt            DateTime  @updatedAt @map(name: "updated_at")
+
+  hasBronzeCoin   Boolean @default(false) @map(name: "has_bronze_coin")
+  hasSilverCoin   Boolean @default(false) @map(name: "has_silver_coin")
+  hasGoldCoin     Boolean @default(false) @map(name: "has_gold_coin")
+  hasPlatinumCoin Boolean @default(false) @map(name: "has_platinum_coin")
+  hasDiamondCoin  Boolean @default(false) @map(name: "has_diamond_coin")
+
+  generations Generation[]
+  likes       Like[]
+  bookmarks   Bookmark[]
 
   @@map(name: "users")
 }
