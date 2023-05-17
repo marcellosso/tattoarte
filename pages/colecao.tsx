@@ -42,7 +42,14 @@ const Collection: FC<ICollection> = ({
   const [localGenerations, setLocalGenerations] =
     useState<DraftGeneration[]>(generations);
 
-  const [topHeaderTabs, setTopHeaderTabs] = useState('favorites');
+  const favoriteLocalGenerations = useMemo(
+    () => localGenerations.filter((l) => l.is_favorite),
+    [localGenerations]
+  );
+
+  const [topHeaderTabs, setTopHeaderTabs] = useState(
+    favoriteLocalGenerations.length > 0 ? 'favorites' : 'bookmarks'
+  );
   const [showDefaultDisplay, setShowDefaultDisplay] = useState(isOwner);
 
   const debouncedLocalGenerations = useDebounce(
@@ -129,11 +136,6 @@ const Collection: FC<ICollection> = ({
       }
     }
   }, [debouncedLocalGenerations, isOwner]);
-
-  const favoriteLocalGenerations = useMemo(
-    () => localGenerations.filter((l) => l.is_favorite),
-    [localGenerations]
-  );
 
   const renderGeneration = (
     mGenerations = localGenerations,
@@ -419,43 +421,45 @@ const Collection: FC<ICollection> = ({
             </div>
           </div>
           <div className="h-full w-full md:w-4/5 mb-12">
-            {showDefaultDisplay && favoriteLocalGenerations.length > 0 && (
-              <>
-                <div className="flex gap-6">
-                  <button
-                    onClick={() => setTopHeaderTabs('favorites')}
-                    className={`font-bold text-2xl md:text-3xl ${
+            {showDefaultDisplay &&
+              (favoriteLocalGenerations.length > 0 ||
+                bookmarkedGenerations.length > 0) && (
+                <>
+                  <div className="flex gap-6">
+                    <button
+                      onClick={() => setTopHeaderTabs('favorites')}
+                      className={`font-bold text-2xl md:text-3xl ${
+                        topHeaderTabs == 'favorites'
+                          ? 'opacity-100'
+                          : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+                      }`}
+                    >
+                      Favoritas
+                    </button>
+                    <button
+                      onClick={() => setTopHeaderTabs('bookmarks')}
+                      className={`font-bold text-2xl md:text-3xl ${
+                        topHeaderTabs == 'bookmarks'
+                          ? 'opacity-100'
+                          : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
+                      }`}
+                    >
+                      Salvas
+                    </button>
+                  </div>
+                  <div className="flex justify-between w-full items-center">
+                    <div className="h-px w-1/4 bg-detail mb-3" />
+                  </div>
+                  <div className="w-full flex gap-6 overflow-x-auto scrollbar-custom mb-4 pb-2">
+                    {renderGeneration(
                       topHeaderTabs == 'favorites'
-                        ? 'opacity-100'
-                        : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
-                    }`}
-                  >
-                    Favoritas
-                  </button>
-                  <button
-                    onClick={() => setTopHeaderTabs('bookmarks')}
-                    className={`font-bold text-2xl md:text-3xl ${
-                      topHeaderTabs == 'bookmarks'
-                        ? 'opacity-100'
-                        : 'opacity-50 hover:cursor-pointer hover:opacity-80 transition-all duration-100 ease-in'
-                    }`}
-                  >
-                    Salvas
-                  </button>
-                </div>
-                <div className="flex justify-between w-full items-center">
-                  <div className="h-px w-1/4 bg-detail mb-3" />
-                </div>
-                <div className="w-full flex gap-6 overflow-x-auto scrollbar-custom mb-4 pb-2">
-                  {renderGeneration(
-                    topHeaderTabs == 'favorites'
-                      ? favoriteLocalGenerations
-                      : bookmarkedGenerations,
-                    topHeaderTabs != 'favorites'
-                  )}
-                </div>
-              </>
-            )}
+                        ? favoriteLocalGenerations
+                        : bookmarkedGenerations,
+                      topHeaderTabs != 'favorites'
+                    )}
+                  </div>
+                </>
+              )}
             <h3 className="font-bold text-2xl md:text-3xl">Todas</h3>
             <div className="flex justify-between w-full items-center">
               <div className="h-px w-1/4 bg-detail mb-2" />
@@ -473,7 +477,7 @@ const Collection: FC<ICollection> = ({
                 {renderGeneration()}
               </div>
             ) : (
-              <div className="h-full w-full flex flex-col items-center justify-center">
+              <div className="h-1/2 w-full flex flex-col items-center justify-center">
                 <p className="text-xl text-letter font-extrabold mb-2">
                   Não há tatuagens criadas!
                 </p>
