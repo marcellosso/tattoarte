@@ -261,7 +261,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
               className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hover:cursor-pointer"
               onClick={() => setOpenFullscreenImageModal(false)}
             >
-              <div className="w-[1024px] h-5/6 my-2 md:my-0 rounded-md flex items-center justify-center relative">
+              <div className="animatedModal w-[1024px] h-5/6 my-2 md:my-0 rounded-md flex items-center justify-center relative">
                 <Image
                   src={generation.imageUrl}
                   alt={`Arte de tatuagem criada pela inteligência artificial com prompt: ${generation.prompt} - TattooArte!`}
@@ -276,15 +276,13 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             </div>
           )}
           {openNotLoggedModal && (
-            <>
+            <div
+              className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-20 z-50 flex items-center justify-center"
+              onClick={() => setOpenNotLoggedModal(false)}
+            >
               <div
-                className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-20 z-50 flex items-center justify-center"
-                onClick={() => setOpenNotLoggedModal(false)}
-              />
-              <div
-                className="bg-secondary h-1/2 w-full sm:w-1/2 lg:w-1/3 my-2 md:my-0 rounded-md 
-                            flex flex-col items-center justify-center gap-8
-                            absolute left-1/2 -translate-x-1/2 translate-y-1/2 z-100"
+                className="animatedModal bg-secondary h-1/2 w-full sm:w-1/2 lg:w-1/3 my-2 md:my-0 rounded-md 
+                            flex flex-col items-center justify-center gap-8"
               >
                 <svg
                   fill="none"
@@ -320,7 +318,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                   Entrar
                 </Link>
               </div>
-            </>
+            </div>
           )}
           <div className="flex flex-col items-center w-full h-full">
             <h1 className="text-detail font-black text-xl sm:text-2xl md:text-5xl text-center">

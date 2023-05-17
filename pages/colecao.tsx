@@ -734,7 +734,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }, 0);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-  const userCoins = generationsFromUser[0]?.author!;
+  const userCoins = generationsFromUser[0]?.author! || {};
 
   return {
     props: {
