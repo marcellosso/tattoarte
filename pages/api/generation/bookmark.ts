@@ -1,6 +1,5 @@
 import { prisma } from '@/utils/use-prisma';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
-import type { Bookmark } from '@prisma/client';
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
@@ -10,7 +9,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
 
     const { id } = req.body as { id: string };
 
-    const data = { generationId: id, userId: userId } as Bookmark;
+    const data = { generationId: id, userId: userId };
 
     const bookmark = await prisma.bookmark.findUnique({
       where: { userId_generationId: data },
