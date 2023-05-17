@@ -551,7 +551,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let generationsFromUser = [] as (DraftGeneration & {
     _count: { likes: number };
-    author: UserCoins | null;
+    // author: UserCoins | null;
   })[];
 
   const isSameUser = queryId == userId;
@@ -575,15 +575,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         imageUrl: true,
         prompt: true,
         style: true,
-        author: {
-          select: {
-            hasBronzeCoin: true,
-            hasSilverCoin: true,
-            hasGoldCoin: true,
-            hasPlatinumCoin: true,
-            hasDiamondCoin: true,
-          },
-        },
+        // author: {
+        //   select: {
+        //     hasBronzeCoin: true,
+        //     hasSilverCoin: true,
+        //     hasGoldCoin: true,
+        //     hasPlatinumCoin: true,
+        //     hasDiamondCoin: true,
+        //   },
+        // },
         _count: {
           select: {
             likes: true,
