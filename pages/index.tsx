@@ -122,10 +122,10 @@ const Home = () => {
                   </svg>
                 </div>
                 <Link
-                  href="/precos?tab=package"
+                  href="/precos"
                   className={`bg-gradient-to-r w-2/3 font-bold text-letter text-sm md:text-lg p-2 text-center rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
                 >
-                  Compre o passe de acesso
+                  Compre créditos
                 </Link>
                 <Link
                   href="/criar"

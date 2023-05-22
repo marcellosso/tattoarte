@@ -475,10 +475,10 @@ const Criar: FC<ICriar> = ({ user }) => {
                   </button>
                 ) : (
                   <Link
-                    href="/precos?tab=package"
+                    href="/precos"
                     className={`${oswald.className} text-center block bg-gradient-to-r w-full font-bold text-xl text-letter p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
                   >
-                    Compre o passe de acesso
+                    Compre créditos para criar tattoos
                   </Link>
                 )}
               </form>
@@ -590,11 +590,11 @@ const Criar: FC<ICriar> = ({ user }) => {
         {user.freeTrial && (
           <div className="w-screen h-12 md:h-9 bg-detail flex items-center justify-center p-2">
             <span className="text-primary text-2xs md:text-xs font-bold">
-              Seu teste permite gerar 4 tatuagens. Compre o passe de acesso para
-              criar tatuagens ilimitadas
+              Seu teste permite gerar 4 tatuagens. Compre créditos para criar
+              tatuagens
             </span>
             <Link
-              href="/precos?tab=package"
+              href="/precos"
               className={`ml-3 h-full text-center flex items-center bg-primary font-bold text-[0.55rem] md:text-xs text-letter p-3 px-4 rounded-md hover:bg-secondary`}
             >
               Comprar

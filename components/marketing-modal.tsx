@@ -42,10 +42,10 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
         <Logo />
 
         <h1 className="text-letter font-bold text-lg md:text-2xl mt-2 md:mt-3">
-          Crie tatuagens ilimtadas
+          Crie tatuagens do seu jeito
         </h1>
         <h2 className="text-letter font-thin text-xs md:text-sm mb-3">
-          Obtenha acesso a criações ilimitadas com um único pagamento.
+          Obtenha acesso a criações com um único pagamento.
         </h2>
 
         <div className="bg-yellow-50 w-full md:w-4/5 h-16 rounded-lg border-yellow-400 border-2 my-4 p-2">
@@ -69,10 +69,10 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
             </div>
             <div className="ml-2 md:ml-4">
               <h3 className="text-yellow-600 font-bold text-sm md:text-md">
-                Seu acesso total expirou!
+                Seus créditos esgotaram!
               </h3>
               <span className="text-yellow-600 text-2xs md:text-xs line-clamp-2">
-                Compra um novo passe para ter acesso ilimitado novamente.
+                Compra créditos para criar suas artes novamente.
               </span>
             </div>
           </div>
@@ -82,12 +82,7 @@ const MarketingModal: FC<IMarketingModal> = ({ setOpenMarketingModal }) => {
           href="/precos?tab=package"
           className={`${oswald.className} bg-gradient-to-r w-3/4 md:w-1/2 font-bold text-center text-md md:text-lg text-letter transition-all p-2 md:p-3 rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
         >
-          Compre o passe de acesso
-        </Link>
-        <Link href="/precos">
-          <span className="text-gray-400 text-2xs md:text-xs underline underline-offset-4 hover:text-gray-50 transition-all mt-2">
-            Ou compre creditos avulsos para utilizar!
-          </span>
+          Compre créditos!
         </Link>
 
         <p className="text-letter text-xs md:text-sm font-semibold mt-4">

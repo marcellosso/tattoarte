@@ -2,19 +2,10 @@ import Link from 'next/link';
 import products from '@/assets/products';
 import PriceCard from '@/components/price-card';
 import { GetServerSidePropsContext } from 'next';
-import { FC, useMemo, useState } from 'react';
 import { PriceTabEnum } from '@/types';
 import Head from 'next/head';
 
-interface IPrice {
-  defaultPriceTab: PriceTabEnum;
-}
-
-const Price: FC<IPrice> = ({ defaultPriceTab }) => {
-  const [priceTab, setPriceTab] = useState(defaultPriceTab);
-
-  const displayProducts = useMemo(() => products[priceTab], [priceTab]);
-
+const Price = () => {
   return (
     <main>
       <Head>
@@ -109,31 +100,14 @@ const Price: FC<IPrice> = ({ defaultPriceTab }) => {
             <div className="bg-detail h-0.5 w-1/3 sm:w-1/2" />
           </div>
 
-          <div className="flex items-center justify-center mb-4 rounded-3xl bg-secondary p-1 w-48">
-            <div
-              className={`py-2 px-4 text-center rounded-3xl text-md sm:text-lg transition-all duration-300  ${
-                priceTab == PriceTabEnum.ACCESS
-                  ? 'bg-detail text-primary font-bold'
-                  : 'hover:cursor-pointer'
-              }`}
-              onClick={() => setPriceTab(PriceTabEnum.ACCESS)}
-            >
+          <div className="flex items-center justify-center mb-4 rounded-3xl bg-secondary p-1">
+            <div className="py-2 px-4 text-center rounded-3xl text-md sm:text-lg transition-all duration-300  bg-detail text-primary font-bold">
               Avulso
-            </div>
-            <div
-              className={`py-2 px-4 text-center rounded-3xl text-md sm:text-lg transition-all duration-300 ${
-                priceTab == PriceTabEnum.PACKAGE
-                  ? 'bg-detail text-primary font-bold'
-                  : 'hover:cursor-pointer'
-              }`}
-              onClick={() => setPriceTab(PriceTabEnum.PACKAGE)}
-            >
-              Pacote
             </div>
           </div>
 
           <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-            {displayProducts.map((product) => (
+            {products[PriceTabEnum.ACCESS].map((product) => (
               <PriceCard key={product.name} product={product} />
             ))}
           </div>
