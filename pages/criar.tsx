@@ -1,10 +1,11 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
+import generateImageStability from '@/utils/generate-stability';
 import { prisma } from '@/utils/use-prisma';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
-import { User } from '@prisma/client';
+import { Features, User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
 import React, { FC, useMemo, useState } from 'react';
@@ -105,9 +106,10 @@ const AchievmentModal: FC<IAchievmentModal> = ({
 
 interface ICriar {
   user: UserProfile & User;
+  userFeatures: Features;
 }
 
-const Criar: FC<ICriar> = ({ user }) => {
+const Criar: FC<ICriar> = ({ user, userFeatures }) => {
   const { register, handleSubmit, watch } = useForm<ParamsType>();
   const [userData, setUserData] = useState(user);
   const [achievedCoin, setAchievedCoin] = useState<string | null>(null);
@@ -140,7 +142,13 @@ const Criar: FC<ICriar> = ({ user }) => {
     setToggleForm(false);
 
     try {
-      const response = await generateImage(params, userData);
+      let response;
+      if (!userFeatures.newAiVersion) {
+        response = await generateImage(params, userData);
+      } else {
+        response = await generateImageStability(params, userData);
+      }
+
       const newUserData = response.newUserData;
       setImages(response.images);
       setUserData(newUserData);
@@ -160,7 +168,7 @@ const Criar: FC<ICriar> = ({ user }) => {
 
     setLoadingImages(false);
   };
-  const promptVal = watch('prompt') || '';
+  const promptVal = (watch('prompt') || '') as string;
 
   const maxPromptLenght = useMemo(() => {
     if (user?.freeTrial) return 100;
@@ -482,23 +490,6 @@ const Criar: FC<ICriar> = ({ user }) => {
                   </Link>
                 )}
               </form>
-              <div className="flex justify-center w-full">
-                <Image
-                  src={`/images/tattoo-machine.png`}
-                  alt="Uma máquina de tatuagem, demonstrando o que poderia ser usado pela IA do TattooArtIA!"
-                  width={200}
-                  height={120}
-                  priority
-                  quality={100}
-                  className={`${
-                    toggleForm ? 'hidden md:block' : 'max-lg:hidden'
-                  } rotate-12 mt-3 opacity-50 mr-2`}
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-              </div>
             </div>
             <button
               type="button"
@@ -616,15 +607,35 @@ export const getServerSideProps = withPageAuthRequired({
       where: {
         email: sessionUser.email as string,
       },
-    })) as User;
+      select: {
+        id: true,
+        email: true,
+        subscribed: true,
+        freeTrial: true,
+        credits: true,
+        name: true,
+        generationCount: true,
+        subscriptionAt: true,
+        subscriptionDuration: true,
+        features: {
+          select: {
+            newAiVersion: true,
+            imageToTattoo: true,
+          },
+        },
+      },
+    })) as Partial<User & { features: Features }>;
 
     if (user?.subscribed) {
-      user = await handleUserSubscription(user);
+      const userWithoutFeatures = { ...user };
+      delete userWithoutFeatures.features;
+      user = await handleUserSubscription(userWithoutFeatures);
     }
 
     return {
       props: {
         user: JSON.parse(JSON.stringify(user)),
+        userFeatures: JSON.parse(JSON.stringify(user?.features || {})),
       },
     };
   },

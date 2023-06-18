@@ -7,7 +7,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 
 module.exports = async (req: any, res: any) => {
   const { id, name, email, secret } = req.body;
-
   if (secret === process.env.AUTH0_HOOK_SECRET) {
     try {
       const customer = await stripe.customers.create({

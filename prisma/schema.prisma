@@ -11,12 +11,18 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum Status {
+  LOADING
+  COMPLETED
+}
+
 model Generation {
   id          String   @id @default(cuid())
   prompt      String
   style       String
-  imageName   String   @map(name: "image_name")
-  imageUrl    String   @map(name: "image_url")
+  status      Status?  @default(LOADING)
+  imageName   String?  @map(name: "image_name")
+  imageUrl    String?  @map(name: "image_url")
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   authorName  String   @map(name: "author_name")
@@ -58,8 +64,14 @@ model Bookmark {
   @@map(name: "bookmarks")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id                   String    @id @default(cuid())
+  role                 Role      @default(USER)
   name                 String?
   email                String?   @unique
   subscribed           Boolean?  @default(false)
@@ -81,6 +93,20 @@ model User {
   generations Generation[]
   likes       Like[]
   bookmarks   Bookmark[]
+  features    Features?
 
   @@map(name: "users")
+}
+
+model Features {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  newAiVersion  Boolean? @default(false)
+  imageToTattoo Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map(name: "features")
 }
