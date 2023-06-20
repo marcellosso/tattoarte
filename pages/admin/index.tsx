@@ -240,7 +240,7 @@ const Admin: FC<IAdmin> = ({ users }) => {
             <h1 className="text-3xl text-letter font-bold">
               Usuários: {users.length}
             </h1>
-            <table className="w-full text-sm text-left text-letter mt-2">
+            <table className="w-full text-sm text-left text-letter mt-2 scrollbar-hide">
               <thead className="text-sm text-detail uppercase dark:bg-secondary ">
                 <tr>
                   <th scope="col" className="px-6 py-3">
