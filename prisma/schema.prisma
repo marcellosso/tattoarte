@@ -102,7 +102,7 @@ model Features {
   id     String @id @default(cuid())
   userId String @unique
 
-  newAiVersion  Boolean? @default(false)
+  newAiVersion  Boolean @default(false)
   imageToTattoo Boolean  @default(false)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
