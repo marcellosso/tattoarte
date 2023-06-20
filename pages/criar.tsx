@@ -147,7 +147,7 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
 
     try {
       let response;
-      if (!userFeatures.newAiVersion && iaVersionVal == 'v1') {
+      if (!userFeatures.newAiVersion || iaVersionVal == 'v1') {
         response = await generateImage(params, userData);
       } else {
         response = await generateImageStability(params, userData);
