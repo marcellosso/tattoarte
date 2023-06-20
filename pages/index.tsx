@@ -68,7 +68,14 @@ const Home = () => {
           content="ffZ_-cy0-_bgVD36C25pYT39CdP6aXu3hhx3FNd-En4"
         />
       </Head>
-      <section className="bg-primary flex min-h-screen h-screen flex-col items-center pt-12 md:pt-24 pb-0 text-letter overflow-y-scroll scrollbar-hide">
+
+      <section className="bg-primary flex min-h-screen h-screen flex-col items-center pt-12 md:pt-24 pb-0 text-letter overflow-y-scroll scrollbar-hide relative">
+        <div className="fixed bottom-0 w-screen h-8 md:h-6 bg-detail flex items-center justify-center p-2 z-100">
+          <span className="text-primary text-2xs md:text-xs font-bold text-center">
+            Devido a alta demanda, desativamos o teste gratuíto. Perdão pelo
+            inconveniente.
+          </span>
+        </div>
         <header className="lg:min-h-screen lg:min-w-screen relative">
           <div className="flex my-12 lg:my-0 gap-24 p-3 lg:p-6 items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-6 lg:gap-12 w-full lg:w-1/2 z-20 relative">
@@ -95,8 +102,7 @@ const Home = () => {
 
               <div className="flex flex-col w-full lg:w-2/3 items-center gap-2">
                 <h3 className="font-bold text-sm xs:text-lg text-center">
-                  Crie sua arte agora e ganhe{' '}
-                  <span className="text-detail">créditos gratuítos</span>
+                  Crie sua arte agora
                 </h3>
               </div>
 
@@ -129,9 +135,9 @@ const Home = () => {
                 </Link>
                 <Link
                   href="/criar"
-                  className="font-bold text-primary text-center text-xs sm:text-sm md:text-lg p-3 rounded-md bg-detail hover:bg-yellow-500"
+                  className="bg-detail w-2/3 font-bold text-primary text-sm md:text-lg p-2 text-center rounded-md hover:bg-yellow-500"
                 >
-                  4 tatuagens gratuitas - Crie sua arte agora
+                  Crie sua arte agora
                 </Link>
               </div>
             </div>

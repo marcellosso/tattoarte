@@ -89,7 +89,7 @@ const Price = () => {
               href="/criar"
               className="font-bold text-[0.55rem] xs:text-xs sm:text-sm md:text-lg text-primary px-5 xs:px-10 py-2 xs:py-3 rounded-md bg-detail hover:bg-yellow-500"
             >
-              4 tatuagens gratuitas - Crie sua arte agora
+              Crie sua arte agora
             </Link>
           </div>
 

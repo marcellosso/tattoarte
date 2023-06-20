@@ -16,8 +16,6 @@ import { v4 } from 'uuid';
 import { S3 } from 'aws-sdk';
 import axios from 'axios';
 
-const PREFIX_DEFAULT_PROMPT = 'tattoo design, flash tattoo, tattoo stencil';
-
 const SAMPLE_SIZE = 4;
 
 const s3 = new S3({
@@ -29,7 +27,8 @@ const s3 = new S3({
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
-    let prompt = PREFIX_DEFAULT_PROMPT;
+    let prompt =
+      'tattoo design, flash tattoo, tattoo drawing, tattoo style, stencil';
     let { user } = req.body as { user: User };
     const { params } = req.body as { params: ParamsType };
 
@@ -71,20 +70,37 @@ module.exports = withApiAuthRequired(async (req, res) => {
     if (params.artistInspiration)
       prompt += `, art by ${params.artistInspiration}`;
 
-    const request = buildGenerationRequest('stable-diffusion-xl-beta-v2-2-2', {
-      type: 'text-to-image',
+    const baseGenerationParams = {
       prompts: [
         {
           text: prompt,
         },
       ],
-      width: 512,
-      height: 512,
       samples: SAMPLE_SIZE,
       cfgScale: 8,
       steps: 30,
+      width: 512,
+      height: 512,
       sampler: Generation.DiffusionSampler.SAMPLER_K_DPMPP_2M,
-    });
+    };
+
+    let request = null;
+
+    if (params.baseImage) {
+      console.log(Buffer.from(params.baseImage, 'base64'));
+      const imageStrength = 1;
+      request = buildGenerationRequest('stable-diffusion-xl-beta-v2-2-2', {
+        type: 'image-to-image',
+        stepScheduleStart: 1 - imageStrength,
+        initImage: Buffer.from(params.baseImage, 'base64'),
+        ...baseGenerationParams,
+      });
+    } else {
+      request = buildGenerationRequest('stable-diffusion-xl-beta-v2-2-2', {
+        type: 'text-to-image',
+        ...baseGenerationParams,
+      });
+    }
 
     const generationObj = {
       prompt: params.prompt,
@@ -141,7 +157,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
         });
       })
       .catch((error) => {
-        console.error('Failed to make text-to-image request:', error);
+        console.error('Failed to make request:', error);
       });
 
     const newUserGenerationCount = (user.generationCount || 0) + 1;

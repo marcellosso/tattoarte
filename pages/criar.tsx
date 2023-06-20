@@ -18,6 +18,7 @@ import type { ParamsType } from '@/types';
 
 import { useForm } from 'react-hook-form';
 import Head from 'next/head';
+import { Tooltip } from 'react-tooltip';
 
 const oswald = Oswald({ subsets: ['latin'] });
 
@@ -123,6 +124,9 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
 
   const [toggleForm, setToggleForm] = useState(true);
 
+  const promptVal = (watch('prompt') || '') as string;
+  const iaVersionVal = (watch('iaVersion') || '') as string;
+
   const triggerAchievement = (genCount: number) => {
     if (genCount == 1) {
       setAchievedCoin('bronze-coin');
@@ -143,7 +147,7 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
 
     try {
       let response;
-      if (!userFeatures.newAiVersion) {
+      if (!userFeatures.newAiVersion && iaVersionVal == 'v1') {
         response = await generateImage(params, userData);
       } else {
         response = await generateImageStability(params, userData);
@@ -168,7 +172,6 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
 
     setLoadingImages(false);
   };
-  const promptVal = (watch('prompt') || '') as string;
 
   const maxPromptLenght = useMemo(() => {
     if (user?.freeTrial) return 100;
@@ -356,12 +359,46 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                     maxLength={maxPromptLenght}
                     className=" bg-primary
                     placeholder-shown:text-2xs md:placeholder-shown:text-md 
-                    max-w-full max-h-48 lg:max-h-64 h-20 md:h-32 lg:h-48 
+                    max-w-full max-h-48 lg:max-h-64 h-16 md:h-28 lg:h-36 
                     block p-2.5 w-full text-sm rounded-lg 
                     border border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
                     placeholder="Um pescador viajando pelo espaço"
                   />
                 </div>
+
+                {/* {iaVersionVal == 'v2' && (
+                  <div className="w-full mb-3">
+                    <label
+                      htmlFor="imagem"
+                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                    >
+                      Imagem
+                    </label>
+
+                    <input
+                      onChange={(e) => {
+                        const currFile = e.target.files?.[0];
+                        if (currFile) {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(e.target.files?.[0] as File);
+                          reader.onload = function () {
+                            setBaseImage(reader.result as string);
+                          };
+                        } else {
+                          setBaseImage('');
+                        }
+                      }}
+                      className="
+                      block w-full text-sm border 
+                    border-letter rounded-lg cursor-pointer 
+                    bg-primary text-letter
+                      focus:outline-none  placeholder-gray-400"
+                      id="imagem"
+                      type="file"
+                      accept="image/png, image/jpeg"
+                    />
+                  </div>
+                )} */}
 
                 <div className="w-full mb-3">
                   <label
@@ -398,6 +435,66 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                         {tattoo}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                <div className="w-full mb-3">
+                  <Tooltip
+                    id="ai-version-help-tooltip"
+                    offset={20}
+                    className="bg-secondary opacity-100 z-100 overflow-hidden"
+                  >
+                    <div>
+                      <b>Escolha uma versão perfeita para seu resultado!</b>
+                    </div>
+                  </Tooltip>
+                  <label
+                    htmlFor="cores"
+                    className="flex text-xs md:text-sm font-normal text-letter items-center"
+                  >
+                    Versão TattooArtIA
+                    <a
+                      data-tooltip-id="ai-version-help-tooltip"
+                      className="hover:cursor-pointer ml-1"
+                    >
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+                        />
+                      </svg>
+                    </a>
+                  </label>
+                  {iaVersionVal == 'v1' ? (
+                    <p className="text-gray-400 text-2xs">
+                      <b>Prime: </b>Versão mais criativa, podendo tomar
+                      liberdades artísticas.
+                    </p>
+                  ) : (
+                    <p className="text-gray-400 text-2xs">
+                      <b>Mythic: </b>Versão mais avançada, tenta seguir sua
+                      descrição à risca.
+                    </p>
+                  )}
+                  <select
+                    {...register('iaVersion')}
+                    id="cores"
+                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
+                    border-letter placeholder-gray-400 text-letter focus:border-detail mt-2"
+                  >
+                    <option value="v1">Prime</option>
+                    {userFeatures.newAiVersion && (
+                      <option value="v2">Mythic</option>
+                    )}
                   </select>
                 </div>
 
@@ -581,8 +678,8 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
         {user.freeTrial && (
           <div className="w-screen h-12 md:h-9 bg-detail flex items-center justify-center p-2">
             <span className="text-primary text-2xs md:text-xs font-bold">
-              Seu teste permite gerar 4 tatuagens. Compre créditos para criar
-              tatuagens
+              Devido a alta demanda, desativamos o teste gratuíto. Compre
+              créditos para criar tatuagens
             </span>
             <Link
               href="/precos"

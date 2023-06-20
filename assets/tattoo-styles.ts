@@ -13,6 +13,7 @@ const tattooStyles = [
   'Tribal',
   'Surrealista',
   'Cartoon',
+  'Sketch',
   '3D',
 ];
 
@@ -31,6 +32,7 @@ const englishTattooStyles = {
   Tribal: 'Tribal',
   Surrealista: 'Surreal',
   Cartoon: 'Cartoon',
+  Sketch: 'Sketch',
   '3D': '3D',
 } as Record<string, string>;
 

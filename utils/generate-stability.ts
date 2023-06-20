@@ -22,7 +22,7 @@ const generateImage = async (params: ParamsType, userInfo: User) => {
 
     // Force await 5 seconds as most generations will take 5 to 10 seconds
     // With this we can avoid sending too many api calls to the server
-    await new Promise((r) => setTimeout(r, 5_000));
+    await new Promise((r) => setTimeout(r, params.baseImage ? 10_000 : 5_000));
 
     const generations = (await poll(
       getGenerations,

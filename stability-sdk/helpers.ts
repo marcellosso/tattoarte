@@ -31,6 +31,8 @@ export type ImageToImageParams = CommonGenerationParams & {
   initImage: Buffer;
   stepScheduleStart: number;
   stepScheduleEnd?: number;
+  height?: number;
+  width?: number;
 };
 
 export type ImageToImageMaskingParams = CommonGenerationParams & {
@@ -126,7 +128,7 @@ export function buildGenerationRequest(
   }
 
   const imageParams = new Generation.ImageParameters();
-  if (params.type === 'text-to-image') {
+  if (params.type === 'text-to-image' || params.type === 'image-to-image') {
     params.width && imageParams.setWidth(params.width);
     params.height && imageParams.setHeight(params.height);
   }
@@ -323,5 +325,5 @@ export async function onGenerationComplete(response: GenerationResponse) {
     );
   }
 
-  return response.imageArtifacts;
+  return [...response.imageArtifacts, ...response.filteredArtifacts];
 }
