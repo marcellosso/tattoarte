@@ -321,7 +321,7 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
                   className="h-full w-full min-h-[174px] min-w-[174px] xs:min-h-[146px] xs:min-w-[146px] sm:min-h-[256px] sm:min-w-[256px] md:min-h-[224px] md:min-w-[224px] rounded-md transition-all relative group"
                 >
                   <Image
-                    src={generation.imageUrl}
+                    src={generation?.imageUrl || ''}
                     alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
                     className="rounded-md md:hover:opacity-60 transition-all duration-200"
                     placeholder="blur"
