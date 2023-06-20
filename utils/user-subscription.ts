@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { prisma } from './use-prisma';
 
-const handleUserSubscription = async (user: User) => {
+const handleUserSubscription = async (user: Partial<User>) => {
   const date1 = new Date();
   const date2 = new Date(user.subscriptionAt as Date);
 

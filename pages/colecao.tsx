@@ -126,15 +126,7 @@ type UserCoins = {
   hasDiamondCoin: boolean;
 };
 
-type DraftGeneration = {
-  id: string;
-  authorName: string;
-  imageUrl: string;
-  prompt: string;
-  style: string;
-  is_favorite: boolean | null;
-  is_private: boolean | null;
-};
+type DraftGeneration = Partial<Generation>;
 
 interface ICollection {
   userName: string;
@@ -265,7 +257,7 @@ const Collection: FC<ICollection> = ({
         className="h-full w-full min-h-[126px] min-w-[126px] sm:min-h-[226px] sm:min-w-[226px] md:min-h-[204px] md:min-w-[204px] lg:min-h-[240px] lg:min-w-[240px] xl:min-h-[280px] xl:min-w-[280px] max-h-[280px] max-w-[280px] rounded-md transition-all relative group"
       >
         <Image
-          src={generation.imageUrl}
+          src={generation?.imageUrl || ''}
           alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
           className="rounded-md md:hover:opacity-60 transition-all duration-200"
           placeholder="blur"
@@ -319,7 +311,7 @@ const Collection: FC<ICollection> = ({
                     e.preventDefault();
                     updateLocalGenerationsState(
                       false,
-                      generation.id,
+                      generation?.id || '',
                       'is_favorite'
                     );
                   }}
@@ -347,7 +339,7 @@ const Collection: FC<ICollection> = ({
                     e.preventDefault();
                     updateLocalGenerationsState(
                       true,
-                      generation.id,
+                      generation?.id || '',
                       'is_favorite'
                     );
                   }}

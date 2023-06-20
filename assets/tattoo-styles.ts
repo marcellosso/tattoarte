@@ -7,13 +7,13 @@ const tattooStyles = [
   'New School',
   'Realista',
   'Geométrico',
-  'Single Line',
   'Preto e Branco',
   'Oriental',
   'Maori',
   'Tribal',
   'Surrealista',
   'Cartoon',
+  'Sketch',
   '3D',
 ];
 
@@ -26,13 +26,13 @@ const englishTattooStyles = {
   'New School': 'New School',
   Realista: 'Realism',
   Geométrico: 'Geometric',
-  'Single Line': 'Single Line',
   'Preto e Branco': 'Black and White',
   Oriental: 'Oriental',
   Maori: 'Maori',
   Tribal: 'Tribal',
   Surrealista: 'Surreal',
   Cartoon: 'Cartoon',
+  Sketch: 'Sketch',
   '3D': '3D',
 } as Record<string, string>;
 

@@ -1,10 +1,11 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
+import generateImageStability from '@/utils/generate-stability';
 import { prisma } from '@/utils/use-prisma';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
-import { User } from '@prisma/client';
+import { Features, User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
 import React, { FC, useMemo, useState } from 'react';
@@ -17,6 +18,7 @@ import type { ParamsType } from '@/types';
 
 import { useForm } from 'react-hook-form';
 import Head from 'next/head';
+import { Tooltip } from 'react-tooltip';
 
 const oswald = Oswald({ subsets: ['latin'] });
 
@@ -105,9 +107,10 @@ const AchievmentModal: FC<IAchievmentModal> = ({
 
 interface ICriar {
   user: UserProfile & User;
+  userFeatures: Features;
 }
 
-const Criar: FC<ICriar> = ({ user }) => {
+const Criar: FC<ICriar> = ({ user, userFeatures }) => {
   const { register, handleSubmit, watch } = useForm<ParamsType>();
   const [userData, setUserData] = useState(user);
   const [achievedCoin, setAchievedCoin] = useState<string | null>(null);
@@ -120,6 +123,9 @@ const Criar: FC<ICriar> = ({ user }) => {
   const [loadingImages, setLoadingImages] = useState(false);
 
   const [toggleForm, setToggleForm] = useState(true);
+
+  const promptVal = (watch('prompt') || '') as string;
+  const iaVersionVal = (watch('iaVersion') || '') as string;
 
   const triggerAchievement = (genCount: number) => {
     if (genCount == 1) {
@@ -140,7 +146,13 @@ const Criar: FC<ICriar> = ({ user }) => {
     setToggleForm(false);
 
     try {
-      const response = await generateImage(params, userData);
+      let response;
+      if (!userFeatures.newAiVersion && iaVersionVal == 'v1') {
+        response = await generateImage(params, userData);
+      } else {
+        response = await generateImageStability(params, userData);
+      }
+
       const newUserData = response.newUserData;
       setImages(response.images);
       setUserData(newUserData);
@@ -160,7 +172,6 @@ const Criar: FC<ICriar> = ({ user }) => {
 
     setLoadingImages(false);
   };
-  const promptVal = watch('prompt') || '';
 
   const maxPromptLenght = useMemo(() => {
     if (user?.freeTrial) return 100;
@@ -348,12 +359,46 @@ const Criar: FC<ICriar> = ({ user }) => {
                     maxLength={maxPromptLenght}
                     className=" bg-primary
                     placeholder-shown:text-2xs md:placeholder-shown:text-md 
-                    max-w-full max-h-48 lg:max-h-64 h-20 md:h-32 lg:h-48 
+                    max-w-full max-h-48 lg:max-h-64 h-16 md:h-28 lg:h-36 
                     block p-2.5 w-full text-sm rounded-lg 
                     border border-letter placeholder-gray-400 text-letter focus:border-detail focus:outline-none"
                     placeholder="Um pescador viajando pelo espaço"
                   />
                 </div>
+
+                {/* {iaVersionVal == 'v2' && (
+                  <div className="w-full mb-3">
+                    <label
+                      htmlFor="imagem"
+                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
+                    >
+                      Imagem
+                    </label>
+
+                    <input
+                      onChange={(e) => {
+                        const currFile = e.target.files?.[0];
+                        if (currFile) {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(e.target.files?.[0] as File);
+                          reader.onload = function () {
+                            setBaseImage(reader.result as string);
+                          };
+                        } else {
+                          setBaseImage('');
+                        }
+                      }}
+                      className="
+                      block w-full text-sm border 
+                    border-letter rounded-lg cursor-pointer 
+                    bg-primary text-letter
+                      focus:outline-none  placeholder-gray-400"
+                      id="imagem"
+                      type="file"
+                      accept="image/png, image/jpeg"
+                    />
+                  </div>
+                )} */}
 
                 <div className="w-full mb-3">
                   <label
@@ -390,6 +435,66 @@ const Criar: FC<ICriar> = ({ user }) => {
                         {tattoo}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                <div className="w-full mb-3">
+                  <Tooltip
+                    id="ai-version-help-tooltip"
+                    offset={20}
+                    className="bg-secondary opacity-100 z-100 overflow-hidden"
+                  >
+                    <div>
+                      <b>Escolha uma versão perfeita para seu resultado!</b>
+                    </div>
+                  </Tooltip>
+                  <label
+                    htmlFor="cores"
+                    className="flex text-xs md:text-sm font-normal text-letter items-center"
+                  >
+                    Versão TattooArtIA
+                    <a
+                      data-tooltip-id="ai-version-help-tooltip"
+                      className="hover:cursor-pointer ml-1"
+                    >
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+                        />
+                      </svg>
+                    </a>
+                  </label>
+                  {iaVersionVal == 'v1' ? (
+                    <p className="text-gray-400 text-2xs">
+                      <b>Prime: </b>Versão mais criativa, podendo tomar
+                      liberdades artísticas.
+                    </p>
+                  ) : (
+                    <p className="text-gray-400 text-2xs">
+                      <b>Mythic: </b>Versão mais avançada, tenta seguir sua
+                      descrição à risca.
+                    </p>
+                  )}
+                  <select
+                    {...register('iaVersion')}
+                    id="cores"
+                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
+                    border-letter placeholder-gray-400 text-letter focus:border-detail mt-2"
+                  >
+                    <option value="v1">Prime</option>
+                    {userFeatures.newAiVersion && (
+                      <option value="v2">Mythic</option>
+                    )}
                   </select>
                 </div>
 
@@ -482,23 +587,6 @@ const Criar: FC<ICriar> = ({ user }) => {
                   </Link>
                 )}
               </form>
-              <div className="flex justify-center w-full">
-                <Image
-                  src={`/images/tattoo-machine.png`}
-                  alt="Uma máquina de tatuagem, demonstrando o que poderia ser usado pela IA do TattooArtIA!"
-                  width={200}
-                  height={120}
-                  priority
-                  quality={100}
-                  className={`${
-                    toggleForm ? 'hidden md:block' : 'max-lg:hidden'
-                  } rotate-12 mt-3 opacity-50 mr-2`}
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-              </div>
             </div>
             <button
               type="button"
@@ -590,8 +678,8 @@ const Criar: FC<ICriar> = ({ user }) => {
         {user.freeTrial && (
           <div className="w-screen h-12 md:h-9 bg-detail flex items-center justify-center p-2">
             <span className="text-primary text-2xs md:text-xs font-bold">
-              Seu teste permite gerar 4 tatuagens. Compre créditos para criar
-              tatuagens
+              Devido a alta demanda, desativamos o teste gratuíto. Compre
+              créditos para criar tatuagens
             </span>
             <Link
               href="/precos"
@@ -616,15 +704,35 @@ export const getServerSideProps = withPageAuthRequired({
       where: {
         email: sessionUser.email as string,
       },
-    })) as User;
+      select: {
+        id: true,
+        email: true,
+        subscribed: true,
+        freeTrial: true,
+        credits: true,
+        name: true,
+        generationCount: true,
+        subscriptionAt: true,
+        subscriptionDuration: true,
+        features: {
+          select: {
+            newAiVersion: true,
+            imageToTattoo: true,
+          },
+        },
+      },
+    })) as Partial<User & { features: Features }>;
 
     if (user?.subscribed) {
-      user = await handleUserSubscription(user);
+      const userWithoutFeatures = { ...user };
+      delete userWithoutFeatures.features;
+      user = await handleUserSubscription(userWithoutFeatures);
     }
 
     return {
       props: {
         user: JSON.parse(JSON.stringify(user)),
+        userFeatures: JSON.parse(JSON.stringify(user?.features || {})),
       },
     };
   },
