@@ -15,7 +15,7 @@ module.exports = async (req: any, res: any) => {
 
       const userId = id.split('|')[1];
       const user = await prisma.user.create({
-        data: { id: userId, email, name, stripeId: customer.id, credits: 1 },
+        data: { id: userId, email, name, stripeId: customer.id },
       });
 
       res.status(200).json(user.id);
