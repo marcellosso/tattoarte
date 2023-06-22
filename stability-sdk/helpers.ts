@@ -230,6 +230,7 @@ export function buildGenerationRequest(
     request.addPrompt(createMaskImagePrompt(params.maskImage));
   }
 
+  console.log('Generation built');
   return request;
 }
 
@@ -266,6 +267,7 @@ export async function executeGenerationRequest(
   metadata: GRPCWeb.Metadata
 ): Promise<GenerationResponse> {
   try {
+    console.log('Generating Tattoo');
     const stream = generationClient.generate(request, metadata);
     const answers = await new Promise<Generation.Answer[]>(
       (resolve, reject) => {
@@ -280,6 +282,7 @@ export async function executeGenerationRequest(
       }
     );
 
+    console.log('Answers - ', answers);
     return extractArtifacts(answers);
   } catch (err) {
     return err instanceof Error ? err : new Error(JSON.stringify(err));

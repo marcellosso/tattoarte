@@ -102,7 +102,10 @@ const Home = () => {
 
               <div className="flex flex-col w-full lg:w-2/3 items-center gap-2">
                 <h3 className="font-bold text-sm xs:text-lg text-center">
-                  Crie sua arte agora
+                  Crie sua arte agora e junte-se a outros usuários!
+                </h3>
+                <h3 className="font-light text-sm xs:text-lg text-center">
+                  Apenas 60 centavos por arte
                 </h3>
               </div>
 
@@ -135,9 +138,10 @@ const Home = () => {
                 </Link>
                 <Link
                   href="/criar"
-                  className="bg-detail w-2/3 font-bold text-primary text-sm md:text-lg p-2 text-center rounded-md hover:bg-yellow-500"
+                  className="font-bold text-primary text-center text-xs sm:text-sm md:text-lg p-3 rounded-md bg-detail hover:bg-yellow-500"
+                  // className="bg-detail w-2/3 font-bold text-primary text-sm md:text-lg p-2 text-center rounded-md hover:bg-yellow-500"
                 >
-                  Crie sua arte agora
+                  + de 300 Tatuagens criadas, crie a sua arte agora
                 </Link>
               </div>
             </div>
