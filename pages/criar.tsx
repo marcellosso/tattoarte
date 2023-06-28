@@ -174,11 +174,8 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
   };
 
   const maxPromptLenght = useMemo(() => {
-    if (user?.freeTrial) return 100;
-    if (!user?.subscribed) return 250;
-
-    return 500;
-  }, [user]);
+    return 1000;
+  }, []);
 
   return (
     <main>
@@ -311,7 +308,7 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                 toggleForm ? 'max-md:flex' : 'max-md:hidden'
               } max-md:flex-col max-md:gap-4 max-md:items-center max-md:justify-center max-md:w-full`}
             >
-              {promptVal.length >= maxPromptLenght && !user.subscribed && (
+              {/* {promptVal.length >= maxPromptLenght && !user.subscribed && (
                 <div
                   className="flex p-4 mb-4 text-sm border rounded-lg  text-blue-400 border-blue-800"
                   role="alert"
@@ -333,7 +330,7 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                     Você atingiu o limite de caracteres!
                   </Link>
                 </div>
-              )}
+              )} */}
               <form
                 onSubmit={handleSubmit(handleCreate)}
                 className={`${
