@@ -21,8 +21,8 @@ export default {
     {
       name: '10 Créditos',
       priceBeforeDiscount: 'R$ 29,99',
-      price: 'R$ 15,99',
-      offerDetail: 'R$ 0,40 por Tattoo',
+      price: 'R$ 17,99',
+      offerDetail: 'R$ 0,45 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_10_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [
