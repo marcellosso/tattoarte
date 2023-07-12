@@ -6,6 +6,7 @@ export default {
       name: 'Degustação - 3 Créditos',
       priceBeforeDiscount: 'R$ 11,99',
       price: 'R$ 6,99',
+      offerDetail: 'R$ 0,60 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_3_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [
@@ -20,7 +21,8 @@ export default {
     {
       name: '10 Créditos',
       priceBeforeDiscount: 'R$ 29,99',
-      price: 'R$ 19,99',
+      price: 'R$ 15,99',
+      offerDetail: 'R$ 0,40 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_10_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [
@@ -35,6 +37,7 @@ export default {
       name: '50 Créditos',
       priceBeforeDiscount: 'R$ 99,99',
       price: 'R$ 79,99',
+      offerDetail: 'R$ 0,40 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_50_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [

@@ -17,6 +17,8 @@ export type ProductType = {
   priceBeforeDiscount: string;
   priceDetail: string;
   perks: string[];
+
+  offerDetail?: string;
 };
 
 export enum PriceTabEnum {

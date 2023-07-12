@@ -101,11 +101,11 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col w-full lg:w-2/3 items-center gap-2">
-                <h3 className="font-bold text-sm xs:text-lg text-center">
+                <h3 className="font-medium text-sm xs:text-lg text-center">
                   Crie sua arte agora e junte-se a outros usuários!
                 </h3>
-                <h3 className="font-light text-sm xs:text-lg text-center">
-                  Apenas 60 centavos por arte
+                <h3 className="font-extrabold text-detail text-sm xs:text-lg md:text-2xl text-center">
+                  Apenas R$ 0,40 por arte de tatuagem
                 </h3>
               </div>
 
@@ -141,7 +141,7 @@ const Home = () => {
                   className="font-bold text-primary text-center text-xs sm:text-sm md:text-lg p-3 rounded-md bg-detail hover:bg-yellow-500"
                   // className="bg-detail w-2/3 font-bold text-primary text-sm md:text-lg p-2 text-center rounded-md hover:bg-yellow-500"
                 >
-                  + de 300 Tatuagens criadas, crie a sua arte agora
+                  + de 600 Tatuagens criadas, crie a sua arte agora
                 </Link>
               </div>
             </div>
