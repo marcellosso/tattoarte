@@ -18,6 +18,7 @@ export default {
         'Maior limite de caracteres ao descrever tatuagem',
       ],
     },
+
     {
       name: '10 Créditos',
       priceBeforeDiscount: 'R$ 29,99',
