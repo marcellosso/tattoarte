@@ -179,6 +179,11 @@ const Checkout: FC<ICheckout> = ({ priceId, isFreeTrial }) => {
                   {!loadingProduct && (
                     <span className="md:text-md sm:text-xs text-xs">
                       {productInfo.description}
+                      {isFreeTrial && (
+                        <p className="text-detail">
+                          Você ganhou 15% para sua primeira compra
+                        </p>
+                      )}
                     </span>
                   )}
                 </div>
