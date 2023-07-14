@@ -1,6 +1,5 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Analytics } from '@vercel/analytics/react';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { Raleway } from 'next/font/google';
 import { Source_Code_Pro } from 'next/font/google';
@@ -55,7 +54,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <Navbar />
       <Component {...pageProps} />
-      <Analytics />
       <ToastContainer />
     </UserProvider>
   );

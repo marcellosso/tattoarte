@@ -14,11 +14,12 @@ export type ProductType = {
   name: string;
   price: string;
   priceId: string;
-  priceBeforeDiscount: string;
   priceDetail: string;
-  perks: string[];
+  priceWithDiscount: string;
+  offerDetail: string;
+  offerDetailWithDiscount: string;
 
-  offerDetail?: string;
+  perks: string[];
 };
 
 export enum PriceTabEnum {

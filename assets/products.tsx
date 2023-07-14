@@ -4,9 +4,10 @@ export default {
   access: [
     {
       name: 'Degustação - 3 Créditos',
-      priceBeforeDiscount: 'R$ 11,99',
       price: 'R$ 6,99',
       offerDetail: 'R$ 0,60 por Tattoo',
+      priceWithDiscount: 'R$ 5,94',
+      offerDetailWithDiscount: 'R$ 0,49 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_3_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [
@@ -21,9 +22,10 @@ export default {
 
     {
       name: '10 Créditos',
-      priceBeforeDiscount: 'R$ 29,99',
       price: 'R$ 17,99',
       offerDetail: 'R$ 0,45 por Tattoo',
+      priceWithDiscount: 'R$ 15,29',
+      offerDetailWithDiscount: 'R$ 0,38 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_10_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [
@@ -36,9 +38,10 @@ export default {
     },
     {
       name: '50 Créditos',
-      priceBeforeDiscount: 'R$ 99,99',
       price: 'R$ 79,99',
       offerDetail: 'R$ 0,40 por Tattoo',
+      priceWithDiscount: 'R$ 67,99',
+      offerDetailWithDiscount: 'R$ 0,34 por Tattoo',
       priceId: process.env.NEXT_PUBLIC_PRICE_50_CREDITS ?? '',
       priceDetail: '(pagamento único)',
       perks: [
@@ -47,57 +50,6 @@ export default {
         'Acesso a coleção pessoal',
         'Artes privadas',
         'Maior limite de caracteres ao descrever tatuagem',
-      ],
-    },
-  ],
-  package: [
-    {
-      name: 'Degustação - 3 Créditos',
-      priceBeforeDiscount: 'R$ 11,99',
-      price: 'R$ 6,99',
-      priceId: process.env.NEXT_PUBLIC_PRICE_3_CREDITS ?? '',
-      priceDetail: '(pagamento único)',
-      perks: [
-        'Perfeito para testar!',
-        'Até 12 artes de tatuagem',
-        'Designer pessoal IA de tattoo',
-        'Acesso a coleção pessoal',
-        'Artes privadas',
-        'Maior limite de caracteres ao descrever tatuagem',
-      ],
-    },
-    {
-      name: 'Acesso Total - 7 dias',
-      priceBeforeDiscount: 'R$ 69,99',
-      price: 'R$ 49,99',
-      priceId: process.env.NEXT_PUBLIC_PRICE_7_DAYS_ACCESS ?? '',
-      priceDetail: '(pagamento único)',
-      perks: [
-        '7 dias de acesso a IA',
-        'Tatuagens Ilimitadas',
-        'Designer pessoal IA de tattoo',
-        'Acesso a coleção pessoal',
-        'Artes privadas',
-        'Pagamento único',
-        'Limite máximo de caracteres ao descrever tatuagem',
-        'Não é mensalidade',
-      ],
-    },
-    {
-      name: 'Acesso Total - 30 dias',
-      priceBeforeDiscount: 'R$ 139,99',
-      price: 'R$ 119,99',
-      priceId: process.env.NEXT_PUBLIC_PRICE_30_DAYS_ACCESS ?? '',
-      priceDetail: '(pagamento único)',
-      perks: [
-        '30 dias de acesso a IA',
-        'Tatuagens Ilimitadas',
-        'Designer pessoal IA de tattoo',
-        'Acesso a coleção pessoal',
-        'Artes privadas',
-        'Pagamento único',
-        'Limite máximo de caracteres ao descrever tatuagem',
-        'Não é mensalidade',
       ],
     },
   ],

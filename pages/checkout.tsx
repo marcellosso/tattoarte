@@ -2,10 +2,11 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import Head from 'next/head';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import axios from 'axios';
 import Image from 'next/image';
 import processPayment from '@/utils/payment';
+import { prisma } from '@/utils/use-prisma';
 
 type ProductInfo = {
   price: string;
@@ -16,9 +17,10 @@ type ProductInfo = {
 
 interface ICheckout {
   priceId: string;
+  isFreeTrial: boolean;
 }
 
-const Checkout: FC<ICheckout> = ({ priceId }) => {
+const Checkout: FC<ICheckout> = ({ priceId, isFreeTrial }) => {
   const [productInfo, setProductInfo] = useState<ProductInfo>(
     {} as ProductInfo
   );
@@ -27,10 +29,14 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false);
 
   const localePrice = useMemo(() => {
-    return (parseInt(productInfo.price) / 100).toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    const price = parseInt(productInfo.price) / 100;
+    return (isFreeTrial ? price - price * 0.15 : price).toLocaleString(
+      'pt-BR',
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    );
   }, [productInfo.price]);
 
   const getProductInfo = async () => {
@@ -249,12 +255,36 @@ const Checkout: FC<ICheckout> = ({ priceId }) => {
 
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps(context) {
-    const { query } = context;
+    const { req, res, query } = context;
     const priceId = query.priceId || undefined;
+
+    if (!priceId) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/precos',
+        },
+      };
+    }
+
+    const session = await getSession(req, res);
+    const sessionUser = session?.user || {};
+
+    const userId = sessionUser?.sub?.split('|')[1];
+
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        freeTrial: true,
+      },
+    });
 
     return {
       props: {
         priceId,
+        isFreeTrial: user?.freeTrial,
       },
     };
   },

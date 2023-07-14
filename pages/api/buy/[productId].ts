@@ -36,6 +36,13 @@ module.exports = withApiAuthRequired(async (req, res) => {
           productId: productId as string,
         },
       },
+      discounts: [
+        {
+          coupon: user.freeTrial
+            ? process.env.STRIPE_DISCOUNT_COUPON_ID
+            : undefined,
+        },
+      ],
       success_url: `${process.env.AUTH0_BASE_URL}/criar`,
       cancel_url: `${process.env.AUTH0_BASE_URL}/precos`,
     });

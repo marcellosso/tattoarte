@@ -11,36 +11,32 @@ const PriceCard: FC<IPriceCard> = ({ product }) => {
   return (
     <div className="flex flex-col p-6 mx-auto max-w-lg text-center rounded-lg border shadow border-detail xl:p-6 bg-primary text-letter max-h-[95%]">
       <h3 className="text-2xl font-bold text-detail">{product.name}</h3>
-      {product.priceBeforeDiscount && (
-        <span className="text-md font-bold text-letter">
-          Oferta limitada{' '}
-          {product.offerDetail && (
-            <>
-              -
-              <span className="font-extrabold text-detail">
-                {' '}
-                {product.offerDetail}
-              </span>
-            </>
-          )}
-        </span>
-      )}
+      <span className="text-md font-bold text-letter">
+        15% na 1ª compra{' '}
+        {product.offerDetailWithDiscount && (
+          <>
+            -
+            <span className="font-extrabold text-detail">
+              {' '}
+              {product.offerDetailWithDiscount}
+            </span>
+          </>
+        )}
+      </span>
       <div className="flex justify-center items-center my-4">
         <div className="flex flex-col items-center">
-          {product.priceBeforeDiscount && (
+          {product.price && (
             <span className="mr-2 text-xs xs:text-md font-normal line-through text-letter">
-              {product.priceBeforeDiscount}
+              {product.price}
             </span>
           )}
           <span className="mr-2 text-lg xs:text-2xl font-extrabold text-detail">
-            {product.price}
+            {product.priceWithDiscount}
           </span>
         </div>
-        {product.priceDetail && (
-          <span className="text-2xs xs:text-sm font-thin ml-1">
-            {product.priceDetail}
-          </span>
-        )}
+        <span className="text-2xs xs:text-sm font-thin ml-1">
+          {product.priceDetail}
+        </span>
       </div>
 
       <Link

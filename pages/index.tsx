@@ -104,15 +104,12 @@ const Home = () => {
                 <h3 className="font-medium text-sm xs:text-lg text-center">
                   Crie sua arte agora e junte-se a outros usuários!
                 </h3>
-                <h3 className="font-extrabold text-detail text-sm xs:text-lg md:text-2xl text-center">
-                  Apenas R$ 0,40 por arte de tatuagem
-                </h3>
               </div>
 
               <div className="flex flex-col w-full lg:w-1/2 relative gap-2 items-center">
                 <div className="flex gap-2 -ml-6">
                   <span className="text-sm text-letter font-light animate-pulse -mt-2">
-                    Oferta por tempo limitado
+                    15% na primeira compra
                   </span>
                   <svg
                     fill="none"
@@ -132,9 +129,9 @@ const Home = () => {
                 </div>
                 <Link
                   href="/precos"
-                  className={`bg-gradient-to-r w-2/3 font-bold text-letter text-sm md:text-lg p-2 text-center rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
+                  className={`bg-gradient-to-r font-bold text-letter text-sm md:text-lg p-3 text-center rounded-md from-green-600 to-blue-700 hover:from-pink-500 hover:to-yellow-500`}
                 >
-                  Compre créditos
+                  Compre créditos - R$ 0,40 por arte
                 </Link>
                 <Link
                   href="/criar"
