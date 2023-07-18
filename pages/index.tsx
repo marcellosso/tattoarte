@@ -303,7 +303,6 @@ const Home = () => {
 
         <div className="h-full lg:w-1/2 w-full z-30 mt-24 md:mt-36 rounded-md mb-6 p-4 lg:p0">
           <video
-            autoPlay
             muted
             loop
             controls
