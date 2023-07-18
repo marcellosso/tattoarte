@@ -81,7 +81,7 @@ const Home = () => {
             <div className="flex flex-col items-center justify-center gap-6 lg:gap-12 w-full lg:w-1/2 z-20 relative">
               <div className="flex flex-col items-center gap-2">
                 <h1 className="text-letter text-2xl xs:text-4xl lg:text-5xl xl:text-6xl">
-                  CRIE TAUTAGENS
+                  CRIE TATUAGENS
                 </h1>
                 <div className="h-1 w-1/4 bg-detail" />
                 <h1 className="text-letter text-2xl xs:text-4xl lg:text-5xl xl:text-6xl">
