@@ -11,8 +11,8 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN || '',
 });
 
-const PREFIX_DEFAULT_PROMPT = 'mdjrny-v4 style tattoo flash design of ';
-const SUFFIX_DEFAULT_PROMPT = ', clean white background, HD, without borders';
+const PREFIX_DEFAULT_PROMPT = process.env.PREFIX_DEFAULT_PROMPT;
+const SUFFIX_DEFAULT_PROMPT = process.env.SUFFIX_DEFAULT_PROMPT;
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
@@ -66,8 +66,6 @@ module.exports = withApiAuthRequired(async (req, res) => {
         num_outputs: 4,
       },
     });
-
-    // const id = 'f5gsyvvbsnfljml3nxal5kquoy';
 
     const newUserGenerationCount = (user.generationCount || 0) + 1;
 

@@ -27,8 +27,7 @@ const s3 = new S3({
 
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
-    let prompt =
-      'tattoo design, flash tattoo, tattoo drawing, tattoo style, stencil';
+    let prompt = process.env.PREFIX_DEFAULT_PROMPT as string;
     let { user } = req.body as { user: User };
     const { params } = req.body as { params: ParamsType };
 
@@ -87,7 +86,6 @@ module.exports = withApiAuthRequired(async (req, res) => {
     let request = null;
 
     if (params.baseImage) {
-      console.log(Buffer.from(params.baseImage, 'base64'));
       const imageStrength = 1;
       request = buildGenerationRequest('stable-diffusion-xl-beta-v2-2-2', {
         type: 'image-to-image',

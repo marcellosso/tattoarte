@@ -138,7 +138,7 @@ const Home = () => {
                   className="font-bold text-primary text-center text-xs sm:text-sm md:text-lg p-3 rounded-md bg-detail hover:bg-yellow-500"
                   // className="bg-detail w-2/3 font-bold text-primary text-sm md:text-lg p-2 text-center rounded-md hover:bg-yellow-500"
                 >
-                  + de 600 Tatuagens criadas, crie a sua arte agora
+                  + de 1700 Tatuagens criadas, crie a sua arte agora
                 </Link>
               </div>
             </div>
