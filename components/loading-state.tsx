@@ -12,6 +12,7 @@ const LoadingState: FC<ILoadingState> = ({ isLoading, label }) => {
       <div className="absolute z-30 top-0 left-0 h-screen w-screen bg-primary opacity-80 flex items-center justify-center">
         <div className="flex flex-col items-center">
           <Image
+            unoptimized
             src={`/images/tattooarte-logo.png`}
             alt="Logo TattooArtIA. Robo representando IA e uma maquina de tatuagem."
             width={100}

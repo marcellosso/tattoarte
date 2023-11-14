@@ -30,6 +30,7 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
         >
           <div className="animatedModal w-[1024px] h-5/6 my-2 md:my-0 rounded-md flex items-center justify-center relative">
             <Image
+              unoptimized
               src={openFullscreenImageModal}
               alt="Arte de tatuagem criada pela inteligência artificial - TattooArtIA!"
               className="rounded-md"
@@ -48,6 +49,7 @@ const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
           className="md:w-[420px] 2xl:w-[640px] w-full h-full min-h-[320px] md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative "
         >
           <Image
+            unoptimized
             src={image}
             alt="Arte de tatuagem criada pela inteligência artificial - TattooArtIA!"
             className="rounded-md hover:cursor-pointer hover:opacity-60 transition-all duration-200"

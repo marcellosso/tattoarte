@@ -65,6 +65,7 @@ export default function Custom404() {
       </Head>
       <div className="flex flex-col items-center justify-center w-screen h-screen">
         <Image
+          unoptimized
           src={`/images/tattooarte-logo.png`}
           alt="Logo TattooArtIA. Robo representando IA e uma maquina de tatuagem."
           width={100}

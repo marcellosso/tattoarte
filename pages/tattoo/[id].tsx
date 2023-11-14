@@ -106,6 +106,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
     return (
       <div className="flex flex-col items-center h-screen w-screen justify-center">
         <Image
+          unoptimized
           src={`/images/tattooarte-logo.png`}
           alt="Logo TattooArtIA. Robo representando IA e uma maquina de tatuagem."
           width={100}
@@ -263,6 +264,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
             >
               <div className="animatedModal w-[1024px] h-5/6 my-2 md:my-0 rounded-md flex items-center justify-center relative">
                 <Image
+                  unoptimized
                   src={generation.imageUrl}
                   alt={`Arte de tatuagem criada pela inteligência artificial com prompt: ${generation.prompt} - TattooArte!`}
                   className="rounded-md"
@@ -347,6 +349,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
                 {new Date(generation.createdAt).toLocaleDateString('pt-BR')}
               </span>
               <Image
+                unoptimized
                 src={generation.imageUrl}
                 alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
                 priority

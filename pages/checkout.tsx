@@ -147,6 +147,7 @@ const Checkout: FC<ICheckout> = ({ priceId, isFreeTrial }) => {
               >
                 {!loadingProduct && (
                   <Image
+                    unoptimized
                     src={productInfo.image}
                     alt={`Imagem do produto: ${productInfo.title}`}
                     priority

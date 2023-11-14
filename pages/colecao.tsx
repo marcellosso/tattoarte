@@ -74,6 +74,7 @@ const AchievmentModal: FC<IAchievmentModal> = ({
         </svg>
         <div className="md:mt-4">
           <Image
+            unoptimized
             src={`/images/coins/${selectedCoin}.png`}
             alt={`${coinName} com um robo cravado - Conquista de ${coinObjective} tatuagens criadas!`}
             width={350}
@@ -257,6 +258,7 @@ const Collection: FC<ICollection> = ({
         className="h-full w-full min-h-[126px] min-w-[126px] sm:min-h-[226px] sm:min-w-[226px] md:min-h-[204px] md:min-w-[204px] lg:min-h-[240px] lg:min-w-[240px] xl:min-h-[280px] xl:min-w-[280px] max-h-[280px] max-w-[280px] rounded-md transition-all relative group"
       >
         <Image
+          unoptimized
           src={generation?.imageUrl || ''}
           alt={`Tatuagem gerada por inteligência artifical com o prompt: ${generation.prompt}`}
           className="rounded-md md:hover:opacity-60 transition-all duration-200"
@@ -472,6 +474,7 @@ const Collection: FC<ICollection> = ({
                 <div className="flex md:gap-2 w-full items-center justify-center">
                   <div>
                     <Image
+                      unoptimized
                       src={`/images/coins/bronze-coin.png`}
                       alt="Moeda de bronze com um robo cravado - Conquista de 1 tatuagem criada!"
                       width={300}
@@ -490,6 +493,7 @@ const Collection: FC<ICollection> = ({
                   </div>
                   <div>
                     <Image
+                      unoptimized
                       src={`/images/coins/silver-coin.png`}
                       alt="Moeda de prata com um robo cravado - Conquista de 5 tatuagens criada!"
                       width={300}
@@ -510,6 +514,7 @@ const Collection: FC<ICollection> = ({
                 <div className="flex md:gap-2 w-full items-center justify-center">
                   <div>
                     <Image
+                      unoptimized
                       src={`/images/coins/gold-coin.png`}
                       alt="Moeda de ouro com um robo cravado - Conquista de 10 tatuagem criada!"
                       width={300}
@@ -528,6 +533,7 @@ const Collection: FC<ICollection> = ({
                   </div>
                   <div>
                     <Image
+                      unoptimized
                       src={`/images/coins/platinum-coin.png`}
                       alt="Moeda de platina com um robo cravado - Conquista de 25 tatuagens criada!"
                       width={300}
@@ -547,6 +553,7 @@ const Collection: FC<ICollection> = ({
                 </div>
                 <div>
                   <Image
+                    unoptimized
                     src={`/images/coins/diamond-coin.png`}
                     alt="Moeda de diamante com um robo cravado - Conquista de 50 tatuagens criada!"
                     width={350}

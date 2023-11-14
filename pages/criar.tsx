@@ -76,6 +76,7 @@ const AchievmentModal: FC<IAchievmentModal> = ({
         </svg>
         <div className="md:mt-4">
           <Image
+            unoptimized
             src={`/images/coins/${selectedCoin}.png`}
             alt={`${coinName} com um robo cravado - Conquista de ${coinObjective} tatuagens criadas!`}
             width={350}
@@ -652,6 +653,7 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                       } lg:block`}
                     >
                       <Image
+                        unoptimized
                         src="/images/tattoo-background.webp"
                         alt="Imagem de fundo com diversas 'flash' tattoos."
                         priority
