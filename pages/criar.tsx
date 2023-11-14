@@ -1,7 +1,6 @@
 import tattooStyles from '@/assets/tattoo-styles';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
-import generateImageStability from '@/utils/generate-stability';
 import { prisma } from '@/utils/use-prisma';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
@@ -147,12 +146,10 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
     setToggleForm(false);
 
     try {
-      let response;
-      if (!userFeatures.newAiVersion || iaVersionVal == 'v1') {
-        response = await generateImage(params, userData);
-      } else {
-        response = await generateImageStability(params, userData);
-      }
+      // let response;
+      // if (iaVersionVal == 'v1') {
+      const response = await generateImage(params, userData);
+      // }
 
       const newUserData = response.newUserData;
       setImages(response.images);
@@ -309,29 +306,6 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                 toggleForm ? 'max-md:flex' : 'max-md:hidden'
               } max-md:flex-col max-md:gap-4 max-md:items-center max-md:justify-center max-md:w-full`}
             >
-              {/* {promptVal.length >= maxPromptLenght && !user.subscribed && (
-                <div
-                  className="flex p-4 mb-4 text-sm border rounded-lg  text-blue-400 border-blue-800"
-                  role="alert"
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="flex-shrink-0 inline w-4 h-4 mr-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <Link href="/precos" className="text-xs hover:text-blue-600">
-                    Você atingiu o limite de caracteres!
-                  </Link>
-                </div>
-              )} */}
               <form
                 onSubmit={handleSubmit(handleCreate)}
                 className={`${
@@ -363,40 +337,6 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                     placeholder="Um pescador viajando pelo espaço"
                   />
                 </div>
-
-                {/* {iaVersionVal == 'v2' && (
-                  <div className="w-full mb-3">
-                    <label
-                      htmlFor="imagem"
-                      className="block mb-2 text-xs md:text-sm font-normal text-letter"
-                    >
-                      Imagem
-                    </label>
-
-                    <input
-                      onChange={(e) => {
-                        const currFile = e.target.files?.[0];
-                        if (currFile) {
-                          const reader = new FileReader();
-                          reader.readAsDataURL(e.target.files?.[0] as File);
-                          reader.onload = function () {
-                            setBaseImage(reader.result as string);
-                          };
-                        } else {
-                          setBaseImage('');
-                        }
-                      }}
-                      className="
-                      block w-full text-sm border 
-                    border-letter rounded-lg cursor-pointer 
-                    bg-primary text-letter
-                      focus:outline-none  placeholder-gray-400"
-                      id="imagem"
-                      type="file"
-                      accept="image/png, image/jpeg"
-                    />
-                  </div>
-                )} */}
 
                 <div className="w-full mb-3">
                   <label
@@ -490,9 +430,9 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                     border-letter placeholder-gray-400 text-letter focus:border-detail mt-2"
                   >
                     <option value="v1">Prime</option>
-                    {userFeatures.newAiVersion && (
+                    {/* {userFeatures.newAiVersion && (
                       <option value="v2">Mythic</option>
-                    )}
+                    )} */}
                   </select>
                 </div>
 
