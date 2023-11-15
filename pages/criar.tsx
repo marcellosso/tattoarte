@@ -107,10 +107,9 @@ const AchievmentModal: FC<IAchievmentModal> = ({
 
 interface ICriar {
   user: UserProfile & User;
-  userFeatures: Features;
 }
 
-const Criar: FC<ICriar> = ({ user, userFeatures }) => {
+const Criar: FC<ICriar> = ({ user }) => {
   const { register, handleSubmit, watch } = useForm<ParamsType>();
   const [userData, setUserData] = useState(user);
   const [achievedCoin, setAchievedCoin] = useState<string | null>(null);
@@ -272,28 +271,18 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                 Voce já criou
                 <span className="text-detail">
                   {' '}
-                  {(userData.generationCount || 0) * 4} tatuagens!
+                  {(userData?.generationCount || 0) * 4} tatuagens!
                 </span>
               </span>
-              {!user.subscribed ? (
-                <Link
-                  href="/precos"
-                  className={`${
-                    toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
-                  } text-detail text-center font-black pb-1 md:pb-3`}
-                >
-                  <span className="text-letter font-medium">Créditos:</span>{' '}
-                  {userData.credits}
-                </Link>
-              ) : (
-                <span
-                  className={`${
-                    toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
-                  } text-letter text-center font-black pb-1 md:pb-3`}
-                >
-                  Acesso Total
-                </span>
-              )}
+              <Link
+                href="/precos"
+                className={`${
+                  toggleForm ? 'max-md:text-sm' : 'max-md:text-lg'
+                } text-detail text-center font-black pb-1 md:pb-3`}
+              >
+                <span className="text-letter font-medium">Créditos:</span>{' '}
+                {userData.credits}
+              </Link>
               <div
                 className={`${
                   toggleForm ? 'max-md:block' : 'max-md:hidden'
@@ -412,17 +401,17 @@ const Criar: FC<ICriar> = ({ user, userFeatures }) => {
                       </svg>
                     </a>
                   </label>
-                  {iaVersionVal == 'v1' ? (
-                    <p className="text-gray-400 text-2xs">
-                      <b>Prime: </b>Versão mais criativa, podendo tomar
-                      liberdades artísticas.
-                    </p>
+                  <p className="text-gray-400 text-2xs">
+                    <b>Prime: </b>Versão mais criativa, podendo tomar liberdades
+                    artísticas.
+                  </p>
+                  {/* {iaVersionVal == 'v1' ? (
                   ) : (
                     <p className="text-gray-400 text-2xs">
                       <b>Mythic: </b>Versão mais avançada, tenta seguir sua
                       descrição à risca.
                     </p>
-                  )}
+                  )} */}
                   <select
                     {...register('iaVersion')}
                     id="cores"
@@ -671,7 +660,6 @@ export const getServerSideProps = withPageAuthRequired({
     return {
       props: {
         user: JSON.parse(JSON.stringify(user)),
-        userFeatures: JSON.parse(JSON.stringify(user?.features || {})),
       },
     };
   },
