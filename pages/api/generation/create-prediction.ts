@@ -75,6 +75,7 @@ module.exports = withApiAuthRequired(async (req, res) => {
         prompt,
         num_outputs: 4,
         negative_prompt: 'borders',
+        disable_safety_checker: true,
       },
     });
 
