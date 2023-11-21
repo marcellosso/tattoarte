@@ -11,27 +11,22 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN || '',
 });
 
-const PREFIX_DEFAULT_PROMPT = process.env.PREFIX_DEFAULT_PROMPT;
-const SUFFIX_DEFAULT_PROMPT = process.env.SUFFIX_DEFAULT_PROMPT;
-
 module.exports = withApiAuthRequired(async (req, res) => {
   try {
-    let prompt = '';
     let { user } = req.body as { user: User };
     const { params } = req.body as { params: ParamsType };
+    let prompt = '';
 
     let newCredits = user.credits || 0;
 
-    if (!user.subscribed) {
-      let creditsToDeduce = 1;
-      if (params.isPrivate && !user.freeTrial) creditsToDeduce += 2;
+    let creditsToDeduce = 1;
+    if (params.isPrivate && !user.freeTrial) creditsToDeduce += 2;
 
-      if (user.credits == 0 || (user.credits || 0) < creditsToDeduce) {
-        throw 'Você não possui créditos suficientes para gerar uma arte.';
-      }
-
-      newCredits = Math.max(0, (user.credits || 0) - creditsToDeduce);
+    if (user.credits == 0 || (user.credits || 0) < creditsToDeduce) {
+      throw 'Você não possui créditos suficientes para gerar uma arte.';
     }
+
+    newCredits = Math.max(0, (user.credits || 0) - creditsToDeduce);
 
     let maxPromptLenght = 500;
 
@@ -56,14 +51,30 @@ module.exports = withApiAuthRequired(async (req, res) => {
     if (params.artistInspiration)
       prompt += `, art by ${params.artistInspiration}`;
 
-    prompt = PREFIX_DEFAULT_PROMPT + prompt + SUFFIX_DEFAULT_PROMPT;
+    prompt =
+      (process.env.PREFIX_DEFAULT_PROMPT ?? '') +
+      prompt +
+      process.env.SUFFIX_DEFAULT_PROMPT;
+
+    prompt =
+      params.aiVersion == 'prime'
+        ? prompt
+        : process.env.CLASSIC_VERSION_INITIAL_PROMPT +
+          prompt +
+          ', HD, without borders';
+
+    const aiVersionMap = {
+      classic:
+        '9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
+      prime: '39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b',
+    } as Record<ParamsType['aiVersion'], string>;
 
     const { id } = await replicate.predictions.create({
-      version:
-        '9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb',
+      version: aiVersionMap[params.aiVersion],
       input: {
         prompt,
         num_outputs: 4,
+        negative_prompt: 'borders',
       },
     });
 

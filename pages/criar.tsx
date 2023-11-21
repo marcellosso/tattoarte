@@ -124,7 +124,7 @@ const Criar: FC<ICriar> = ({ user }) => {
   const [toggleForm, setToggleForm] = useState(true);
 
   const promptVal = (watch('prompt') || '') as string;
-  const iaVersionVal = (watch('iaVersion') || '') as string;
+  const aiVersionVal = (watch('aiVersion') || '') as ParamsType['aiVersion'];
 
   const triggerAchievement = (genCount: number) => {
     if (genCount == 1) {
@@ -145,10 +145,7 @@ const Criar: FC<ICriar> = ({ user }) => {
     setToggleForm(false);
 
     try {
-      // let response;
-      // if (iaVersionVal == 'v1') {
       const response = await generateImage(params, userData);
-      // }
 
       const newUserData = response.newUserData;
       setImages(response.images);
@@ -377,12 +374,12 @@ const Criar: FC<ICriar> = ({ user }) => {
                   </Tooltip>
                   <label
                     htmlFor="cores"
-                    className="flex text-xs md:text-sm font-normal text-letter items-center"
+                    className="flex text-xs md:text-sm font-normal text-letter items-center gap-1"
                   >
                     Versão TattooArtIA
                     <a
                       data-tooltip-id="ai-version-help-tooltip"
-                      className="hover:cursor-pointer ml-1"
+                      className="hover:cursor-pointe"
                     >
                       <svg
                         fill="none"
@@ -400,28 +397,29 @@ const Criar: FC<ICriar> = ({ user }) => {
                         />
                       </svg>
                     </a>
+                    <p className="uppercase bg-detail rounded-3xl text-primary text-xs px-2">
+                      Novo
+                    </p>
                   </label>
-                  <p className="text-gray-400 text-2xs">
-                    <b>Prime: </b>Versão mais criativa, podendo tomar liberdades
-                    artísticas.
-                  </p>
-                  {/* {iaVersionVal == 'v1' ? (
+                  {aiVersionVal == 'classic' ? (
+                    <p className="text-gray-400 text-2xs">
+                      <b>Classic: </b>Versão mais simples, podendo tomar
+                      liberdades artísticas.
+                    </p>
                   ) : (
                     <p className="text-gray-400 text-2xs">
-                      <b>Mythic: </b>Versão mais avançada, tenta seguir sua
+                      <b>Prime: </b>Versão mais avançada, tenta seguir sua
                       descrição à risca.
                     </p>
-                  )} */}
+                  )}
                   <select
-                    {...register('iaVersion')}
+                    {...register('aiVersion')}
                     id="cores"
                     className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
                     border-letter placeholder-gray-400 text-letter focus:border-detail mt-2"
                   >
-                    <option value="v1">Prime</option>
-                    {/* {userFeatures.newAiVersion && (
-                      <option value="v2">Mythic</option>
-                    )} */}
+                    <option value="prime">Prime</option>
+                    <option value="classic">Classic</option>
                   </select>
                 </div>
 
@@ -626,36 +624,30 @@ export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps(context) {
     const { req, res } = context;
     const session = await getSession(req, res);
-    const sessionUser = session!.user || {};
 
-    let user = (await prisma.user.findUnique({
+    if (!session) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/',
+        },
+      };
+    }
+    const sessionUser = session.user || {};
+
+    const user = (await prisma.user.findUnique({
       where: {
         email: sessionUser.email as string,
       },
       select: {
         id: true,
         email: true,
-        subscribed: true,
         freeTrial: true,
         credits: true,
         name: true,
         generationCount: true,
-        subscriptionAt: true,
-        subscriptionDuration: true,
-        features: {
-          select: {
-            newAiVersion: true,
-            imageToTattoo: true,
-          },
-        },
       },
     })) as Partial<User & { features: Features }>;
-
-    if (user?.subscribed) {
-      const userWithoutFeatures = { ...user };
-      delete userWithoutFeatures.features;
-      user = await handleUserSubscription(userWithoutFeatures);
-    }
 
     return {
       props: {

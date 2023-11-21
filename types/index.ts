@@ -2,7 +2,7 @@ export type ParamsType = {
   prompt: string;
   colorsStyle: string;
   tattooStyle: string;
-  iaVersion: string;
+  aiVersion: 'prime' | 'classic';
   artistInspiration?: string;
   isHD?: boolean;
   isPrivate?: boolean;
