@@ -67,6 +67,7 @@ const OrderBy: FC<IOrderBy> = ({ handleOrderByChange }) => {
               Mais Recentes
             </button>
           </li>
+
           <li className="mb-2 relative">
             <button
               onClick={() => handleChangeOrder('likes')}
