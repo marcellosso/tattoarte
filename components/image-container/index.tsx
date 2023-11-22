@@ -5,18 +5,23 @@ import LoadingImage from './loading-image';
 interface IImageContaier {
   isLoading: boolean;
   images: string[];
+  progressAmount: number;
 }
 
-const ImageContainer: FC<IImageContaier> = ({ isLoading, images }) => {
+const ImageContainer: FC<IImageContaier> = ({
+  isLoading,
+  images,
+  progressAmount,
+}) => {
   const [openFullscreenImageModal, setOpenFullscreenImageModal] = useState('');
 
   if (isLoading) {
     return (
       <>
-        <LoadingImage />
-        <LoadingImage />
-        <LoadingImage />
-        <LoadingImage />
+        <LoadingImage progressAmount={progressAmount} />
+        <LoadingImage progressAmount={progressAmount} />
+        <LoadingImage progressAmount={progressAmount} />
+        <LoadingImage progressAmount={progressAmount} />
       </>
     );
   }

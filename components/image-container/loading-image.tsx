@@ -1,9 +1,12 @@
-const LoadingImage = () => {
+const LoadingImage = ({ progressAmount }: { progressAmount: number }) => {
   return (
-    <div className="bg-gray-600 w-11/12 h-72 md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center">
+    <div className="bg-gray-600 w-11/12 h-72 md:h-96 my-2 md:my-0 rounded-md flex items-center justify-center relative">
+      <p className="absolute text-sm transition-all duration-200">
+        {progressAmount}%
+      </p>
       <svg
         aria-hidden="true"
-        className="w-8 h-8 mr- animate-spin text-gray-400 fill-gray-500"
+        className="w-12 h-12 mr- animate-spin text-gray-400 fill-gray-500"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

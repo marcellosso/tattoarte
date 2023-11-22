@@ -10,7 +10,6 @@ import Image from 'next/image';
 import React, { FC, useMemo, useState } from 'react';
 
 import { toast } from 'react-toastify';
-import handleUserSubscription from '@/utils/user-subscription';
 import Link from 'next/link';
 import MarketingModal from '@/components/marketing-modal';
 import type { ParamsType } from '@/types';
@@ -110,7 +109,9 @@ interface ICriar {
 }
 
 const Criar: FC<ICriar> = ({ user }) => {
-  const { register, handleSubmit, watch } = useForm<ParamsType>();
+  const { register, handleSubmit, watch, setValue } = useForm<ParamsType>({
+    defaultValues: { aiVersion: 'prime' },
+  });
   const [userData, setUserData] = useState(user);
   const [achievedCoin, setAchievedCoin] = useState<string | null>(null);
 
@@ -122,6 +123,8 @@ const Criar: FC<ICriar> = ({ user }) => {
   const [loadingImages, setLoadingImages] = useState(false);
 
   const [toggleForm, setToggleForm] = useState(true);
+
+  const [generationProgress, setGenerationProgress] = useState<number>(0);
 
   const promptVal = (watch('prompt') || '') as string;
   const aiVersionVal = (watch('aiVersion') || '') as ParamsType['aiVersion'];
@@ -145,7 +148,11 @@ const Criar: FC<ICriar> = ({ user }) => {
     setToggleForm(false);
 
     try {
-      const response = await generateImage(params, userData);
+      const response = await generateImage(
+        params,
+        userData,
+        setGenerationProgress
+      );
 
       const newUserData = response.newUserData;
       setImages(response.images);
@@ -412,15 +419,37 @@ const Criar: FC<ICriar> = ({ user }) => {
                       descrição à risca.
                     </p>
                   )}
-                  <select
-                    {...register('aiVersion')}
-                    id="cores"
-                    className="border text-xs md:text-sm rounded-lg block w-full p-2 md:p-2.5 bg-primary 
-                    border-letter placeholder-gray-400 text-letter focus:border-detail mt-2"
-                  >
-                    <option value="prime">Prime</option>
-                    <option value="classic">Classic</option>
-                  </select>
+                  <div className="flex w-full gap-3 mt-2 relative">
+                    <button
+                      type="button"
+                      className={`border w-1/2  bg-transparent text-xs xs:text-sm p-1 xs:p-2 rounded-md transition-all duration-150
+                        ${
+                          aiVersionVal == 'classic'
+                            ? 'border-detail text-detail'
+                            : 'border-letter text-letter hover:border-detail hover:text-detail'
+                        }
+                      `}
+                      onClick={() => setValue('aiVersion', 'classic')}
+                    >
+                      Classic
+                    </button>
+                    <button
+                      type="button"
+                      className={`border w-1/2  bg-transparent text-xs xs:text-sm p-1 xs:p-2 rounded-md transition-all duration-150
+                        ${
+                          aiVersionVal == 'prime'
+                            ? 'border-detail text-detail'
+                            : 'border-letter text-letter hover:border-detail hover:text-detail'
+                        }
+                      `}
+                      onClick={() => setValue('aiVersion', 'prime')}
+                    >
+                      Prime
+                    </button>
+                    <p className="absolute -right-3 -top-1 text-letter rotate-45 text-xs font-bold">
+                      Novo
+                    </p>
+                  </div>
                 </div>
 
                 <div className="mb-3">
@@ -512,6 +541,10 @@ const Criar: FC<ICriar> = ({ user }) => {
                   </Link>
                 )}
               </form>
+              <p className="text-sm font-light self-start">
+                Tempo Estimado: {aiVersionVal == 'classic' ? '15' : '45'}{' '}
+                segundos
+              </p>
             </div>
             <button
               type="button"
@@ -595,7 +628,11 @@ const Criar: FC<ICriar> = ({ user }) => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 h-full w-full overflow-y-scroll scrollbar-hide gap-5 place-items-center">
-                  <ImageContainer isLoading={loadingImages} images={images} />
+                  <ImageContainer
+                    isLoading={loadingImages}
+                    images={images}
+                    progressAmount={generationProgress}
+                  />
                 </div>
               )}
             </div>

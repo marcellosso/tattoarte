@@ -15,7 +15,7 @@ export default async function middleware(
   const ip = request.ip ?? '127.0.0.1';
   const { success } = await rateLimit.limit(ip);
 
-  if (request.nextUrl.pathname.includes('get-generations'))
+  if (request.nextUrl.pathname.includes('get-prediction'))
     return NextResponse.next();
 
   return success
