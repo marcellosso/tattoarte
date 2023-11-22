@@ -7,7 +7,12 @@
   --background-color: #222831;
 }
 
-body {
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
   overscroll-behavior: none;
   background: linear-gradient(180deg, #0a0909 0%, #0a0909 17.71%, #292828 100%);
 }

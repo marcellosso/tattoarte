@@ -74,7 +74,7 @@ const Estilos: FC<IEstilos> = ({ generationCount }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <section className="flex min-h-screen h-screen flex-col font-normal items-center px-2 pt-16 md:pt-24 text-letter overflow-y-scroll overflow-x-hidden scrollbar-hide">
+      <section className="flex flex-col font-normal items-center px-2 pt-16 md:pt-24 text-letter">
         <h1 className="text-md xs:text-xl md:text-4xl font-bold text-center">
           <span className="text-detail">Estilos</span> de tatuagem
         </h1>

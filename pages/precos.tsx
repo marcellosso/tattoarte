@@ -66,8 +66,8 @@ const Price = () => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <section className="flex min-h-screen h-screen flex-col items-center pt-6 md:pt-8 pb-0 text-letter overflow-y-scroll overflow-x-hidden scrollbar-hide">
-        <div className="py-8 px-4 mx-auto max-w-screen-xl max-h-full lg:pt-12 lg:px-6 flex flex-col items-center">
+      <section className="flex flex-col items-center pt-6 md:pt-8 pb-0 text-letter">
+        <div className="py-8 px-4 mx-auto max-w-screen-xl lg:pt-12 lg:px-6 flex flex-col items-center">
           <div className="mx-auto max-w-screen-lg text-center mb-4 lg:mb-8">
             <h1 className="mb-4 text-md sm:text-2xl md:text-4xl tracking-tight font-bold text-letter text-center">
               Cria um design <span className="text-detail">perfeito</span> para
@@ -93,20 +93,14 @@ const Price = () => {
             </Link>
           </div>
 
-          <div className="flex w-full items-center justify-between mb-4">
+          <div className="flex w-full items-center justify-between max-md:mt-3 mb-4">
             <h3 className="font-medium text-sm sm:text-md md:text-3xl">
               Escolha a melhor opção para você
             </h3>
             <div className="bg-detail h-0.5 w-1/3 sm:w-1/2" />
           </div>
 
-          <div className="flex items-center justify-center mb-4 rounded-3xl bg-secondary p-1">
-            <div className="py-2 px-4 text-center rounded-3xl text-md sm:text-lg transition-all duration-300  bg-detail text-primary font-bold">
-              Avulso
-            </div>
-          </div>
-
-          <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
+          <div className="space-y-8 grid lg:grid-cols-3 grid-cols-1 sm:gap-6 xl:gap-10 lg:space-y-0">
             {products[PriceTabEnum.ACCESS].map((product) => (
               <PriceCard key={product.name} product={product} />
             ))}

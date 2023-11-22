@@ -69,7 +69,7 @@ const Home = () => {
         />
       </Head>
 
-      <section className="bg-primary flex min-h-screen h-screen flex-col items-center pt-12 md:pt-24 pb-0 text-letter overflow-y-scroll scrollbar-hide relative">
+      <section className="bg-primary flex flex-col items-center pt-12 md:pt-24 pb-0 text-letter overflow-y-scroll scrollbar-hide relative">
         <div className="fixed bottom-0 w-screen h-8 md:h-6 bg-detail flex items-center justify-center p-2 z-100">
           <span className="text-primary text-2xs md:text-xs font-bold text-center">
             Devido a alta demanda, desativamos o teste gratuíto. Perdão pelo

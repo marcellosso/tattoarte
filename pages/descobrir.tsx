@@ -252,7 +252,7 @@ const Discover: FC<IDiscover> = ({ generations, generationCount, style }) => {
           content="Artista de Tatuagem IA - Crie tatuagens únicas | TattooArtIA"
         />
       </Head>
-      <section className="flex min-h-screen h-screen px-2 flex-col items-center pt-16 md:pt-24 pb-0 text-letter overflow-y-scroll overflow-x-hidden scrollbar-hide">
+      <section className="flex px-2 flex-col items-center pt-16 md:pt-24 pb-0 text-letter">
         <h1 className="text-md sm:text-2xl  md:text-4xl font-bold text-center">
           Descubra criações de outros{' '}
           <span className="text-detail">usuários</span>!
