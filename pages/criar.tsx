@@ -542,7 +542,7 @@ const Criar: FC<ICriar> = ({ user }) => {
                 )}
               </form>
               <p className="text-sm font-light self-start">
-                Tempo Estimado: {aiVersionVal == 'classic' ? '15' : '45'}{' '}
+                Tempo Estimado: {aiVersionVal == 'classic' ? '15' : '20'}{' '}
                 segundos
               </p>
             </div>

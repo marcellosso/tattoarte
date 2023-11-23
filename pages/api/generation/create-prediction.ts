@@ -69,14 +69,26 @@ module.exports = withApiAuthRequired(async (req, res) => {
       prime: '39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b',
     } as Record<ParamsType['aiVersion'], string>;
 
-    const { id } = await replicate.predictions.create({
-      version: aiVersionMap[params.aiVersion],
-      input: {
-        prompt,
-        num_outputs: 4,
+    let inputParams = {
+      prompt,
+      num_outputs: 4,
+    } as object;
+
+    if (params.aiVersion == 'prime') {
+      inputParams = {
+        ...inputParams,
         negative_prompt: 'borders',
         disable_safety_checker: true,
-      },
+        width: 768,
+        height: 768,
+        num_inference_steps: 30,
+        refine: 'expert_ensemble_refiner',
+      };
+    }
+
+    const { id } = await replicate.predictions.create({
+      version: aiVersionMap[params.aiVersion],
+      input: inputParams,
     });
 
     const newUserGenerationCount = (user.generationCount || 0) + 1;
