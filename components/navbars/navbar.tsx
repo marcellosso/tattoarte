@@ -78,6 +78,15 @@ const MobileNavbar: FC<IMobileNavbar> = ({
           onClick={() => setToggleMobileNavbar(false)}
         />
       </li>
+
+      <li className="relative mb-2">
+        <MobileNavbarLink
+          label="Contato"
+          linkRoute="/contato"
+          isSelected={currentRoute.includes('/contato')}
+          onClick={() => setToggleMobileNavbar(false)}
+        />
+      </li>
     </ul>
   </div>
 );
@@ -109,6 +118,11 @@ const Navbar = () => {
               label="Preços"
               href="/precos"
               isSelected={route.includes('/precos')}
+            />
+            <NavbarLink
+              label="Contato"
+              href="/contato"
+              isSelected={route.includes('/contato')}
             />
           </ul>
           <Link
