@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Image from 'next/image';
 import Link from 'next/link';
-import { getSession } from '@auth0/nextjs-auth0';
 import { prisma } from '@/utils/use-prisma';
 import { FC, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
@@ -11,6 +10,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { GetServerSideProps } from 'next';
 import type { Generation } from '@prisma/client';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
 interface IAchievmentModal {
   selectedCoin: string;
@@ -650,20 +650,19 @@ const Collection: FC<ICollection> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res, query } = context;
-  const session = await getSession(req, res);
-  const sessionUser = session?.user || {};
+  const { req, query } = context;
+  const { userId } = await getAuth(req);
+  const user = userId ? await clerkClient.users.getUser(userId) : undefined;
 
-  const userId = sessionUser?.sub?.split('|')[1];
-  const userName = sessionUser.name ?? '';
+  const userName = `${user?.firstName} ${user?.lastName}` ?? '';
 
-  const queryId = query?.userId || userId;
+  const queryId = query?.userId || user?.externalId;
 
   if (!queryId) {
     return {
       redirect: {
         permanent: false,
-        destination: '/api/auth/login',
+        destination: '/login',
       },
     };
   }

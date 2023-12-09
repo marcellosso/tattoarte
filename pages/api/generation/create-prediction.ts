@@ -1,4 +1,3 @@
-import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { User } from '@prisma/client';
 
 import { ParamsType } from '@/types';
@@ -6,12 +5,13 @@ import Replicate from 'replicate';
 import axios from 'axios';
 
 import { englishTattooStyles } from '@/assets/tattoo-styles';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN || '',
 });
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     let { user } = req.body as { user: User };
     const { params } = req.body as { params: ParamsType };
@@ -103,4 +103,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-});
+};

@@ -1,14 +1,15 @@
 import { prisma } from '@/utils/use-prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { Features, Role, User } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
-module.exports = withApiAuthRequired(async (req, res) => {
-  const session = await getSession(req, res);
-  const sessionUser = session?.user || {};
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { userId } = await getAuth(req);
+  const { externalId } = await clerkClient.users.getUser(userId ?? '');
 
   const user = await prisma.user.findUnique({
     where: {
-      email: sessionUser.email as string,
+      id: externalId ?? '',
     },
   });
 
@@ -54,4 +55,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
     console.log(err);
     res.status(500).send(err);
   }
-});
+};

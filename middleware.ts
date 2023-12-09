@@ -1,6 +1,9 @@
-import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import { authMiddleware, redirectToSignIn } from '@clerk/nextjs';
+
+const privatePaths = ['/checkout', '/criar', '/sign-up*', '/sign-in*'];
 
 const rateLimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -8,23 +11,72 @@ const rateLimit = new Ratelimit({
   analytics: true,
 });
 
-export default async function middleware(
-  request: NextRequest,
-  event: NextFetchEvent
-): Promise<Response | undefined> {
-  const ip = request.ip ?? '127.0.0.1';
-  const { success } = await rateLimit.limit(ip);
+// Checks if the pathname you are is public
+const isPublic = (path: string) => {
+  return !privatePaths.find((x) =>
+    path.match(new RegExp(`^${x}$`.replace('*$', '($|/|\\.)')))
+  );
+};
 
-  if (request.nextUrl.pathname.includes('get-prediction'))
-    return NextResponse.next();
+// Checks if you are hitting an API
+const isAPI = (path: string) => {
+  return !!path.match(new RegExp(`^\/api\/`));
+};
 
-  return success
-    ? NextResponse.next()
-    : new NextResponse('Limite de chamadas atingido, vai com calma!', {
-        status: 409,
+export default authMiddleware({
+  publicRoutes: (req: NextRequest) => {
+    return isPublic(req.nextUrl.pathname);
+  },
+  apiRoutes: ['/api/buy(.*)', '/api/generation(.*)', '/api/user/(.*)'],
+  async afterAuth(auth, req, evt) {
+    if (!auth.userId && auth.isApiRoute) {
+      return new NextResponse(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-}
+    }
+
+    if (isAPI(req.nextUrl.pathname)) {
+      const ip = req.ip ?? '127.0.0.1';
+      const { success, pending, limit, reset, remaining } =
+        await rateLimit.limit(`ratelimit_middleware_${ip}`);
+      evt.waitUntil(pending);
+
+      if (req.nextUrl.pathname.includes('get-prediction'))
+        return NextResponse.next();
+
+      const res = success
+        ? NextResponse.next()
+        : new NextResponse('Limte de chamadas atingido, vai com calma!', {
+            status: 409,
+          });
+
+      res.headers.set('X-RateLimit-Limit', limit.toString());
+      res.headers.set('X-RateLimit-Remaining', remaining.toString());
+      res.headers.set('X-RateLimit-Reset', reset.toString());
+      return res;
+    }
+
+    // handle users who aren't authenticated
+    if (!auth.userId && !auth.isPublicRoute) {
+      return redirectToSignIn({ returnBackUrl: req.url });
+    }
+
+    return NextResponse.next();
+  },
+});
 
 export const config = {
-  matcher: '/api/:path*',
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next
+     * - static (static files)
+     * - favicon.ico (favicon file)
+     */
+    '/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)',
+    '/',
+  ],
 };

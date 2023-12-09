@@ -1,23 +1,23 @@
 import { prisma } from '@/utils/use-prisma';
-import { withApiAuthRequired, getSession, Session } from '@auth0/nextjs-auth0';
 import { User } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { productId } = req.query;
 
-    const {
-      user: { email },
-    } = (await getSession(req, res)) as Session;
+    const { userId } = await getAuth(req);
+    const { externalId } = await clerkClient.users.getUser(userId ?? '');
 
     const user = (await prisma.user.findUnique({
       where: {
-        email,
+        id: externalId ?? '',
       },
     })) as User;
 
@@ -51,4 +51,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
   } catch (err) {
     res.send(err);
   }
-});
+};

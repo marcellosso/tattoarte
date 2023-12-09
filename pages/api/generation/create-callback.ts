@@ -1,9 +1,9 @@
 import type { ParamsType } from '@/types';
 import { prisma } from '@/utils/use-prisma';
-import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import type { User } from '@prisma/client';
 import S3 from 'aws-sdk/clients/s3';
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 } from 'uuid';
 
 const s3 = new S3({
@@ -13,7 +13,7 @@ const s3 = new S3({
   signatureVersion: 'v4',
 });
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { user, params, images } = req.body as {
       user: User;
@@ -125,4 +125,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
     console.log(err);
     res.status(500).send('Error updating user information');
   }
-});
+};

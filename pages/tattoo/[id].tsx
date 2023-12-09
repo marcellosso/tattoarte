@@ -5,11 +5,10 @@ import { FC, useMemo, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { getSession, Session } from '@auth0/nextjs-auth0';
 import { toggleLike, toggleBookmark } from '@/utils/toggle-options';
 import { toast } from 'react-toastify';
 import Logo from '@/components/logo';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
 import { isMobile } from 'react-device-detect';
 
@@ -29,11 +28,10 @@ type CustomGeneration = {
 
 interface ITattoo {
   generation: CustomGeneration;
+  isAuthenticated: boolean;
 }
 
-const Tattoo: FC<ITattoo> = ({ generation }) => {
-  const { user } = useUser();
-
+const Tattoo: FC<ITattoo> = ({ generation, isAuthenticated }) => {
   const [openFullscreenImageModal, setOpenFullscreenImageModal] =
     useState(false);
   const [openNotLoggedModal, setOpenNotLoggedModal] = useState(false);
@@ -71,7 +69,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   };
 
   const handleToggleLike = async () => {
-    if (!user) {
+    if (!isAuthenticated) {
       setOpenNotLoggedModal(true);
       return;
     }
@@ -87,7 +85,7 @@ const Tattoo: FC<ITattoo> = ({ generation }) => {
   };
 
   const handleToggleBookmark = async () => {
-    if (!user) {
+    if (!isAuthenticated) {
       setOpenNotLoggedModal(true);
       return;
     }
@@ -454,10 +452,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     'public, s-maxage=120, stale-while-revalidate=180'
   );
 
-  const { query, req, res } = context;
-  const session = (await getSession(req, res)) as Session;
-  const sessionUser = session?.user ?? {};
-  const currentUserId = sessionUser?.sub?.split('|')?.[1] ?? null;
+  const { query, req } = context;
+  const { userId } = await getAuth(req);
+
+  const userInfo = (await clerkClient.users.getUser(userId || '')) ?? {};
+  const currentUserId = userInfo.externalId ?? null;
 
   const generationId = query?.id;
 
@@ -512,6 +511,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           bookmarkCount: generation._count.bookmarks ?? 0,
         })
       ),
+      isAuthenticated: !!userId,
     },
   };
 };

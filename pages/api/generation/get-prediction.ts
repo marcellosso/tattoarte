@@ -1,11 +1,11 @@
-import { withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Replicate from 'replicate';
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN || '',
 });
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { id } = req.body as { id: string };
 
@@ -15,4 +15,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-});
+};

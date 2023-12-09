@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
+import { SignIn, SignOutButton } from '@clerk/nextjs';
 
 const Home = () => {
   return (
@@ -90,6 +91,8 @@ const Home = () => {
                 </h1>
                 <div className="h-1 w-2/3 bg-detail" />
               </div>
+              <SignIn />
+              <SignOutButton />
 
               <div className="flex flex-col w-full lg:w-2/3 items-center gap-2">
                 <h2 className="font-bold text-sm xs:text-lg text-center">
