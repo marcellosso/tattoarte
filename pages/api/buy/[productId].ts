@@ -32,7 +32,7 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
       mode: 'payment',
       payment_intent_data: {
         metadata: {
-          userId: user?.id,
+          userId: externalId ?? '',
           productId: productId as string,
         },
       },

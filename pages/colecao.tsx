@@ -651,12 +651,16 @@ const Collection: FC<ICollection> = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, query } = context;
-  const { userId } = await getAuth(req);
-  const user = userId ? await clerkClient.users.getUser(userId) : undefined;
+  const { userId: authUserId } = await getAuth(req);
+  const user = authUserId
+    ? await clerkClient.users.getUser(authUserId)
+    : undefined;
+
+  const userId = user?.externalId ?? '';
 
   const userName = `${user?.firstName} ${user?.lastName}` ?? '';
 
-  const queryId = query?.userId || user?.externalId;
+  const queryId = query?.userId || userId;
 
   if (!queryId) {
     return {
@@ -672,7 +676,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     author: UserCoins | null;
   })[];
 
-  const isSameUser = queryId == user?.externalId;
+  const isSameUser = queryId == userId;
 
   generationsFromUser =
     (await prisma.generation.findMany({
