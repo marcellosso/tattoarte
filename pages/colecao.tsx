@@ -672,7 +672,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     author: UserCoins | null;
   })[];
 
-  const isSameUser = queryId == userId;
+  const isSameUser = queryId == user?.externalId;
 
   generationsFromUser =
     (await prisma.generation.findMany({
