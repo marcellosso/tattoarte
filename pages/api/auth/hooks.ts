@@ -9,6 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 module.exports = async (req: any, res: any) => {
   const { data } = req.body;
 
+  console.log('data - ', data);
   const { id, first_name, last_name, email_addresses } = data;
   const email = email_addresses[0].email_address;
   let name = first_name;
