@@ -61,7 +61,7 @@ export default authMiddleware({
 
     // handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
-      const signInUrl = new URL('/login', req.url);
+      const signInUrl = new URL('/sign-in', req.url);
       signInUrl.searchParams.set('redirect_url', req.url);
       return NextResponse.redirect(signInUrl);
     }

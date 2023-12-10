@@ -1,4 +1,4 @@
-import { SignIn, useUser } from '@clerk/nextjs';
+import { SignUp, useUser } from '@clerk/nextjs';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -78,7 +78,8 @@ const Login = () => {
 
       <section className=" h-screen flex flex-col items-center justify-center pt-12 md:pt-24 pb-0 text-letter  relative">
         <div className="mb-8 ">
-          <SignIn
+          <SignUp
+            signInUrl="/sign-in"
             redirectUrl={(redirect_url as string) ?? '/criar'}
             appearance={{
               variables: {
@@ -94,9 +95,12 @@ const Login = () => {
               },
               elements: {
                 rootBox: 'mx-auto',
-                formFieldInput__identifier: 'border-letter focus:border-detail',
+                formFieldInput__emailAddress:
+                  'border-letter focus:border-detail',
+                formFieldInput__password: 'border-letter focus:border-detail',
                 dividerLine: 'bg-letter/60',
                 socialButtonsBlockButton: 'border-letter',
+                identityPreview: 'border-letter bg-secondary',
               },
             }}
           />

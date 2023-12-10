@@ -22,14 +22,7 @@ const sourceCodePro = Source_Code_Pro({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ClerkProvider
-      localization={ptBR}
-      appearance={{
-        elements: {
-          footer: 'hidden',
-        },
-      }}
-    >
+    <ClerkProvider localization={ptBR}>
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
