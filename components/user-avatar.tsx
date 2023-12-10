@@ -1,4 +1,4 @@
-import { SignOutButton, useClerk } from '@clerk/nextjs';
+import { useClerk } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useMemo, useState } from 'react';
@@ -115,36 +115,32 @@ const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
 
             <li className="relative mb-2">
               <div>
-                <SignOutButton
-                  signOutCallback={() => {
+                <button
+                  className={`w-full px-4 py-2 text-letter hover:bg-gray-600 flex items-center ${LINK_BEFORE_CSS}`}
+                  onClick={() => {
                     setIsUserDropdownOpen(false);
-                    signOut();
-                    router.push('/');
+                    signOut(() => router.push('/'));
                   }}
                 >
-                  <button
-                    className={`w-full px-4 py-2 text-letter hover:bg-gray-600 flex items-center ${LINK_BEFORE_CSS}`}
-                  >
-                    <div className="h-6 w-6 mr-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                      </svg>
-                    </div>
-                    Sair
-                  </button>
-                </SignOutButton>
+                  <div className="h-6 w-6 mr-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                      <polyline points="16 17 21 12 16 7"></polyline>
+                      <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                  </div>
+                  Sair
+                </button>
               </div>
             </li>
           </ul>
