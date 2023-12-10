@@ -1,5 +1,6 @@
-import { SignOutButton } from '@clerk/nextjs';
+import { SignOutButton, useClerk } from '@clerk/nextjs';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useMemo, useState } from 'react';
 
 const LINK_BEFORE_CSS =
@@ -10,6 +11,8 @@ interface IUserAvatar {
 }
 
 const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
+  const router = useRouter();
+  const { signOut } = useClerk();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   const userInitials = useMemo(() => {
@@ -111,8 +114,14 @@ const UserAvatar: FC<IUserAvatar> = ({ userName }) => {
             </li>
 
             <li className="relative mb-2">
-              <div onClick={() => setIsUserDropdownOpen(false)}>
-                <SignOutButton>
+              <div>
+                <SignOutButton
+                  signOutCallback={() => {
+                    setIsUserDropdownOpen(false);
+                    signOut();
+                    router.push('/');
+                  }}
+                >
                   <button
                     className={`w-full px-4 py-2 text-letter hover:bg-gray-600 flex items-center ${LINK_BEFORE_CSS}`}
                   >

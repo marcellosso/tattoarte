@@ -11,7 +11,10 @@ module.exports = async (req: any, res: any) => {
 
   const { id, first_name, last_name, email_addresses } = data;
   const email = email_addresses[0].email_address;
-  const name = `${first_name} ${last_name}`;
+  let name = first_name;
+  if (last_name) {
+    name += ` ${last_name}`;
+  }
 
   const { secret } = req.headers;
 

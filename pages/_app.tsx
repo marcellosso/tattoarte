@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import NextNProgress from 'nextjs-progressbar';
 import Script from 'next/script';
 import Navbar from '@/components/navbars/navbar';
+import { ptBR } from '@clerk/localizations';
 
 const raleWay = Raleway({ subsets: ['latin'], display: 'swap', preload: true });
 
@@ -21,7 +22,14 @@ const sourceCodePro = Source_Code_Pro({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      localization={ptBR}
+      appearance={{
+        elements: {
+          footer: 'hidden',
+        },
+      }}
+    >
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}

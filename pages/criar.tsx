@@ -665,12 +665,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/login',
       },
     };
   }
 
-  const userInfo = await clerkClient.users.getUser(userId);
+  const userInfo = await clerkClient.users.getUser(userId ?? '');
 
   const user = (await prisma.user.findUnique({
     where: {

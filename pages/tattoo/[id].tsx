@@ -455,8 +455,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query, req } = context;
   const { userId } = await getAuth(req);
 
-  const userInfo = (await clerkClient.users.getUser(userId || '')) ?? {};
-  const currentUserId = userInfo.externalId ?? null;
+  let currentUserId = null;
+  if (userId) {
+    const userInfo = (await clerkClient.users.getUser(userId || '')) ?? {};
+    currentUserId = userInfo.externalId ?? null;
+  }
 
   const generationId = query?.id;
 

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { authMiddleware, redirectToSignIn } from '@clerk/nextjs';
+import { authMiddleware } from '@clerk/nextjs';
 
-const privatePaths = ['/checkout', '/criar', '/sign-up*', '/sign-in*'];
+const privatePaths = ['/checkout', '/criar'];
 
 const rateLimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -61,7 +61,9 @@ export default authMiddleware({
 
     // handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
-      return redirectToSignIn({ returnBackUrl: req.url });
+      const signInUrl = new URL('/login', req.url);
+      signInUrl.searchParams.set('redirect_url', req.url);
+      return NextResponse.redirect(signInUrl);
     }
 
     return NextResponse.next();
