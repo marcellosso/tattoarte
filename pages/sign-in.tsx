@@ -98,6 +98,7 @@ const Login = () => {
                 formFieldInput__identifier: 'border-letter focus:border-detail',
                 formFieldInput__firstName: 'border-letter focus:border-detail',
                 formFieldInput__lastName: 'border-letter focus:border-detail',
+                formFieldInput__username: 'border-letter focus:border-detail',
                 formFieldInput__password: 'border-letter focus:border-detail',
                 formFieldInput__confirmPassword:
                   'border-letter focus:border-detail',
