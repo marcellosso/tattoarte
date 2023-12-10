@@ -659,9 +659,9 @@ const Criar: FC<ICriar> = ({ user }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
-  const { userId } = await getAuth(req);
+  const { userId: authUserId } = await getAuth(req);
 
-  if (!userId) {
+  if (!authUserId) {
     return {
       redirect: {
         permanent: false,
@@ -670,11 +670,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const userInfo = await clerkClient.users.getUser(userId ?? '');
+  const userInfo = await clerkClient.users.getUser(authUserId ?? '');
 
-  const user = (await prisma.user.findUnique({
+  const userId = userInfo.externalId ?? authUserId.split('_')[1];
+
+  const defaultUser = {
+    id: userId,
+    email: userInfo.emailAddresses[0].emailAddress ?? '',
+    name: `${userInfo.firstName} ${userInfo.lastName}`,
+    freeTrial: true,
+    credits: 0,
+    generationCount: 0,
+  };
+
+  const dbUser = (await prisma.user.findUnique({
     where: {
-      id: userInfo.externalId ?? '',
+      id: userId,
     },
     select: {
       id: true,
@@ -685,6 +696,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       generationCount: true,
     },
   })) as Partial<User & { features: Features }>;
+
+  const user = dbUser ?? defaultUser;
 
   return {
     props: {
