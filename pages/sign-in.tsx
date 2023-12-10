@@ -96,9 +96,13 @@ const Login = () => {
               elements: {
                 rootBox: 'mx-auto',
                 formFieldInput__identifier: 'border-letter focus:border-detail',
+                formFieldInput__password: 'border-letter focus:border-detail',
+                formFieldInput__confirmPassword:
+                  'border-letter focus:border-detail',
                 dividerLine: 'bg-letter/60',
                 socialButtonsBlockButton: 'border-letter',
                 identityPreview: 'border-letter bg-secondary',
+                otpCodeFieldInput: 'border-b-letter',
               },
             }}
           />
