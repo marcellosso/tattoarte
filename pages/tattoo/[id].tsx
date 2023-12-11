@@ -312,7 +312,7 @@ const Tattoo: FC<ITattoo> = ({ generation, isAuthenticated }) => {
                   </p>
                 </div>
                 <Link
-                  href="/api/auth/sign-in"
+                  href="/sign-in"
                   className="bg-detail text-center hover:scale-105 text-xs xs:text-sm md:text-xl w-1/2 font-bold text-primary p-3 rounded-md"
                 >
                   Entrar
