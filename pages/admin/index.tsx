@@ -1,11 +1,12 @@
 import { prisma } from '@/utils/use-prisma';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { Role, User, Features } from '@prisma/client';
 import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Tooltip } from 'react-tooltip';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
 interface IUserEditModal {
   user: User & { features: Partial<Features> };
@@ -368,51 +369,50 @@ const Admin: FC<IAdmin> = ({ users }) => {
   );
 };
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res } = context;
-    const session = await getSession(req, res);
-    const sessionUser = session!.user || {};
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const { userId } = await getAuth(req);
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: sessionUser.email as string,
-      },
-    });
+  const { externalId } = await clerkClient.users.getUser(userId || '');
 
-    if (user?.role != Role.ADMIN) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/404',
-        },
-      };
-    }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: externalId ?? '',
+    },
+  });
 
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        credits: true,
-        name: true,
-        role: true,
-        createdAt: true,
-        generationCount: true,
-        features: {
-          select: {
-            newAiVersion: true,
-            imageToTattoo: true,
-          },
-        },
-      },
-    });
-
+  if (user?.role != Role.ADMIN) {
     return {
-      props: {
-        users: JSON.parse(JSON.stringify(users)),
+      redirect: {
+        permanent: false,
+        destination: '/404',
       },
     };
-  },
-});
+  }
+
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      email: true,
+      credits: true,
+      name: true,
+      role: true,
+      createdAt: true,
+      generationCount: true,
+      features: {
+        select: {
+          newAiVersion: true,
+          imageToTattoo: true,
+        },
+      },
+    },
+  });
+
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+    },
+  };
+};
 
 export default Admin;

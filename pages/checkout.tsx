@@ -2,11 +2,12 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import Head from 'next/head';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import axios from 'axios';
 import Image from 'next/image';
 import processPayment from '@/utils/payment';
 import { prisma } from '@/utils/use-prisma';
+import { GetServerSideProps } from 'next';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
 type ProductInfo = {
   price: string;
@@ -259,41 +260,37 @@ const Checkout: FC<ICheckout> = ({ priceId, isFreeTrial }) => {
   );
 };
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res, query } = context;
-    const priceId = query.priceId || undefined;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, query } = context;
+  const { userId } = await getAuth(req);
+  const priceId = query.priceId || undefined;
 
-    if (!priceId) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/precos',
-        },
-      };
-    }
-
-    const session = await getSession(req, res);
-    const sessionUser = session?.user || {};
-
-    const userId = sessionUser?.sub?.split('|')[1];
-
-    const user = await prisma.user.findFirst({
-      where: {
-        id: userId,
-      },
-      select: {
-        freeTrial: true,
-      },
-    });
-
+  if (!priceId || !userId) {
     return {
-      props: {
-        priceId,
-        isFreeTrial: user?.freeTrial,
+      redirect: {
+        permanent: false,
+        destination: '/precos',
       },
     };
-  },
-});
+  }
+
+  const userInfo = await clerkClient.users.getUser(userId);
+
+  const user = await prisma.user.findFirst({
+    where: {
+      id: userInfo.externalId ?? '',
+    },
+    select: {
+      freeTrial: true,
+    },
+  });
+
+  return {
+    props: {
+      priceId,
+      isFreeTrial: user?.freeTrial,
+    },
+  };
+};
 
 export default Checkout;

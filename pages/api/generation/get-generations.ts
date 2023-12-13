@@ -1,8 +1,8 @@
 import { prisma } from '@/utils/use-prisma';
-import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { Status } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { generationIds } = req.body as { generationIds: string[] };
 
@@ -19,4 +19,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-});
+};

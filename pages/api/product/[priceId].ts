@@ -1,11 +1,11 @@
-import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import Stripe from 'stripe';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { priceId } = req.query;
     const price = await stripe.prices.retrieve(priceId as string);
@@ -21,4 +21,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
   } catch (err) {
     res.send(err);
   }
-});
+};

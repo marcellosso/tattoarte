@@ -1,15 +1,15 @@
 import { prisma } from '@/utils/use-prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 
-module.exports = withApiAuthRequired(async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await getSession(req, res);
-    const sessionUser = session?.user;
-    const userId = sessionUser?.sub.split('|')[1];
+    const { userId } = await getAuth(req);
+    const { externalId } = await clerkClient.users.getUser(userId ?? '');
 
     const { id } = req.body as { id: string };
 
-    const data = { generationId: id, userId: userId };
+    const data = { generationId: id, userId: externalId ?? '' };
 
     const bookmark = await prisma.bookmark.findUnique({
       where: { userId_generationId: data },
@@ -22,4 +22,4 @@ module.exports = withApiAuthRequired(async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-});
+};

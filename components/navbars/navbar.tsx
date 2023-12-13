@@ -1,10 +1,11 @@
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { getAuth } from '@clerk/nextjs/server';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import Logo from '../logo';
 import UserAvatar from '../user-avatar';
 import NavbarLink from './navbar-link';
+import { useUser } from '@clerk/nextjs';
 
 const HAMBURGER_LINE = `block h-1 w-8 my-1 bg-detail transition ease-linear transform duration-300`;
 
@@ -121,7 +122,7 @@ const Navbar = () => {
           >
             Crie sua arte
           </Link>
-          {user && <UserAvatar userName={user.name ?? ''} />}
+          {user && <UserAvatar userName={user.fullName ?? ''} />}
           {toggleMobileNavbar && (
             <div
               className="fixed top-0 left-0 bottom-0 right-0 bg-primary z-20 opacity-40"

@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { ClerkProvider } from '@clerk/nextjs';
 import { Raleway } from 'next/font/google';
 import { Source_Code_Pro } from 'next/font/google';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import NextNProgress from 'nextjs-progressbar';
 import Script from 'next/script';
 import Navbar from '@/components/navbars/navbar';
+import { ptBR } from '@clerk/localizations';
 
 const raleWay = Raleway({ subsets: ['latin'], display: 'swap', preload: true });
 
@@ -21,7 +22,7 @@ const sourceCodePro = Source_Code_Pro({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <UserProvider>
+    <ClerkProvider localization={ptBR}>
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
@@ -55,6 +56,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Navbar />
       <Component {...pageProps} />
       <ToastContainer />
-    </UserProvider>
+    </ClerkProvider>
   );
 }

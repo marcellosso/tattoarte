@@ -2,8 +2,7 @@ import tattooStyles from '@/assets/tattoo-styles';
 import ImageContainer from '@/components/image-container';
 import generateImage from '@/utils/generate';
 import { prisma } from '@/utils/use-prisma';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { clerkClient, getAuth } from '@clerk/nextjs/server';
 import { Features, User } from '@prisma/client';
 import { Oswald } from 'next/font/google';
 import Image from 'next/image';
@@ -17,6 +16,7 @@ import type { ParamsType } from '@/types';
 import { useForm } from 'react-hook-form';
 import Head from 'next/head';
 import { Tooltip } from 'react-tooltip';
+import { GetServerSideProps } from 'next';
 
 const oswald = Oswald({ subsets: ['latin'] });
 
@@ -105,7 +105,7 @@ const AchievmentModal: FC<IAchievmentModal> = ({
 };
 
 interface ICriar {
-  user: UserProfile & User;
+  user: User;
 }
 
 const Criar: FC<ICriar> = ({ user }) => {
@@ -657,41 +657,53 @@ const Criar: FC<ICriar> = ({ user }) => {
   );
 };
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res } = context;
-    const session = await getSession(req, res);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const { userId: authUserId } = await getAuth(req);
 
-    if (!session) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/',
-        },
-      };
-    }
-    const sessionUser = session.user || {};
-
-    const user = (await prisma.user.findUnique({
-      where: {
-        email: sessionUser.email as string,
-      },
-      select: {
-        id: true,
-        email: true,
-        freeTrial: true,
-        credits: true,
-        name: true,
-        generationCount: true,
-      },
-    })) as Partial<User & { features: Features }>;
-
+  if (!authUserId) {
     return {
-      props: {
-        user: JSON.parse(JSON.stringify(user)),
+      redirect: {
+        permanent: false,
+        destination: '/sign-in',
       },
     };
-  },
-});
+  }
+
+  const userInfo = await clerkClient.users.getUser(authUserId ?? '');
+
+  const userId = userInfo.externalId ?? authUserId.split('_')[1];
+
+  const defaultUser = {
+    id: userId,
+    email: userInfo.emailAddresses[0].emailAddress ?? '',
+    name: `${userInfo.firstName} ${userInfo.lastName}`,
+    freeTrial: true,
+    credits: 0,
+    generationCount: 0,
+  };
+
+  const dbUser = (await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      email: true,
+      freeTrial: true,
+      credits: true,
+      name: true,
+      generationCount: true,
+    },
+  })) as Partial<User & { features: Features }>;
+
+  const user = dbUser ?? defaultUser;
+
+  return {
+    props: {
+      user: JSON.parse(JSON.stringify(user)),
+    },
+  };
+};
 
 export default Criar;
