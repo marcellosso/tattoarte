@@ -94,7 +94,7 @@ const Home = () => {
               <div className="flex flex-col w-full lg:w-2/3 items-center gap-2">
                 <h2 className="font-bold text-sm xs:text-lg text-center">
                   Chega de tatuagens genéricas, crie uma tatuagem única em
-                  segundos de acordo com seu gosto. Escolhe entre diversos
+                  segundos de acordo com seu gosto. Escolha entre diversos
                   estilos para criar a sua próxima tatuagem!
                 </h2>
                 <div className="h-0.5 w-1/6 bg-detail" />
