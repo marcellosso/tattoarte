@@ -4,14 +4,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { generationCursor, generationStyle } = req.query;
+    const { generationCursor, generationStyle, limit } = req.query;
 
     const prismaCallObj = {
       where: {
         is_private: false,
         style: (generationStyle || undefined) as string,
       },
-      take: 24,
+      take: limit ?? 24,
       orderBy: [
         {
           createdAt: 'desc',
