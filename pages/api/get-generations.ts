@@ -11,7 +11,7 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
         is_private: false,
         style: (generationStyle || undefined) as string,
       },
-      take: limit ?? 24,
+      take: Number(limit) ?? 24,
       orderBy: [
         {
           createdAt: 'desc',
