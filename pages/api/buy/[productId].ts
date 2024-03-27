@@ -43,6 +43,7 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
             : undefined,
         },
       ],
+      allow_promotion_codes: true,
       success_url: `${process.env.AUTH0_BASE_URL}/criar`,
       cancel_url: `${process.env.AUTH0_BASE_URL}/precos`,
     });
